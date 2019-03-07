@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Gerrymandering</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg==" crossorigin=""></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <script type="text/javascript" src="index.js"></script>
 </head>
@@ -17,18 +20,18 @@
             <p class="h3">Gerrymandering</p>
         </div>
         <div class="col-md">
-            <form id="aaaa" action = "/hello">
-                <input type="button" class="btn btn-primary" value="Account" onclick="document.getElementById('aaaa').submit()">
-                <input type="button" class="btn btn-primary" value="Log Out" onclick="document.getElementById('aaaa').submit()">
+            <form id="backToMain" action = "/login" method="get">
+                <input type="button" class="btn btn-primary" value="Account" onclick="document.getElementById('backToMain').submit()">
+                <input type="button" class="btn btn-primary" value="Log Out" onclick="document.getElementById('backToMain').submit()">
             </form>
         </div>
     </div>
 </div>
 
 <div id = "container-fluid">
-    <div id = "map">
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAZ8ohH2IfqKCNbyoBapGKDp07Gf051R0&callback=initMap" async defer></script>
-    </div>
+    <div id="map"></div>
+        <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAZ8ohH2IfqKCNbyoBapGKDp07Gf051R0&callback=initMap" async defer></script>-->
+    <!--</div>-->
     <div class="card border-dark mb-1" style="max-width: 25rem;">
         <div class="card-header" style="text-align: center">Map Management</div>
         <div class="card-body text-dark">
