@@ -2,8 +2,11 @@
 <html>
 <head>
     <title>Gerrymander</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <script type="text/javascript" src="login.js"></script>
+
 </head>
 <body>
 <div id = "fixed-top">
@@ -15,8 +18,8 @@
             <p class="h3">Gerrymander</p>
         </div>
         <div class="col-md">
-            <form id="aaaa" action = "/hello">
-                <input type="button" class="btn btn-primary" value="Sign In as a Guest" onclick="document.getElementById('aaaa').submit()">
+            <form id="signInAsGuest" action = "/hello">
+                <input type="button" class="btn btn-primary" value="Sign In as a Guest" onclick="document.getElementById('signInAsGuest').submit()">
             </form>
         </div>
     </div>
@@ -35,8 +38,16 @@
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit" onsubmit="document.getElementById('toHome').onsubmit">Sign In</button>
     </form>
-    <form class="form-signin" id="toSignUp" action="/SignUp.html">
-        <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="document.getElementById('toSignUp').submit()">Sign Up</button>
+    <button class="btn btn-lg btn-primary btn-block sign-up-btn" type="submit">Sign Up</button>
+</div>
+
+<div class="lightbox">
+    <h2 class="h3">Sign up</h2>
+    <p class="h3">Welcome to Orioles!</p>
+    <form class="form-signin" action="">
+        <input type="email" class="form-control" placeholder="Your best email">
+        <input type="password" class="form-control" placeholder="password">
+        <button class="btn btn-primary btn-lg" type="submit" value="Sign me up">Sign me up</button>
     </form>
 </div>
 

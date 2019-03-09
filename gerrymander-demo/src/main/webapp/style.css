@@ -7,7 +7,7 @@
 
 .h3{
     color: white !important;
-    font-family: Serif !important;
+    font-family: cursive;
 }
 body{
     background-color:#343a40 !important;
@@ -16,6 +16,10 @@ body{
     float: right;
     text-align: right;
 }
+.sign-up-btn{
+    width: 300px;
+    margin-left: 405px;
+}
 .rememberme{
     color: white;
 }
@@ -23,6 +27,20 @@ body{
     width: 75%;
     height: 700px;
     float: left;
+}
+
+.lightbox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+    padding: 15% 35% 25% 35%;
+    text-align: center;
+    background-color: #7d8ea0;
+    text-align: center;
+    text-shadow: #333 0 1px 0;
 }
 
 .toolbar{
