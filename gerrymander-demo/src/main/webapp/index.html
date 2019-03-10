@@ -73,6 +73,9 @@
                     </label>
                 </li>
             </div>
+
+
+
             <label for="compactness">COMPACTNESS</label>
             <input type="range" class="custom-range" id="compactness">
             <label for="politicalFairness">POLITICAL FAIRNESS</label>
@@ -89,10 +92,57 @@
             <input type="range" class="custom-range" id="ethnicMinority">
             <label for="graphThroretical">GRAPH_THEORETICAL_COMPACTNESS</label>
             <input type="range" class="custom-range" id="graphThroretical">
-            <label for="majorityMinority">MAJORITY_MINORITY_DISTRICT</label>
+            <!--<label for="majorityMinority">MAJORITY_MINORITY</label>-->
+
+            <div class="dropdown alignment">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Majority-Minority
+                </button>
+                <li class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    <label class="alignmentCC">
+                        <input type="checkbox">  African-American
+                    </label>
+                    <br>
+                    <label class="alignmentCC">
+                        <input type="checkbox">  Hispanic-American
+                    </label>
+                    <br>
+                    <label class="alignmentCC">
+                        <input type="checkbox">  Asian-American
+                    </label>
+                    <br>
+                    <label class="alignmentCC">
+                        <input type="checkbox">  Others
+                    </label>
+                </li>
+            </div>
+
             <input type="range" class="custom-range" id="majorityMinority">
+            <!--<ul class="list-group list-group-horizontal">-->
+
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                <label class="custom-control-label" for="customSwitch1">Toggle this switch element</label>
+            </div>
+
+            <!--</ul>-->
+            <!--<div class="input-group mb-3">-->
+                <!--<div class="input-group-prepend">-->
+                    <!--<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</button>-->
+                    <!--<div class="dropdown-menu">-->
+                        <!--<a class="dropdown-item" href="#">Action</a>-->
+                        <!--<a class="dropdown-item" href="#">Another action</a>-->
+                        <!--<a class="dropdown-item" href="#">Something else here</a>-->
+                        <!--<div role="separator" class="dropdown-divider"></div>-->
+                        <!--<a class="dropdown-item" href="#">Separated link</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<input type="range" class="custom-range range1" id="majorityMinority">-->
+            <!--</div>-->
         </div>
     </div>
+</div>
+
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
