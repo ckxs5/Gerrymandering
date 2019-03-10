@@ -12,7 +12,6 @@
 </head>
 <body>
 
-
 <div id = "fixed-top">
     <div class="row">
         <div class="col">
@@ -29,7 +28,6 @@
         </div>
     </div>
 </div>
-
 
 <div id = "container-fluid">
     <div id="map"></div>
@@ -54,6 +52,28 @@
                     <button type="button" class="btn btn-secondary">Load Weights</button>
                 </div>
             </div>
+            <div class="dropdown alignment">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    ALIGNMENT
+                </button>
+                <li class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    <label class="alignmentCC">
+                        <input type="checkbox">  County&Cities
+                    </label>
+                    <br>
+                    <label class="alignmentCC">
+                        <input type="checkbox">  Highways
+                    </label>
+                    <br>
+                    <label class="alignmentCC">
+                        <input type="checkbox">  Rivers
+                    </label>
+                    <br>
+                    <label class="alignmentCC">
+                        <input type="checkbox">  Mountains
+                    </label>
+                </li>
+            </div>
             <label for="compactness">COMPACTNESS</label>
             <input type="range" class="custom-range" id="compactness">
             <label for="politicalFairness">POLITICAL FAIRNESS</label>
@@ -72,6 +92,7 @@
             <input type="range" class="custom-range" id="graphThroretical">
             <label for="majorityMinority">MAJORITY_MINORITY_DISTRICT</label>
             <input type="range" class="custom-range" id="majorityMinority">
+
         </div>
     </div>
 

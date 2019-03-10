@@ -4,13 +4,16 @@
     text-align: center !important;
     padding: 5px !important;
 }
-
+.oriole{
+    text-align: center;
+}
 .h3{
     color: white !important;
     font-family: cursive;
 }
 body{
-    background-color:#343a40 !important;
+    background-color: #343a40 !important;
+
 }
 .col-md{
     float: right;
@@ -85,4 +88,40 @@ body{
     margin-bottom: 10px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+}
+
+.alignmentCC {
+    color: black;
+}
+.signinpage{
+
+    
+}
+.mappage{
+    text-align: center;
+    background-color: #343a40;
+
+}
+
+
+/*D3.js map================================*/
+.states :hover {
+    fill: orange;
+}
+.states{
+    fill: black;
+}
+
+.state-borders {
+    fill: none;
+    stroke: yellow;
+    stroke-width: 0.5px;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    pointer-events: none;
+}
+.svg{
+    stroke: black;
+    background: yellow;
+    text-align: center;
 }
