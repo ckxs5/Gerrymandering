@@ -20,6 +20,8 @@ body, html{
     background-color: #232a30 !important;
     height: 100%;
 }
+
+
 .col-md{
     float: right;
     text-align: right;
@@ -33,8 +35,14 @@ body, html{
 }
 #map {
     width: 75%;
-    height: 900px;
+    height: 700px;
     float: left;
+}
+.card{
+    width: 25%;
+    height: 700px;
+    background-color: #232a30;
+    float: right;
 }
 .rounded1{
     display: block;
@@ -127,5 +135,21 @@ body, html{
     background-color: #232a30;
     display: block;
     width: 100%;
+}
+
+.btn-align{
+    float: left;
+}
+
+.btn-major{
+    float: right;
+}
+.major{
+    width: 145px;
+    float: right;
+}
+
+.custom-control-label, .ranges{
+    color: ghostwhite;
 }
 
