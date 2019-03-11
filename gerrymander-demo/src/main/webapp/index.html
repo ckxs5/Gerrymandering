@@ -3,150 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <title>Gerrymandering</title>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg==" crossorigin=""></script>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script type="text/javascript" src="index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" type="text/javascript"></script>
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
+    <link crossorigin="" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+          integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+          rel="stylesheet"/>
+    <script crossorigin=""
+            integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+            src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+    <link href="style.css" rel="stylesheet" type="text/css">
+    <script src="index.js" type="text/javascript"></script>
 </head>
 <body>
 
-<div id = "fixed-top">
+<div id="fixed-top">
     <div class="row">
         <div class="col">
-            <img src="Oriole.jpg" class="rounded float-left">
+            <img class="rounded float-left" src="Oriole.jpg">
         </div>
         <div class="col">
             <p class="h3">Gerrymandering</p>
         </div>
         <div class="col-md">
-            <form id="backToMain" action = "/login" method="get">
-                <input type="button" class="btn btn-primary" value="Log Out" onclick="document.getElementById('backToMain').submit()">
+            <form action="/login" id="backToMain" method="get">
+                <input class="btn btn-primary" onclick="document.getElementById('backToMain').submit()" type="button"
+                       value="Log Out">
             </form>
         </div>
     </div>
 </div>
 
-<div id = "container-fluid">
+<div id="container-fluid">
     <div id="map"></div>
+
+
     <div class="card border-dark mb-1" style="max-width: 25rem;">
         <div class="card-body text-dark">
-            <div class="btn-toolbar mb-1" role="toolbar" aria-label="Toolbar with button groups">
-                <div class="btn-group btn-group-sm" role="group" aria-label="First group">
-                    <button type="button" class="btn btn-secondary">Play</button>
-                    <button type="button" class="btn btn-secondary">Update</button>
-                    <button type="button" class="btn btn-secondary">Save Maps</button>
-                    <button type="button" class="btn btn-secondary">View Maps</button>
-                    <button type="button" class="btn btn-secondary">Load Maps</button>
-                    <button type="button" class="btn btn-secondary">Delete Maps</button>
+
+
+            <div aria-label="Toolbar with button groups" class="btn-toolbar mb-1" role="toolbar">
+                <div aria-label="First group" class="btn-group btn-group-sm" role="group">
+                    <button class="btn btn-secondary" type="button">Play</button>
+                    <button class="btn btn-secondary" type="button">Update</button>
+                    <button class="btn btn-secondary" type="button">Save Maps</button>
+                    <button class="btn btn-secondary" type="button">View Maps</button>
+                    <button class="btn btn-secondary" type="button">Load Maps</button>
+                    <button class="btn btn-secondary" type="button">Delete Maps</button>
                 </div>
             </div>
-            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                <div class="btn-group btn-group-sm" role="group" aria-label="First group">
-                    <button type="button" class="btn btn-secondary">Stop</button>
-                    <button type="button" class="btn btn-secondary">Pause</button>
-                    <button type="button" class="btn btn-secondary">Save Weights</button>
-                    <button type="button" class="btn btn-secondary">View Weights</button>
-                    <button type="button" class="btn btn-secondary">Load Weights</button>
+
+
+            <div aria-label="Toolbar with button groups" class="btn-toolbar mb-1" role="toolbar">
+                <div aria-label="First group" class="btn-group btn-group-sm" role="group">
+                    <button class="btn btn-secondary" type="button">Stop</button>
+                    <button class="btn btn-secondary" type="button">Pause</button>
+                    <button class="btn btn-secondary" type="button">Save Weights</button>
+                    <button class="btn btn-secondary" type="button">View Weights</button>
+                    <button class="btn btn-secondary" type="button">Load Weights</button>
                 </div>
             </div>
-            <div class="dropdown alignment">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    ALIGNMENT
-                </button>
-                <li class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    <label class="alignmentCC">
-                        <input type="checkbox">  County&Cities
-                    </label>
-                    <br>
-                    <label class="alignmentCC">
-                        <input type="checkbox">  Highways
-                    </label>
-                    <br>
-                    <label class="alignmentCC">
-                        <input type="checkbox">  Rivers
-                    </label>
-                    <br>
-                    <label class="alignmentCC">
-                        <input type="checkbox">  Mountains
-                    </label>
-                </li>
+
+
+            <div class="btn-container">
+                <div class="dropdown btn-align">
+                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        ALIGNMENT
+                    </button>
+                    <li class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <label class="alignmentCC">
+                            <input type="checkbox">  County&Cities
+                        </label>
+                        <br>
+                        <label class="alignmentCC">
+                            <input type="checkbox">  Highways
+                        </label>
+                        <br>
+                        <label class="alignmentCC">
+                            <input type="checkbox">  Rivers
+                        </label>
+                        <br>
+                        <label class="alignmentCC">
+                            <input type="checkbox">  Mountains
+                        </label>
+                    </li>
+                </div>
+
+                <div class="dropdown btn-major">
+                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Majority-Minority
+                    </button>
+                    <li class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                        <label class="alignmentCC">
+                            <input type="checkbox">  African-American
+                        </label>
+                        <br>
+                        <label class="alignmentCC">
+                            <input type="checkbox">  Hispanic-American
+                        </label>
+                        <br>
+                        <label class="alignmentCC">
+                            <input type="checkbox">  Asian-American
+                        </label>
+                        <br>
+                        <label class="alignmentCC">
+                            <input type="checkbox">  Others
+                        </label>
+                    </li>
+                </div>
+                    <input class="custom-range major" id="majorityMinority" type="range">
+                <div class="custom-switch" id="compare">
+                    <input class="custom-control-input" id="customSwitch1" type="checkbox">
+                    <label class="custom-control-label" for="customSwitch1">COMPARISON</label>
+                </div>
+            </div>
+
+            <div>
+                <label for="compactness" class="ranges">COMPACTNESS</label>
+                <input class="custom-range" id="compactness" type="range">
+                <label for="politicalFairness" class="ranges">POLITICAL FAIRNESS</label>
+                <input class="custom-range" id="politicalFairness" type="range">
+                <label for="popluationEquality" class="ranges">POPULATION_EQUALITY</label>
+                <input class="custom-range" id="popluationEquality" type="range">
+                <label for="communityInterest" class="ranges">COMMUNITY_OF_INTEREST</label>
+                <input class="custom-range" id="communityInterest" type="range">
+                <label for="efficiencyGap" class="ranges">EFFICIENCY_GAP</label>
+                <input class="custom-range" id="efficiencyGap" type="range">
+                <label for="partisanFiarness" class="ranges">PARTISAN_FAIRNESS</label>
+                <input class="custom-range" id="partisanFiarness" type="range">
+                <label for="ethnicMinority" class="ranges">ETHNIC_MINORITY_DATA</label>
+                <input class="custom-range" id="ethnicMinority" type="range">
+                <label for="graphThroretical" class="ranges">GRAPH_THEORETICAL_COMPACTNESS</label>
+                <input class="custom-range" id="graphThroretical" type="range">
             </div>
 
 
-
-            <label for="compactness">COMPACTNESS</label>
-            <input type="range" class="custom-range" id="compactness">
-            <label for="politicalFairness">POLITICAL FAIRNESS</label>
-            <input type="range" class="custom-range" id="politicalFairness">
-            <label for="popluationEquality">POPULATION_EQUALITY</label>
-            <input type="range" class="custom-range" id="popluationEquality">
-            <label for="communityInterest">COMMUNITY_OF_INTEREST</label>
-            <input type="range" class="custom-range" id="communityInterest">
-            <label for="efficiencyGap">EFFICIENCY_GAP</label>
-            <input type="range" class="custom-range" id="efficiencyGap">
-            <label for="partisanFiarness">PARTISAN_FAIRNESS</label>
-            <input type="range" class="custom-range" id="partisanFiarness">
-            <label for="ethnicMinority">ETHNIC_MINORITY_DATA</label>
-            <input type="range" class="custom-range" id="ethnicMinority">
-            <label for="graphThroretical">GRAPH_THEORETICAL_COMPACTNESS</label>
-            <input type="range" class="custom-range" id="graphThroretical">
-            <!--<label for="majorityMinority">MAJORITY_MINORITY</label>-->
-
-            <div class="dropdown alignment">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Majority-Minority
-                </button>
-                <li class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    <label class="alignmentCC">
-                        <input type="checkbox">  African-American
-                    </label>
-                    <br>
-                    <label class="alignmentCC">
-                        <input type="checkbox">  Hispanic-American
-                    </label>
-                    <br>
-                    <label class="alignmentCC">
-                        <input type="checkbox">  Asian-American
-                    </label>
-                    <br>
-                    <label class="alignmentCC">
-                        <input type="checkbox">  Others
-                    </label>
-                </li>
-            </div>
-
-            <input type="range" class="custom-range" id="majorityMinority">
-            <!--<ul class="list-group list-group-horizontal">-->
-
-            <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                <label class="custom-control-label" for="customSwitch1">Toggle this switch element</label>
-            </div>
-
-            <!--</ul>-->
-            <!--<div class="input-group mb-3">-->
-                <!--<div class="input-group-prepend">-->
-                    <!--<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</button>-->
-                    <!--<div class="dropdown-menu">-->
-                        <!--<a class="dropdown-item" href="#">Action</a>-->
-                        <!--<a class="dropdown-item" href="#">Another action</a>-->
-                        <!--<a class="dropdown-item" href="#">Something else here</a>-->
-                        <!--<div role="separator" class="dropdown-divider"></div>-->
-                        <!--<a class="dropdown-item" href="#">Separated link</a>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<input type="range" class="custom-range range1" id="majorityMinority">-->
-            <!--</div>-->
         </div>
     </div>
 </div>
 
-
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script crossorigin="anonymous"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script crossorigin="anonymous"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script crossorigin="anonymous"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

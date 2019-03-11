@@ -10,11 +10,11 @@ HELP.md
 .settings
 .springBeans
 .sts4-cache
-
+s
 ### IntelliJ IDEA ###
-.idea
-*.iws
+.idea/
 *.iml
+*.iws
 *.ipr
 
 ### NetBeans ###

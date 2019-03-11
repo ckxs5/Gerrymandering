@@ -11,5 +11,6 @@ $("document").ready(function(){
         }).addTo(mymap);
     }
     initalMap();
+
 });
 
