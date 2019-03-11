@@ -106,6 +106,9 @@ body, html{
     padding: 15px;
     margin: auto;
 }
+.logbtn{
+    opacity: 0.9 !important;
+}
 .form-signin .checkbox {
     font-weight: 400;
 }
@@ -115,6 +118,7 @@ body, html{
     height: auto;
     padding: 10px;
     font-size: 16px;
+    opacity: 0.9 !important;
 }
 .form-signin .form-control:focus {
     z-index: 2;
