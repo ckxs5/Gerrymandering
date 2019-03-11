@@ -1,9 +1,9 @@
 $(function () {
-    $(".sign-up-btn").click(function () {
+    $("#signupbtn").click(function () {
         $(".lightbox").delay(500).fadeIn(500);
     });
-    $(".btn-sm").click(function () {
-        $(this).stop().fadeOut();
+    $("#signup-submit-button").click(function () {
+        $(this).stop().delay(500).fadeOut(500);
     });
 
     $(".loginmap").ready(function () {
