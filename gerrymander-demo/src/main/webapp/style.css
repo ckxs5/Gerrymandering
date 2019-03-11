@@ -48,8 +48,9 @@ body, html{
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 50%;
+    width: 640px;
 }
+
 .scroll {
     display: block;
     margin-left: auto;
@@ -89,6 +90,14 @@ body, html{
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
+}
+.oriolebkg{
+    background-image: url("bigoriole.png");
+    background-repeat: no-repeat;
+    background-size: 640px;
+    background-position-x: center;
+    /*background-position: center ;*/
+    padding-top: 140px;
 }
 
 .form-signin {
