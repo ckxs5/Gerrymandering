@@ -1,5 +1,6 @@
 package com.example.gerrymanderdemo.controller;
 
+import com.example.gerrymanderdemo.Repository.AdministratorRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -22,4 +23,5 @@ public class HelloController {
     public String homepage(){
         return "index";
     }
+
 }
