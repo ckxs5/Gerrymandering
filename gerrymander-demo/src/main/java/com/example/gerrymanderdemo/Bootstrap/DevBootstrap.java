@@ -6,9 +6,8 @@ import com.example.gerrymanderdemo.model.Administrator;
 import com.example.gerrymanderdemo.model.Guest;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.stereotype.Component;
 
-@Component
+
 public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
     private AdministratorRepository administratorRepository;
@@ -26,8 +25,8 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 
     private void initData(){
 
-        Guest guest = new Guest("testGuest", "cse308");
-        Administrator administrator = new Administrator("testAdmin", "cse308");
+        Guest guest = new Guest("testGuest", "test@gmail.com", "cse308");
+        Administrator administrator = new Administrator("testAdmin", "admin@gmail.com", "cse308");
         administrator.addToList(guest);
         guestRepository.save(guest);
         administratorRepository.save(administrator);

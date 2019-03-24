@@ -1,5 +1,7 @@
 package com.example.gerrymanderdemo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -15,11 +17,15 @@ public abstract class User {
     @Column(updatable = false, nullable = false)
     private String name;
 
+    @Column(updatable = false, nullable = false)
+    private String email;
+
     @Column(nullable = false)
     private String password;
 
-    public User(String name, String password) {
+    public User(String name, String email, String password) {
         this.name = name;
+        this.email = email;
         this.password = password;
     }
 
@@ -39,6 +45,15 @@ public abstract class User {
         this.name = name;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @JsonIgnore
     public String getPassword() {
         return password;
     }

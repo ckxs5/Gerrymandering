@@ -11,13 +11,13 @@ public class Administrator extends User {
     @OneToMany
     Collection<User> userList;
 
-    public Administrator(String name, String password) {
-        super(name, password);
+    public Administrator(String name, String email, String password) {
+        super(name, email, password);
         this.userList = new ArrayList<>();
     }
 
-    public Administrator(String name, String password, Collection<User> userList) {
-        super(name, password);
+    public Administrator(String name, String email, String password, Collection<User> userList) {
+        super(name, email, password);
         this.userList = userList;
     }
 
