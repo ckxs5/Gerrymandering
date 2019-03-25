@@ -6,7 +6,7 @@ import com.example.gerrymanderdemo.model.Administrator;
 import com.example.gerrymanderdemo.model.Guest;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-
+import org.springframework.stereotype.Component;
 
 public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
