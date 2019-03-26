@@ -1,11 +1,9 @@
 package com.example.gerrymanderdemo.controller;
 
-import com.example.gerrymanderdemo.Repository.AdministratorRepository;
 import com.example.gerrymanderdemo.Service.UserService;
 import com.example.gerrymanderdemo.model.Guest;
 import com.example.gerrymanderdemo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +33,7 @@ public class HelloController {
     public ResponseEntity<User> login(@RequestParam("email") String email, @RequestParam("password") String password, HttpSession session){
         User user = userService.find(email, password);
         session.setAttribute("user", user);
+        System.out.println(user);
         return ResponseEntity.ok(user);
     }
 
