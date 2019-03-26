@@ -31,6 +31,7 @@ public class HelloController {
 
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestParam("email") String email, @RequestParam("password") String password, HttpSession session){
+        System.out.printf("Get email: %s and pass: %s\n", email, password);
         User user = userService.find(email, password);
         session.setAttribute("user", user);
         System.out.println(user);
@@ -38,8 +39,8 @@ public class HelloController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signup(@RequestParam("email") String email, @RequestParam("username") String username, @RequestParam("password") String password) {
-        Guest guest = new Guest(username, email, password);
+    public ResponseEntity<User> signup(@RequestParam("email") String email, @RequestParam("password") String password) {
+        Guest guest = new Guest("Unknown", email, password);
         guest = userService.addGuest(guest);
         return ResponseEntity.ok(guest);
     }

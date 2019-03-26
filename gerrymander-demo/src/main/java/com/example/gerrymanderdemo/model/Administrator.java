@@ -11,6 +11,9 @@ public class Administrator extends User {
     @OneToMany
     Collection<User> userList;
 
+    public Administrator() {
+    }
+
     public Administrator(String name, String email, String password) {
         super(name, email, password);
         this.userList = new ArrayList<>();

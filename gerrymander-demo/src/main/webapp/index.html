@@ -12,15 +12,15 @@
     <script crossorigin=""
             integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
             src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
-    <link href="style.css" rel="stylesheet" type="text/css">
-    <script src="index.js" type="text/javascript"></script>
+    <link href="CSS/style.css" rel="stylesheet" type="text/css">
+    <script src="JSFiles/index.js" type="text/javascript"></script>
 </head>
 <body>
 
-<div id="fixed-top">
+<nav id="fixed-top">
     <div class="row">
         <div class="col">
-            <img class="rounded float-left" src="Oriole.jpg">
+            <img class="rounded float-left" src="Images/Oriole.jpg">
         </div>
         <div class="col">
             <p class="h3">Gerrymandering</p>
@@ -32,9 +32,10 @@
             </form>
         </div>
     </div>
-</div>
+</nav>
 
 <div id="container-fluid">
+    <script type="text/javascript" src="./JSFiles/us-states.js"></script>
     <div id="map"></div>
 
 

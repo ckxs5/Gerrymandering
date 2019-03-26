@@ -58,7 +58,7 @@ body, html{
     padding: 5%;
 }
 #loginmap{
-    width: 80%;
+    width: 95%;
     height: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -92,7 +92,7 @@ body, html{
     text-align: center;
 }
 .oriolebkg{
-    background-image: url("bigoriole.png");
+    background-image: url("../Images/bigoriole.png");
     background-repeat: no-repeat;
     background-size: 640px;
     background-position-x: center;
