@@ -23,5 +23,10 @@ $("document").ready(function(){
     }
     initalMap();
 
+
+
 });
+
+
+
 
