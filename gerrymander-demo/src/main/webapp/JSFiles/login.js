@@ -28,5 +28,4 @@ $(function () {
 
         var geojson = L.geoJson(statesData).addTo(mymap);
     });
-
 });
