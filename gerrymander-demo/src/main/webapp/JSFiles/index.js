@@ -26,10 +26,10 @@ $("document").ready(function(){
     }
     initalMap();
 
-    // function disable(){
-    //     console.log(document.referrers.);
-    // }
-    // disable();
+    function disables(){
+        $("#controllpane").find("*").prop("disabled", true);
+    }
+    disables();
 });
 
 
