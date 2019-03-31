@@ -19,8 +19,10 @@ $("document").ready(function(){
         mymap.setMaxBounds(maxBounds);
         mymap.fitBounds(maxBounds);
 
-        var geojson = L.geoJson(statesData).addTo(mymap);
-        var geojson = L.geoJson(maryland_precinct).addTo(mymap);
+        var geojson = L.geoJson(MD_Dist).addTo(mymap);
+        var geojson = L.geoJson(MD_P).addTo(mymap);
+        var geojson = L.geoJson(MN_Dist).addTo(mymap);
+        var geojson = L.geoJson(MN_P).addTo(mymap);
     }
     initalMap();
 
