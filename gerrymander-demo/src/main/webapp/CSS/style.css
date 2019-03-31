@@ -86,7 +86,7 @@ body, html{
 }
 .container {
     position: absolute;
-    top: 50%;
+    top: 55%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
@@ -96,6 +96,7 @@ body, html{
     background-repeat: no-repeat;
     background-size: 640px;
     background-position-x: center;
+    background-position-y: 12px;
     /*background-position: center ;*/
     padding-top: 140px;
 }
@@ -165,4 +166,10 @@ body, html{
 .custom-control-label, .ranges{
     color: ghostwhite;
 }
+
+.disabledbutton {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
 

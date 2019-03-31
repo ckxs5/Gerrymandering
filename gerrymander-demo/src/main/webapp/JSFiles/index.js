@@ -20,11 +20,14 @@ $("document").ready(function(){
         mymap.fitBounds(maxBounds);
 
         var geojson = L.geoJson(statesData).addTo(mymap);
+        var geojson = L.geoJson(maryland_precinct).addTo(mymap);
     }
     initalMap();
 
-
-
+    // function disable(){
+    //     console.log(document.referrers.);
+    // }
+    // disable();
 });
 
 
