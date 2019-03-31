@@ -6,11 +6,10 @@ import com.example.gerrymanderdemo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.io.*;
 
 
 @Controller
@@ -19,31 +18,35 @@ public class HelloController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/")
+    @RequestMapping("/")
     public String index(){
-        return "login";
+        return "index";
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String getlogin() {
         return "login";
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestParam("email") String email, @RequestParam("password") String password, HttpSession session){
+    public String login(@RequestParam("email") String email, @RequestParam("password") String password, HttpSession session){
         System.out.printf("Get email: %s and pass: %s\n", email, password);
         User user = userService.find(email, password);
-        session.setAttribute("user", user);
-        System.out.println(user);
-        return ResponseEntity.ok(user);
+        if (user != null) {
+            session.setAttribute("user", user);
+            System.out.printf("User is %s login\n", user);
+            return "index";
+        }
+        else return "login";
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signup(@RequestParam("email") String email, @RequestParam("password") String password) {
+    public String signup(@RequestParam("email") String email, @RequestParam("password") String password) {
         Guest guest = new Guest("Unknown", email, password);
-        guest = userService.addGuest(guest);
-        return ResponseEntity.ok(guest);
+        userService.addGuest(guest);
+        return "login";
     }
+
 
     @GetMapping("/homepage")
     public String homepage(){
