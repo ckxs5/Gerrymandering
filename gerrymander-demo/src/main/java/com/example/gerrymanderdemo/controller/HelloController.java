@@ -3,6 +3,7 @@ package com.example.gerrymanderdemo.controller;
 import com.example.gerrymanderdemo.Service.UserService;
 import com.example.gerrymanderdemo.model.Guest;
 import com.example.gerrymanderdemo.model.Response.ErrorResponse;
+import com.example.gerrymanderdemo.model.Response.OKResponse;
 import com.example.gerrymanderdemo.model.Response.OKUserResponse;
 import com.example.gerrymanderdemo.model.Response.Response;
 import com.example.gerrymanderdemo.model.User;
@@ -51,10 +52,18 @@ public class HelloController {
     }
 
     @PostMapping("/signup")
-    public String signup(@RequestParam("email") String email, @RequestParam("password") String password) {
-        Guest guest = new Guest("Unknown", email, password);
-        userService.addGuest(guest);
-        return "login";
+    public ResponseEntity<Response> signup(@RequestBody User user) {
+        user = userService.addGuest(user);
+        if (user == null)
+            return ResponseEntity.ok(new ErrorResponse("User Exist"));
+        else
+            return ResponseEntity.ok(new OKResponse());
+    }
+
+    @GetMapping
+    public ResponseEntity<Response> logout(HttpSession session) {
+        session.setAttribute("user", null);
+        return ResponseEntity.ok(new OKResponse());
     }
 
 

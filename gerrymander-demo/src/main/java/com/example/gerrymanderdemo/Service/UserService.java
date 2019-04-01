@@ -23,13 +23,13 @@ public class UserService {
         return userRepository.findByEmailAndPassword(userEmail, password);
     }
 
-    public Guest addGuest(Guest guest) {
-       Guest add = guestRepository.findByEmail(guest.getEmail());
+    public User addGuest(User user) {
+       User add = userRepository.findByNameOrEmail(user.getName(), user.getEmail());
        if (add != null) {
            return null;
        }
        else {
-           return guestRepository.save(guest);
+           return userRepository.save(user);
        }
     }
 }
