@@ -76,12 +76,7 @@ $("document").ready(function(){
             style:style,
             onEachFeature:onEachDistrictFeature
         }).addTo(mymap);
-
-
-        }
-
-
-
+        
 
         var geojson = L.geoJson(MD_Dist).addTo(mymap);
         var geojson = L.geoJson(MD_P).addTo(mymap);
