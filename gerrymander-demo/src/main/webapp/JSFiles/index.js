@@ -76,12 +76,12 @@ $("document").ready(function(){
             style:style,
             onEachFeature:onEachDistrictFeature
         }).addTo(mymap);
-        
 
-        var geojson = L.geoJson(MD_Dist).addTo(mymap);
-        var geojson = L.geoJson(MD_P).addTo(mymap);
-        var geojson = L.geoJson(MN_Dist).addTo(mymap);
-        var geojson = L.geoJson(MN_P).addTo(mymap);
+
+        L.geoJson(MD_Dist).addTo(mymap);
+        L.geoJson(MD_P).addTo(mymap);
+        L.geoJson(MN_Dist).addTo(mymap);
+        L.geoJson(MN_P).addTo(mymap);
     }
     initalMap();
 
