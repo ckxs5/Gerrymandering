@@ -93,11 +93,6 @@ $("document").ready(function(){
         }).addTo(mymap);
 
 
-
-
-
-
-
         L.geoJson(MD_Dist).addTo(mymap);
         L.geoJson(MD_P).addTo(mymap);
         L.geoJson(MN_Dist).addTo(mymap);
