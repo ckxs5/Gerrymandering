@@ -1,14 +1,15 @@
 package com.example.gerrymanderdemo.controller;
 
 import com.example.gerrymanderdemo.Service.UserService;
-import com.example.gerrymanderdemo.model.Guest;
+import com.example.gerrymanderdemo.model.Response.ErrorResponse;
+import com.example.gerrymanderdemo.model.Response.OKResponse;
+import com.example.gerrymanderdemo.model.Response.OKUserResponse;
+import com.example.gerrymanderdemo.model.Response.Response;
 import com.example.gerrymanderdemo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -19,31 +20,47 @@ public class HelloController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/")
-    public String index(){
-        return "login";
+    @RequestMapping("/")
+    public String index(HttpSession session){
+        User user = (User) session.getAttribute("user");
+        if(user == null)
+            return "login";
+        else
+            return "index";
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String getlogin() {
         return "login";
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestParam("email") String email, @RequestParam("password") String password, HttpSession session){
-        System.out.printf("Get email: %s and pass: %s\n", email, password);
-        User user = userService.find(email, password);
-        session.setAttribute("user", user);
-        System.out.println(user);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<Response> login(@RequestBody User user, HttpSession session){
+        System.out.printf("Get email: %s and pass: %s\n", user.getEmail(), user.getPassword());
+        user = userService.find(user.getEmail(), user.getPassword());
+        if (user != null) {
+            session.setAttribute("user", user);
+            System.out.printf("User: %s login\n", user);
+            return ResponseEntity.ok(new OKUserResponse(user));
+        }
+        else return ResponseEntity.ok(new ErrorResponse("Could not found user"));
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signup(@RequestParam("email") String email, @RequestParam("password") String password) {
-        Guest guest = new Guest("Unknown", email, password);
-        guest = userService.addGuest(guest);
-        return ResponseEntity.ok(guest);
+    public ResponseEntity<Response> signup(@RequestBody User user) {
+        user = userService.addUser(user);
+        if (user == null)
+            return ResponseEntity.ok(new ErrorResponse("User Exist"));
+        else
+            return ResponseEntity.ok(new OKResponse());
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Response> logout(HttpSession session) {
+        session.setAttribute("user", null);
+        return ResponseEntity.ok(new OKResponse());
+    }
+
 
     @GetMapping("/homepage")
     public String homepage(){

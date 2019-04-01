@@ -14,6 +14,8 @@
             src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
     <link href="CSS/style.css" rel="stylesheet" type="text/css">
     <script src="JSFiles/index.js" type="text/javascript"></script>
+    <script src="JSFiles/helper.js" type="text/javascript"></script>
+    <script src="JSFiles/formPost.js" type="text/javascript"></script>
 </head>
 <body>
 
@@ -26,25 +28,23 @@
             <p class="h3">Gerrymandering</p>
         </div>
         <div class="col-md">
-            <form action="/login" id="backToMain" method="get">
-                <input class="btn btn-primary" onclick="document.getElementById('backToMain').submit()" type="button"
-                       value="Log Out">
-            </form>
+            <input class="btn btn-primary" onclick=postData(null,"/logout",cleardata) type="button" value="Log Out">
         </div>
     </div>
 </nav>
 
 <div id="container-fluid">
-    <!--<script type="text/javascript" src="./JSFiles/us-states.js"></script>-->
     <script type="text/javascript" src="./geoJson/FL_Dist.js"></script>
+    <script type="text/javascript" src="geoJson/MD_CongressionalDistrict.js"></script>
+    <script type="text/javascript" src="geoJson/MD_Precincts.js"></script>
+    <script type="text/javascript" src="geoJson/MN_CongressionalDistrict.js"></script>
+    <script type="text/javascript" src="geoJson/MN_Precincts.js"></script>
     <div id="map"></div>
 
-
-    <div class="card border-dark mb-1" style="max-width: 25rem;">
+    <div class="card border-dark mb-1" id="controllpane" style="max-width: 25rem;">
         <div class="card-body text-dark">
 
-
-            <div aria-label="Toolbar with button groups" class="btn-toolbar mb-1" role="toolbar">
+            <div aria-label="Toolbar with button groups" class="btn-toolbar mb-1 aaa" role="toolbar">
                 <div aria-label="First group" class="btn-group btn-group-sm" role="group">
                     <button class="btn btn-secondary" type="button">Play</button>
                     <button class="btn btn-secondary" type="button">Update</button>
@@ -138,15 +138,10 @@
                 <label for="graphThroretical" class="ranges">GRAPH_THEORETICAL_COMPACTNESS</label>
                 <input class="custom-range" id="graphThroretical" type="range">
             </div>
-
-
         </div>
     </div>
 </div>
 
-<script crossorigin="anonymous"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script crossorigin="anonymous"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

@@ -82,10 +82,19 @@ $("document").ready(function(){
 
 
 
+
+        var geojson = L.geoJson(MD_Dist).addTo(mymap);
+        var geojson = L.geoJson(MD_P).addTo(mymap);
+        var geojson = L.geoJson(MN_Dist).addTo(mymap);
+        var geojson = L.geoJson(MN_P).addTo(mymap);
+    }
     initalMap();
 
+    function disables(){
+        $("#controllpane").find("*").prop("disabled", true);
+    }
 
-
+    disables();
 });
 
 
