@@ -29,7 +29,7 @@ $(function () {
         var geojson = L.geoJson(statesData).addTo(mymap);
     });
 
-    $.getJSON("geoJson/maryland_precincts_2016.json", function(json) {
-        console.log("json"); // this will show the info it in firebug console
-    });
+    // $.getJSON("geoJson/maryland_precincts_2016.json", function(json) {
+    //     console.log("json"); // this will show the info it in firebug console
+    // });
 });

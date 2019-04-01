@@ -13,5 +13,6 @@ function postForm(event, formId, postUrl, callback) {
 function dealdata(logindata){
     console.log(logindata);
     sessionStorage.setItem("user", logindata["user"]);
-
+    console.log(sessionStorage.getItem("user"));
+    window.location.href = '/';
 }
