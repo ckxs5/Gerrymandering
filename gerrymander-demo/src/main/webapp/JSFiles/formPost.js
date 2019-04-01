@@ -9,3 +9,9 @@ function postForm(event, formId, postUrl, callback) {
     // if (formId != null)
     //     window.location.href = redirectUrl;
 }
+
+function dealdata(logindata){
+    console.log(logindata);
+    sessionStorage.setItem("user", logindata["user"]);
+
+}

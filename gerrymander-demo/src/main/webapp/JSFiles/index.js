@@ -29,6 +29,7 @@ $("document").ready(function(){
     function disables(){
         $("#controllpane").find("*").prop("disabled", true);
     }
+
     disables();
 });
 
