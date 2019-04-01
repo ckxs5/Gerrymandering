@@ -1,3 +1,11 @@
+function objectizeFormArray(formArray) {
+    var obj={};
+    for(var i in formArray){
+        obj[formArray[i]['name']] = formArray[i]['value'];
+    }
+    return obj;
+}
+
 function postForm(event, formId, postUrl, callback) {
     var form;
     if (formId != null)
@@ -16,3 +24,9 @@ function dealdata(logindata){
     console.log(sessionStorage.getItem("user"));
     window.location.href = '/';
 }
+
+function cleardata(logoutdata){
+    sessionStorage.clear();
+    window.location.href = '/';
+}
+

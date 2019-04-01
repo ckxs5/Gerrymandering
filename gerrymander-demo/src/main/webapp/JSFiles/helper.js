@@ -6,7 +6,8 @@ function postData(data, url, callback){
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function(sucMsg){
-            callback(sucMsg);
+            if (callback != null)
+                callback(sucMsg);
         },
         failure: function(errMsg) {
             alert(errMsg);
@@ -14,10 +15,3 @@ function postData(data, url, callback){
     });
 }
 
-function objectizeFormArray(formArray) {
-    var obj={};
-    for(var i in formArray){
-        obj[formArray[i]['name']] = formArray[i]['value'];
-    }
-    return obj;
-}
