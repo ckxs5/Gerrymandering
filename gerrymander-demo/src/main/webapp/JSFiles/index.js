@@ -64,6 +64,21 @@ $("document").ready(function(){
             id: 'mapbox.light'
         }).addTo(mymap);
 
+        // control that shows state info on hover
+        var info = L.control();
+
+        info.onAdd = function (mymap) {
+            this._div = L.DomUtil.create('div', 'info');
+            this.update();
+            return this._div;
+        };
+
+        info.update = function (props) {
+            this._div.innerHTML = '<h4>US Population Density</h4>';
+        };
+
+        info.addTo(mymap);
+
         var maxBounds = L.latLngBounds(
             L.latLng(53.5300, -131.1267),
             L.latLng(22.2008, -62.3436)
@@ -78,23 +93,23 @@ $("document").ready(function(){
         }).addTo(mymap);
 
 
-        }
 
 
 
 
-        var geojson = L.geoJson(MD_Dist).addTo(mymap);
-        var geojson = L.geoJson(MD_P).addTo(mymap);
-        var geojson = L.geoJson(MN_Dist).addTo(mymap);
-        var geojson = L.geoJson(MN_P).addTo(mymap);
+
+        L.geoJson(MD_Dist).addTo(mymap);
+        L.geoJson(MD_P).addTo(mymap);
+        L.geoJson(MN_Dist).addTo(mymap);
+        L.geoJson(MN_P).addTo(mymap);
     }
     initalMap();
 
-    function disables(){
-        $("#controllpane").find("*").prop("disabled", true);
-    }
-
-    disables();
+    // function disables(){
+    //     //     $("#controllpane").find("*").prop("disabled", true);
+    //     // }
+    //     //
+    //     // disables();
 });
 
 
