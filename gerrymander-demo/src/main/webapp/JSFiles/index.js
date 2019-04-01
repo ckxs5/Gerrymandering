@@ -14,13 +14,13 @@ $("document").ready(function(){
 
     function getColor(d) {
         return d > 1000 ? '#800026' :
-            d > 500  ? '#BD0026' :
-                d > 200  ? '#E31A1C' :
-                    d > 100  ? '#FC4E2A' :
-                        d > 50   ? '#FD8D3C' :
-                            d > 20   ? '#FEB24C' :
-                                d > 10   ? '#FED976' :
-                                    '#FFEDA0';
+        d > 500  ? '#BD0026' :
+        d > 200  ? '#E31A1C' :
+        d > 100  ? '#FC4E2A' :
+        d > 50   ? '#FD8D3C' :
+        d > 20   ? '#FEB24C' :
+        d > 10   ? '#FED976' :
+        '#FFEDA0';
     }
 
     function highlightFeature(e) {
@@ -64,10 +64,25 @@ $("document").ready(function(){
             id: 'mapbox.light'
         }).addTo(mymap);
 
+        // control that shows state info on hover
+        var info = L.control();
+
+        info.onAdd = function (mymap) {
+            this._div = L.DomUtil.create('div', 'info');
+            this.update();
+            return this._div;
+        };
+
+        info.update = function (props) {
+            this._div.innerHTML = '<h4>US Population Density</h4>';
+        };
+
+        info.addTo(mymap);
+
         var maxBounds = L.latLngBounds(
             L.latLng(53.5300, -131.1267),
             L.latLng(22.2008, -62.3436)
-        )
+            )
 
         mymap.setMaxBounds(maxBounds);
         //mymap.fitBounds(maxBounds);
@@ -85,11 +100,11 @@ $("document").ready(function(){
     }
     initalMap();
 
-    function disables(){
-        $("#controllpane").find("*").prop("disabled", true);
-    }
-
-    disables();
+    // function disables(){
+    //     //     $("#controllpane").find("*").prop("disabled", true);
+    //     // }
+    //     //
+    //     // disables();
 });
 
 
