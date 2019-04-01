@@ -6,8 +6,9 @@ function postData(data, url, callback){
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function(sucMsg){
-            if (callback != null)
+            if (callback != null) {
                 callback(sucMsg);
+            }
         },
         failure: function(errMsg) {
             alert(errMsg);

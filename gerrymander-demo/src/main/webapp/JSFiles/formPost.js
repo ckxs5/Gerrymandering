@@ -18,14 +18,14 @@ function postForm(event, formId, postUrl, callback) {
     //     window.location.href = redirectUrl;
 }
 
-function dealdata(logindata){
+function userlogin(logindata) {
     console.log(logindata);
     sessionStorage.setItem("user", logindata["user"]);
     console.log(sessionStorage.getItem("user"));
     window.location.href = '/';
 }
 
-function cleardata(logoutdata){
+function userlogout(logoutdata) {
     sessionStorage.clear();
     window.location.href = '/';
 }

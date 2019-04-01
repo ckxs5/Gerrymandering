@@ -99,11 +99,14 @@ $("document").ready(function () {
 
     initalMap();
 
-    // function disables(){
-    //     //     $("#controllpane").find("*").prop("disabled", true);
-    //     // }
-    //     //
-    //     // disables();
+    function disables(){
+        if(sessionStorage.getItem("user") == null ){
+            $("#controllpane").find("*").prop("disabled", true);
+        }
+
+        }
+
+        disables();
 });
 
 
