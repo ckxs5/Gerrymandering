@@ -3,7 +3,6 @@ package com.example.gerrymanderdemo.Service;
 import com.example.gerrymanderdemo.Repository.AdministratorRepository;
 import com.example.gerrymanderdemo.Repository.GuestRepository;
 import com.example.gerrymanderdemo.Repository.UserRepository;
-import com.example.gerrymanderdemo.model.Guest;
 import com.example.gerrymanderdemo.model.User;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,7 @@ public class UserService {
         return userRepository.findByEmailAndPassword(userEmail, password);
     }
 
-    public User addGuest(User user) {
+    public User addUser(User user) {
        User add = userRepository.findByNameOrEmail(user.getName(), user.getEmail());
        if (add != null) {
            return null;

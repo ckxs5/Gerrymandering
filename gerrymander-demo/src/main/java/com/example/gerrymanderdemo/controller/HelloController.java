@@ -1,22 +1,17 @@
 package com.example.gerrymanderdemo.controller;
 
 import com.example.gerrymanderdemo.Service.UserService;
-import com.example.gerrymanderdemo.model.Guest;
 import com.example.gerrymanderdemo.model.Response.ErrorResponse;
 import com.example.gerrymanderdemo.model.Response.OKResponse;
 import com.example.gerrymanderdemo.model.Response.OKUserResponse;
 import com.example.gerrymanderdemo.model.Response.Response;
 import com.example.gerrymanderdemo.model.User;
-import org.apache.tomcat.util.json.JSONParser;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.io.*;
 
 
 @Controller
@@ -53,7 +48,7 @@ public class HelloController {
 
     @PostMapping("/signup")
     public ResponseEntity<Response> signup(@RequestBody User user) {
-        user = userService.addGuest(user);
+        user = userService.addUser(user);
         if (user == null)
             return ResponseEntity.ok(new ErrorResponse("User Exist"));
         else
