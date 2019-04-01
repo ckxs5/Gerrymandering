@@ -1,13 +1,14 @@
 package com.example.gerrymanderdemo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class User {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,6 +21,7 @@ public abstract class User {
     @Column(updatable = false, nullable = false)
     private String email;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private String password;
 
@@ -56,7 +58,6 @@ public abstract class User {
         this.email = email;
     }
 
-    @JsonIgnore
     public String getPassword() {
         return password;
     }

@@ -2,6 +2,9 @@ package com.example.gerrymanderdemo.controller;
 
 import com.example.gerrymanderdemo.Service.UserService;
 import com.example.gerrymanderdemo.model.Guest;
+import com.example.gerrymanderdemo.model.Response.ErrorResponse;
+import com.example.gerrymanderdemo.model.Response.OKUserResponse;
+import com.example.gerrymanderdemo.model.Response.Response;
 import com.example.gerrymanderdemo.model.User;
 import org.apache.tomcat.util.json.JSONParser;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
@@ -22,8 +25,12 @@ public class HelloController {
     private UserService userService;
 
     @RequestMapping("/")
-    public String index(){
-        return "index";
+    public String index(HttpSession session){
+        User user = (User) session.getAttribute("user");
+        if(user == null)
+            return "login";
+        else
+            return "index";
     }
 
     @GetMapping("/login")
@@ -32,15 +39,15 @@ public class HelloController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam("email") String email, @RequestParam("password") String password, HttpSession session){
-        System.out.printf("Get email: %s and pass: %s\n", email, password);
-        User user = userService.find(email, password);
+    public ResponseEntity<Response> login(@RequestBody User user, HttpSession session){
+        System.out.printf("Get email: %s and pass: %s\n", user.getEmail(), user.getPassword());
+        user = userService.find(user.getEmail(), user.getPassword());
         if (user != null) {
             session.setAttribute("user", user);
-            System.out.printf("User is %s login\n", user);
-            return "index";
+            System.out.printf("User: %s login\n", user);
+            return ResponseEntity.ok(new OKUserResponse(user));
         }
-        else return "login";
+        else return ResponseEntity.ok(new ErrorResponse("Could not found user"));
     }
 
     @PostMapping("/signup")
