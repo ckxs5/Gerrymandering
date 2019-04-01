@@ -1,4 +1,4 @@
-$("document").ready(function(){
+$("document").ready(function () {
     var geojson;
 
     function style(feature) {
@@ -14,13 +14,13 @@ $("document").ready(function(){
 
     function getColor(d) {
         return d > 1000 ? '#800026' :
-        d > 500  ? '#BD0026' :
-        d > 200  ? '#E31A1C' :
-        d > 100  ? '#FC4E2A' :
-        d > 50   ? '#FD8D3C' :
-        d > 20   ? '#FEB24C' :
-        d > 10   ? '#FED976' :
-        '#FFEDA0';
+            d > 500 ? '#BD0026' :
+                d > 200 ? '#E31A1C' :
+                    d > 100 ? '#FC4E2A' :
+                        d > 50 ? '#FD8D3C' :
+                            d > 20 ? '#FEB24C' :
+                                d > 10 ? '#FED976' :
+                                    '#FFEDA0';
     }
 
     function highlightFeature(e) {
@@ -45,11 +45,9 @@ $("document").ready(function(){
     function onEachDistrictFeature(feature, layer) {
         layer.on({
             mouseover: highlightFeature,
-            mouseout:resetHighlight
+            mouseout: resetHighlight
         });
     }
-
-
 
 
     function initalMap() {
@@ -82,14 +80,14 @@ $("document").ready(function(){
         var maxBounds = L.latLngBounds(
             L.latLng(53.5300, -131.1267),
             L.latLng(22.2008, -62.3436)
-            )
+        );
 
         mymap.setMaxBounds(maxBounds);
         //mymap.fitBounds(maxBounds);
 
-        geojson = L.geoJson(FL_Dist,{
-            style:style,
-            onEachFeature:onEachDistrictFeature
+        geojson = L.geoJson(FL_Dist, {
+            style: style,
+            onEachFeature: onEachDistrictFeature
         }).addTo(mymap);
 
 
@@ -98,6 +96,7 @@ $("document").ready(function(){
         L.geoJson(MN_Dist).addTo(mymap);
         L.geoJson(MN_P).addTo(mymap);
     }
+
     initalMap();
 
     // function disables(){
