@@ -55,7 +55,7 @@ public class HelloController {
             return ResponseEntity.ok(new OKResponse());
     }
 
-    @GetMapping
+    @PostMapping("/logout")
     public ResponseEntity<Response> logout(HttpSession session) {
         session.setAttribute("user", null);
         return ResponseEntity.ok(new OKResponse());
