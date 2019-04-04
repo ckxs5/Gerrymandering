@@ -1,20 +1,14 @@
 package com.example.gerrymanderdemo.Service;
 
-import com.example.gerrymanderdemo.Repository.AdministratorRepository;
-import com.example.gerrymanderdemo.Repository.GuestRepository;
 import com.example.gerrymanderdemo.Repository.UserRepository;
 import com.example.gerrymanderdemo.model.User;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    private AdministratorRepository administratorRepository;
-    private GuestRepository guestRepository;
     private UserRepository userRepository;
 
-    public UserService(AdministratorRepository administratorRepository, GuestRepository guestRepository, UserRepository userRepository) {
-        this.administratorRepository = administratorRepository;
-        this.guestRepository = guestRepository;
+    public UserService (UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
