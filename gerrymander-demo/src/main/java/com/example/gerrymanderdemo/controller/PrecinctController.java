@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -18,10 +19,10 @@ public class PrecinctController {
     public PrecinctController() {
     }
 
-    @RequestMapping("/precinct/{id}/data")
+    @RequestMapping(value = "/precinct/{name}/data", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     //TODO Subjected to change for production
-    public String getPrecinct(@PathVariable Long id) {
+    public String getPrecinct(@PathVariable String name) {
         Precinct precinct = new Precinct();
         Data data = new Data();
         int[] demo = new int[RaceType.values().length];

@@ -22,7 +22,8 @@ public class UserService {
 
     public User addUser(User user) {
         System.out.println(user);
-       User add = userRepository.findByNameOrEmail(user.getName(), user.getEmail());
+       User add = userRepository.findByEmail(user.getEmail());
+       System.out.println(add);
        if (add != null) {
            return null;
        }
