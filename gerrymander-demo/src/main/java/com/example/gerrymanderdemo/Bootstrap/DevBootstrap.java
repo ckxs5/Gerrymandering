@@ -1,11 +1,14 @@
 package com.example.gerrymanderdemo.Bootstrap;
 
 import com.example.gerrymanderdemo.Repository.AdministratorRepository;
+import com.example.gerrymanderdemo.Service.StateService;
 import com.example.gerrymanderdemo.model.Administrator;
+import com.example.gerrymanderdemo.model.Data.Vote;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
     private AdministratorRepository administratorRepository;
@@ -16,7 +19,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        initData();
+
     }
 
     private void initData(){
