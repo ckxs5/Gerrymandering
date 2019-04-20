@@ -23,9 +23,6 @@ $("document").ready(function () {
             return this._div;
         };
 
-        info.update = function () {
-            this._div.innerHTML = '<h4>US Population Density</h4>';
-        };
 
         info.addTo(mymap);
 
@@ -53,6 +50,16 @@ $("document").ready(function () {
             onEachFeature: onEachDistrictFeature
         }).addTo(mymap);
         // goejson = L.geoJson(MN_P).addTo(mymap);
+
+        precinctjson = L.geoJson(MN_P, {
+            style: style,
+            onEachFeature: onEachPrecinctFeature
+        }).addTo(mymap);
+
+
+
+
+
     }
 
     initalMap();
@@ -96,6 +103,82 @@ $("document").ready(function () {
         }
     }
 
+    function highlightPrecinctFeature(e) {
+        var layer = e.target;
+
+        layer.setStyle({
+            weight: 5,
+            color: '#666',
+            dashArray: '',
+            fillOpacity: 0.7
+        });
+
+        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+            layer.bringToFront();
+        }
+
+        loadPrecinctProperties(layer)
+    }
+
+    function loadPrecinctProperties(layer){
+        getData("/precinct/1/data",loadPrecinctPropertiesHelper)
+    }
+
+    function loadPrecinctPropertiesHelper(loadedJson){
+        obj=JSON.parse(loadedJson)
+        if(obj['data']) {
+            if (obj['votingData']) {
+                var democratic = obj['voting_data']['DEMOCRATIC']
+                var republican = obj['voting_data']['REPUBLICAN']
+                var otherParties = obj['voting_data']['OTHERS']
+            } else {
+                var democratic = "N/A"
+                var republican = "N/A"
+                var others = "N/A"
+            }
+            if (obj['demographic']) {
+                var all = obj['demographic']['ALL']
+                var otherRaces = obj['demographic']['OTHERS']
+                var caucasian = obj['demographic']['CAUCASIAN']
+                var asian = obj['demographic']['ASIAN_PACIFIC_AMERICAN']
+                var hispanic = obj['demographic']['HISPANIC_LATINO_AMERICAN']
+                var african = obj['demographic']['AFRICAN_AMERICAN']
+                var native = obj['demographic']['NATIVE_AMERICAN']
+            } else {
+                var all = "N/A"
+                var others = "N/A"
+                var caucasian = "N/A"
+                var asian = "N/A"
+                var hispanic = "N/A"
+                var african = "N/A"
+                var native = "N/A"
+            }
+        }
+        if(obj['name']){
+            var name = obj['name']
+        }
+
+        info.update(democratic,republican,otherParties,all,otherRaces,caucasian,asian,hispanic,african,native,name)
+    }
+
+    info.update = function(democratic,republican,otherParties,all,otherRaces,caucasian,asian,hispanic,african,native,name){
+        this._div.innerHTML = '<h4>Precinct Information</h4>' +  (all ?
+            '<b>Demographics</b><br>'
+            + 'Asian/Pacific Islander: ' + asian + '<br>'
+            + 'Caucasian: ' + caucasian + '<br>'
+            + 'Hispanic (of Any Race): ' + hispanic + '<br>'
+            + 'African-American: ' + african + '<br>'
+            + 'Native American: ' + native + '<br>'
+            + 'Other: ' + other + '<br>'
+            + '<br><b>Election</b><br>'
+            + 'Democratic' + democratic + '<br>'
+            + 'Republican' + republican + '<br>'
+            + 'OtherParties' + otherParties + '<br>'
+            + '<br><b>Population</b><br>'
+            + all['all']
+            :'Hover over a precinct');
+    }
+
     function resetHighlight(e) {
         geojson.resetStyle(e.target);
     }
@@ -107,6 +190,15 @@ $("document").ready(function () {
         });
     }
 
+    function onEachPrecinctFeature(feature, layer) {
+        layer.on({
+            mouseover: highlightPrecinctFeature,
+            mouseout: resetHighlight
+        });
+    }
+
+
+
 
     function disables() {
         if (sessionStorage.getItem("user") == null) {
@@ -114,6 +206,7 @@ $("document").ready(function () {
         }
 
     }
+
 
     disables();
 });
