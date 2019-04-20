@@ -44,10 +44,10 @@
 <div class="lightbox">
     <h2 class="h3">Sign up</h2>
     <p class="h3">Welcome to Orioles!</p>
-    <form class="form-signin" action="/signup" method="post">
+    <form class="form-signin" id="signup" method="post">
         <input type="email" name="email" class="form-control" placeholder="Email" required autofocus>
         <input type="password" name="password" class="form-control" placeholder="password" required>
-        <button class="btn btn-primary btn-lg" type="submit" id="signup-submit-button" value="Sign me up">Sign up</button>
+        <button class="btn btn-primary btn-lg" type="submit" id="signup-submit-button" onclick=postForm(event,"#signup","/signup",usersignup)>Sign up</button>
         <button class="btn btn-primary btn-lg" type="button" id="cancel-button"> Cancel </button>
     </form>
 

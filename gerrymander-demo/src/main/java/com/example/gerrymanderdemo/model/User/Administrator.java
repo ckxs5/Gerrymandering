@@ -1,7 +1,5 @@
 package com.example.gerrymanderdemo.model.User;
 
-import com.example.gerrymanderdemo.model.User.User;
-
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
@@ -16,13 +14,13 @@ public class Administrator extends User {
     public Administrator() {
     }
 
-    public Administrator(String name, String email, String password) {
-        super(name, email, password);
+    public Administrator(String email, String password) {
+        super(email, password);
         this.userList = new ArrayList<>();
     }
 
-    public Administrator(String name, String email, String password, Collection<User> userList) {
-        super(name, email, password);
+    public Administrator(String email, String password, Collection<User> userList) {
+        super(email, password);
         this.userList = userList;
     }
 

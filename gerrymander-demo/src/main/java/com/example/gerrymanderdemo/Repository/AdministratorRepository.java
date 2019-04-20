@@ -4,6 +4,6 @@ import com.example.gerrymanderdemo.model.User.Administrator;
 import org.springframework.data.repository.CrudRepository;
 
 public interface AdministratorRepository extends CrudRepository<Administrator, Long> {
-    Administrator findByNameAndPassword(String name, String password);
+//    Administrator findByNameAndPassword(String name, String password);
     Administrator findByEmailAndPassword(String email, String passworc);
 }

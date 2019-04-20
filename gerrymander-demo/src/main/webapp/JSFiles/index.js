@@ -47,12 +47,21 @@ $("document").ready(function () {
             style: style,
             onEachFeature: onEachDistrictFeature
         }).addTo(mymap);
-        // goejson = L.geoJson(MD_P).addTo(mymap);
-        goejson = L.geoJson(MN_Dist, {
+
+        // goejson = L.geoJson(MD_P, {
+        //     style: style,
+        //     onEachFeature: onEachDistrictFeature
+        // }).addTo(mymap);
+
+        // goejson = L.geoJson(MN_Dist, {
+        //     style: style,
+        //     onEachFeature: onEachDistrictFeature
+        // }).addTo(mymap);
+
+        goejson = L.geoJson(MN_P, {
             style: style,
             onEachFeature: onEachDistrictFeature
         }).addTo(mymap);
-        // goejson = L.geoJson(MN_P).addTo(mymap);
     }
 
     initalMap();
