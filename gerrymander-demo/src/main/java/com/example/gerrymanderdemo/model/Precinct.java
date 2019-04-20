@@ -8,16 +8,16 @@ import org.json.JSONObject;
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity
+
 public class Precinct implements ResponseObject {
 
-    @Id
+    
     String id;
 
-    @OneToOne
+
     Data data;
 
-    @ManyToMany
+
     Set<Precinct> neigbours;
 
     public Precinct() {
