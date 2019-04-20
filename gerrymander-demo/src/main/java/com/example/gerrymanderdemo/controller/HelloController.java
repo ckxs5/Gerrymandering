@@ -6,7 +6,6 @@ import com.example.gerrymanderdemo.model.Response.OKResponse;
 import com.example.gerrymanderdemo.model.Response.OKUserResponse;
 import com.example.gerrymanderdemo.model.Response.Response;
 import com.example.gerrymanderdemo.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +16,11 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class HelloController {
 
-    @Autowired
     private UserService userService;
+
+    public HelloController (UserService userService) {
+        this.userService = userService;
+    }
 
     @RequestMapping("/")
     public String index(HttpSession session){
