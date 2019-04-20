@@ -22,7 +22,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 
     private void initData(){
 
-        Administrator administrator = new Administrator("testAdmin", "admin@gmail.com", "cse308");
+        Administrator administrator = new Administrator("admin@gmail.com", "cse308");
         administratorRepository.save(administrator);
     }
 }

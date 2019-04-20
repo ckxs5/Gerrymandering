@@ -30,3 +30,7 @@ function userlogout(logoutdata) {
     window.location.href = '/';
 }
 
+function usersignup(signupdata) {
+    sessionStorage.clear();
+    window.location.href = '/';
+}
