@@ -1,9 +1,7 @@
 package com.example.gerrymanderdemo.Bootstrap;
 
 import com.example.gerrymanderdemo.Repository.AdministratorRepository;
-import com.example.gerrymanderdemo.Service.StateService;
-import com.example.gerrymanderdemo.model.Administrator;
-import com.example.gerrymanderdemo.model.Data.Vote;
+import com.example.gerrymanderdemo.model.User.Administrator;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;

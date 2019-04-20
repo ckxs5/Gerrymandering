@@ -1,4 +1,6 @@
-package com.example.gerrymanderdemo.model;
+package com.example.gerrymanderdemo.model.User;
+
+import com.example.gerrymanderdemo.model.User.User;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;

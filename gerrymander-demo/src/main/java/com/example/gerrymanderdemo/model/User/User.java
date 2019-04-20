@@ -1,6 +1,5 @@
-package com.example.gerrymanderdemo.model;
+package com.example.gerrymanderdemo.model.User;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;

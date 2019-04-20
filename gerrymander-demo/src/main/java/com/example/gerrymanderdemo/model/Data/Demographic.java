@@ -1,8 +1,11 @@
 package com.example.gerrymanderdemo.model.Data;
 
 import com.example.gerrymanderdemo.model.Enum.RaceType;
+import com.example.gerrymanderdemo.model.Response.ResponseObject;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class Demographic {
+public class Demographic implements ResponseObject {
     int[] population;
 
     public Demographic(int[] population) {
@@ -31,5 +34,16 @@ public class Demographic {
         return (double)(population[race.ordinal()] / population[RaceType.ALL.ordinal()]);
     }
 
-
+    @Override
+    public JSONObject toJSONObject() {
+        JSONObject json = new JSONObject();
+        try {
+            for (RaceType race : RaceType.values())
+                json.put(race.toString(), population[race.ordinal()]);
+        }catch (JSONException ex) {
+            System.out.println("Unexpected error occurs when converting a Vote object to JSON object");
+            return null;
+        }
+        return json;
+    }
 }

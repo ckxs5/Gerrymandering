@@ -1,12 +1,13 @@
 package com.example.gerrymanderdemo.model.Data;
 
 import com.example.gerrymanderdemo.model.Enum.Party;
+import com.example.gerrymanderdemo.model.Response.ResponseObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
 
-public class Vote {
+public class Vote implements ResponseObject {
     int[] votes;
 
     public Vote(int[] votes) {
@@ -48,6 +49,7 @@ public class Vote {
         return json.toString();
     }
 
+    @Override
     public JSONObject toJSONObject() {
         JSONObject json = new JSONObject();
         try {

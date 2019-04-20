@@ -1,6 +1,10 @@
 package com.example.gerrymanderdemo.model.Data;
 
-public class Data {
+import com.example.gerrymanderdemo.model.Response.ResponseObject;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class Data implements ResponseObject {
     Vote voteData;
     Demographic demographic;
     Boundary boundary;
@@ -33,5 +37,19 @@ public class Data {
 
     public void setBoundary(Boundary boundary) {
         this.boundary = boundary;
+    }
+
+    @Override
+    public JSONObject toJSONObject() {
+        try {
+            JSONObject json = new JSONObject();
+            json.put("demographic", demographic.toJSONObject());
+            json.put("votingData", voteData.toJSONObject());
+            return json;
+        } catch (JSONException ex) {
+            System.out.println("Unexpected error occurs when converting Data into JSON object");
+            return null;
+        }
+
     }
 }

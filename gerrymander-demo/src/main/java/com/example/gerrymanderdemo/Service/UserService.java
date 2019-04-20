@@ -2,7 +2,7 @@ package com.example.gerrymanderdemo.Service;
 
 import com.example.gerrymanderdemo.Repository.AdministratorRepository;
 import com.example.gerrymanderdemo.Repository.UserRepository;
-import com.example.gerrymanderdemo.model.User;
+import com.example.gerrymanderdemo.model.User.User;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,6 +1,6 @@
 package com.example.gerrymanderdemo.Repository;
 
-import com.example.gerrymanderdemo.model.User;
+import com.example.gerrymanderdemo.model.User.User;
 import org.springframework.data.repository.CrudRepository;
 
 public interface UserRepository extends CrudRepository<User, Long> {

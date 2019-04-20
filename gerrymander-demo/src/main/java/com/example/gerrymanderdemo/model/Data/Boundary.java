@@ -1,8 +1,9 @@
 package com.example.gerrymanderdemo.model.Data;
 
+import com.example.gerrymanderdemo.model.Response.ResponseObject;
 import org.json.JSONObject;
 
-public class Boundary {
+public class Boundary implements ResponseObject {
     JSONObject geoJSON;
 
     public Boundary(JSONObject geoJSON) {
@@ -15,5 +16,15 @@ public class Boundary {
 
     public void setGeoJSON(JSONObject geoJSON) {
         this.geoJSON = geoJSON;
+    }
+
+    @Override
+    public String toString() {
+        return geoJSON.toString();
+    }
+
+    @Override
+    public JSONObject toJSONObject() {
+        return geoJSON;
     }
 }

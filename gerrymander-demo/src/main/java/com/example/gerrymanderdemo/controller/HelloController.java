@@ -5,7 +5,7 @@ import com.example.gerrymanderdemo.model.Response.ErrorResponse;
 import com.example.gerrymanderdemo.model.Response.OKResponse;
 import com.example.gerrymanderdemo.model.Response.OKUserResponse;
 import com.example.gerrymanderdemo.model.Response.Response;
-import com.example.gerrymanderdemo.model.User;
+import com.example.gerrymanderdemo.model.User.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
