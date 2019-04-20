@@ -1,5 +1,6 @@
 $("document").ready(function () {
     var geojson;
+
     function initalMap() {
         var mymap = L.map('map').setView([39.8283, -100.5795], 4.5);
 
@@ -10,7 +11,7 @@ $("document").ready(function () {
         }).addTo(mymap);
 
 
-         // mymap = L.control.(map,{title:'Hello world!',content:'This is my first control window.'}).show()
+        // mymap = L.control.(map,{title:'Hello world!',content:'This is my first control window.'}).show()
 
 
         // control that shows state info on hover
@@ -72,12 +73,12 @@ $("document").ready(function () {
     function getColor(d) {
         return d > 1000 ? '#800026' :
             d > 500 ? '#BD0026' :
-            d > 200 ? '#E31A1C' :
-            d > 100 ? '#FC4E2A' :
-            d > 50 ? '#FD8D3C' :
-            d > 20 ? '#FEB24C' :
-            d > 10 ? '#FED976' :
-            '#FFEDA0';
+                d > 200 ? '#E31A1C' :
+                    d > 100 ? '#FC4E2A' :
+                        d > 50 ? '#FD8D3C' :
+                            d > 20 ? '#FEB24C' :
+                                d > 10 ? '#FED976' :
+                                    '#FFEDA0';
     }
 
     function highlightFeature(e) {
@@ -107,16 +108,14 @@ $("document").ready(function () {
     }
 
 
-
-
-    function disables(){
-        if(sessionStorage.getItem("user") == null ){
+    function disables() {
+        if (sessionStorage.getItem("user") == null) {
             $("#controllpane").find("*").prop("disabled", true);
         }
 
-        }
+    }
 
-        disables();
+    disables();
 });
 
 
