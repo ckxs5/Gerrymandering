@@ -9,6 +9,9 @@ public class Data implements ResponseObject {
     Demographic demographic;
     Boundary boundary;
 
+    public Data() {
+    }
+
     public Data(Vote voteData, Demographic demographic, Boundary boundary) {
         this.voteData = voteData;
         this.demographic = demographic;

@@ -14,7 +14,7 @@ public class User {
     @Column(updatable = false, nullable = false)
     private Long id;
 
-    @Column(updatable = false, nullable = false)
+    @Column(updatable = false)
     private String name;
 
     @Column(updatable = false, nullable = false)
@@ -70,7 +70,7 @@ public class User {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return getId().equals(user.getId());
+        return getEmail().equals(((User) o).email);
     }
 
     @Override
@@ -78,11 +78,13 @@ public class User {
         return Objects.hash(getId());
     }
 
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }

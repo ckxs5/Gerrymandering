@@ -11,20 +11,21 @@ import java.util.Set;
 
 public class Precinct implements ResponseObject {
 
-    
+
     String id;
 
+    String name;
 
     Data data;
-
 
     Set<Precinct> neigbours;
 
     public Precinct() {
     }
 
-    public Precinct(String id, Data data, Set<Precinct> neigbours) {
+    public Precinct(String id, String name, Data data, Set<Precinct> neigbours) {
         this.id = id;
+        this.name = name;
         this.data = data;
         this.neigbours = neigbours;
     }
@@ -57,10 +58,19 @@ public class Precinct implements ResponseObject {
         return data.getBoundary().toJSONObject().toString();
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public JSONObject toJSONObject() {
         try{
             JSONObject json = new JSONObject();
+            json.put("name", name);
             json.put("data", data.toJSONObject());
             //TODO: put neighbours into json
             return json;

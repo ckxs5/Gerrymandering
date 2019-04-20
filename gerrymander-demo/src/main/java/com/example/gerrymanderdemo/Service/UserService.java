@@ -3,6 +3,7 @@ package com.example.gerrymanderdemo.Service;
 import com.example.gerrymanderdemo.Repository.AdministratorRepository;
 import com.example.gerrymanderdemo.Repository.UserRepository;
 import com.example.gerrymanderdemo.model.User.User;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +21,7 @@ public class UserService {
     }
 
     public User addUser(User user) {
+        System.out.println(user);
        User add = userRepository.findByNameOrEmail(user.getName(), user.getEmail());
        if (add != null) {
            return null;
