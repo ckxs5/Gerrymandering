@@ -51,6 +51,15 @@ $("document").ready(function () {
                         onEachFeature: onEachPrecinctFeature
                     }).addTo(mymap);
                 }
+                console.log(mymap.getZoom() <= 7 && mymap.hasLayer(precinctGeojson));
+            if(mymap.getZoom() <= 7 && mymap.hasLayer(precinctGeojson)) {
+                precinctGeojson.remove();
+                districtGeojson = L.geoJson(MN_Dist, {
+                    style: style,
+                    onEachFeature: onEachDistrictFeature
+                }).addTo(mymap);
+            }
+
         })
 
     }
