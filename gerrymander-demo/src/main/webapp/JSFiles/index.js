@@ -1,5 +1,6 @@
 $("document").ready(function () {
-    var geojson;
+    var districtGeojson;
+    var precinctGeojson;
     var mymap;
     var info;
 
@@ -19,30 +20,38 @@ $("document").ready(function () {
         mymap.setMaxBounds(maxBounds);
         //mymap.fitBounds(maxBounds);
 
-        geojson = L.geoJson(FL_Dist, {
+        districtGeojson = L.geoJson(FL_Dist, {
             style: style,
             onEachFeature: onEachDistrictFeature
         }).addTo(mymap);
 
-        geojson = L.geoJson(MD_Dist, {
+        districtGeojson = L.geoJson(MD_Dist, {
             style: style,
             onEachFeature: onEachDistrictFeature
         }).addTo(mymap);
 
-        // geojson = L.geoJson(MN_Dist, {
-        //     style: style,
-        //     onEachFeature: onEachDistrictFeature
-        // }).addTo(mymap);
+        districtGeojson = L.geoJson(MN_Dist, {
+            style: style,
+            onEachFeature: onEachDistrictFeature
+        }).addTo(mymap);
 
         // geojson = L.geoJson(MD_P, {
         //     style: style,
         //     onEachFeature: onEachDistrictFeature
         // }).addTo(mymap);
 
-        geojson = L.geoJson(MN_P, {
-            style: style,
-            onEachFeature: onEachPrecinctFeature
-        }).addTo(mymap);
+
+
+
+        mymap.on("zoomend", function() {
+                if(mymap.getZoom() > 7 && mymap.hasLayer(districtGeojson)) {
+                    districtGeojson.remove();
+                    precinctGeojson = L.geoJson(MN_P, {
+                        style: style,
+                        onEachFeature: onEachPrecinctFeature
+                    }).addTo(mymap);
+                }
+        })
 
     }
 
@@ -181,22 +190,26 @@ $("document").ready(function () {
         info.update(democratic,republican,otherParties,all,otherRaces,caucasian,asian,hispanic,african,native,name)
     }
 
-    function resetHighlight(e) {
+    function resetPrecinctHighlight(e) {
         //info.update(null,null,null,null,null,null,null,null,null,null,null);
         info.update();
-        geojson.resetStyle(e.target);
+        precinctGeojson.resetStyle(e.target);
+    }
+
+    function resetDistrictHighlight(e) {
+        districtGeojson.resetStyle(e.target);
     }
 
     function onEachDistrictFeature(feature, layer) {
         layer.on({
             mouseover: highlightFeature,
-            mouseout: resetHighlight
+            mouseout: resetDistrictHighlight
         });
     }
     function onEachPrecinctFeature(feature, layer) {
         layer.on({
             mouseover: highlightPrecinctFeature,
-            mouseout: resetHighlight
+            mouseout: resetPrecinctHighlight
         });
     }
     function disables() {
