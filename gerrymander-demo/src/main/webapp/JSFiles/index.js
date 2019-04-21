@@ -1,26 +1,15 @@
 $("document").ready(function () {
     var geojson;
+    var mymap;
+    var info;
 
     function initalMap() {
-        var mymap = L.map('map').setView([39.8283, -100.5795], 4.5);
-
+        mymap = L.map('map').setView([39.8283, -100.5795], 4.5);
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
             maxZoom: 18,
             minZoom: 4,
             id: 'mapbox.light'
         }).addTo(mymap);
-
-        // control that shows state info on hover
-        var info = L.control();
-
-        info.onAdd = function (mymap) {
-            this._div = L.DomUtil.create('div', 'info');
-            this.update();
-            return this._div;
-        };
-
-
-        info.addTo(mymap);
 
         var maxBounds = L.latLngBounds(
             L.latLng(53.5300, -131.1267),
@@ -35,8 +24,12 @@ $("document").ready(function () {
             onEachFeature: onEachDistrictFeature
         }).addTo(mymap);
 
-
         geojson = L.geoJson(MD_Dist, {
+            style: style,
+            onEachFeature: onEachDistrictFeature
+        }).addTo(mymap);
+
+        geojson = L.geoJson(MN_Dist, {
             style: style,
             onEachFeature: onEachDistrictFeature
         }).addTo(mymap);
@@ -46,24 +39,34 @@ $("document").ready(function () {
         //     onEachFeature: onEachDistrictFeature
         // }).addTo(mymap);
 
-        // geojson = L.geoJson(MN_Dist, {
-        //     style: style,
-        //     onEachFeature: onEachDistrictFeature
-        // }).addTo(mymap);
-
         geojson = L.geoJson(MN_P, {
             style: style,
             onEachFeature: onEachDistrictFeature
         }).addTo(mymap);
-        // goejson = L.geoJson(MN_P).addTo(mymap);
 
-        precinctjson = L.geoJson(MN_P, {
-            style: style,
-            onEachFeature: onEachPrecinctFeature
-        }).addTo(mymap);
     }
 
     initalMap();
+
+    function infoWindow() {
+        // control that shows state info on hover
+        info = L.control();
+
+        info.onAdd = function (mymap) {
+            this._div = L.DomUtil.create('div', 'info');
+            this.update();
+            return this._div;
+        };
+
+        info.update = function () {
+            this._div.innerHTML = '<h4>Hello</h4>'
+        };
+
+
+        info.addTo(mymap);
+    }
+
+    infoWindow();
 
 
     function style(feature) {
