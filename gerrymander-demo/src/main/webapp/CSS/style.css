@@ -16,6 +16,11 @@
     color: white !important;
     font-family: cursive;
 }
+.h4{
+    color: white !important;
+    font-family: Helvetica;
+    font-size: 15px !important;
+}
 body, html{
     background-color: #232a30 !important;
     height: 100%;

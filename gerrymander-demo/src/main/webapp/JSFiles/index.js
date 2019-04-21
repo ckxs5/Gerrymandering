@@ -10,10 +10,6 @@ $("document").ready(function () {
             id: 'mapbox.light'
         }).addTo(mymap);
 
-
-        // mymap = L.control.(map,{title:'Hello world!',content:'This is my first control window.'}).show()
-
-
         // control that shows state info on hover
         var info = L.control();
 
@@ -43,22 +39,22 @@ $("document").ready(function () {
         }).addTo(mymap);
 
 
-        goejson = L.geoJson(MD_Dist, {
+        geojson = L.geoJson(MD_Dist, {
             style: style,
             onEachFeature: onEachDistrictFeature
         }).addTo(mymap);
 
-        // goejson = L.geoJson(MD_P, {
+        // geojson = L.geoJson(MD_P, {
         //     style: style,
         //     onEachFeature: onEachDistrictFeature
         // }).addTo(mymap);
 
-        // goejson = L.geoJson(MN_Dist, {
+        // geojson = L.geoJson(MN_Dist, {
         //     style: style,
         //     onEachFeature: onEachDistrictFeature
         // }).addTo(mymap);
 
-        goejson = L.geoJson(MN_P, {
+        geojson = L.geoJson(MN_P, {
             style: style,
             onEachFeature: onEachDistrictFeature
         }).addTo(mymap);
@@ -115,7 +111,6 @@ $("document").ready(function () {
             mouseout: resetHighlight
         });
     }
-
 
     function disables() {
         if (sessionStorage.getItem("user") == null) {

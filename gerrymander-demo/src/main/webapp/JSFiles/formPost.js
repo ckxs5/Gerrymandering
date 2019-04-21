@@ -19,9 +19,9 @@ function postForm(event, formId, postUrl, callback) {
 }
 
 function userlogin(logindata) {
-    console.log(logindata);
+    // console.log(logindata);
     sessionStorage.setItem("user", logindata["user"]);
-    console.log(sessionStorage.getItem("user"));
+    // console.log(sessionStorage.getItem("user"));
     window.location.href = '/';
 }
 
@@ -31,6 +31,10 @@ function userlogout(logoutdata) {
 }
 
 function usersignup(signupdata) {
-    sessionStorage.clear();
-    window.location.href = '/';
+    console.log(signupdata);
+    if (sessionStorage.getItem("id") == null){
+        document.getElementById('userExist').innerText = "User Exists";
+    }else{
+        window.location.href = '/';
+    }
 }
