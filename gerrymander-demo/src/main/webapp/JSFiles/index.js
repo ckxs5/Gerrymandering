@@ -29,10 +29,10 @@ $("document").ready(function () {
             onEachFeature: onEachDistrictFeature
         }).addTo(mymap);
 
-        geojson = L.geoJson(MN_Dist, {
-            style: style,
-            onEachFeature: onEachDistrictFeature
-        }).addTo(mymap);
+        // geojson = L.geoJson(MN_Dist, {
+        //     style: style,
+        //     onEachFeature: onEachDistrictFeature
+        // }).addTo(mymap);
 
         // geojson = L.geoJson(MD_P, {
         //     style: style,
@@ -41,7 +41,7 @@ $("document").ready(function () {
 
         geojson = L.geoJson(MN_P, {
             style: style,
-            onEachFeature: onEachDistrictFeature
+            onEachFeature: onEachPrecinctFeature
         }).addTo(mymap);
 
     }
@@ -58,10 +58,23 @@ $("document").ready(function () {
             return this._div;
         };
 
-        info.update = function () {
-            this._div.innerHTML = '<h4>Hello</h4>'
-        };
-
+        info.update = function(democratic,republican,otherParties,all,otherRaces,caucasian,asian,hispanic,african,native,name){
+            this._div.innerHTML = '<h4>Precinct Information</h4>' +  (all ?
+                '<b>Demographics</b><br>'
+                + 'Asian/Pacific Islander: ' + asian + '<br>'
+                + 'Caucasian: ' + caucasian + '<br>'
+                + 'Hispanic (of Any Race): ' + hispanic + '<br>'
+                + 'African-American: ' + african + '<br>'
+                + 'Native American: ' + native + '<br>'
+                + 'Other: ' + otherParties + '<br>'
+                + '<br><b>Election</b><br>'
+                + 'Democratic' + democratic + '<br>'
+                + 'Republican' + republican + '<br>'
+                + 'OtherParties' + otherParties + '<br>'
+                + '<br><b>Population</b><br>'
+                + all
+                : 'Hover over a precinct');
+        }
 
         info.addTo(mymap);
     }
@@ -84,12 +97,12 @@ $("document").ready(function () {
     function getColor(d) {
         return d > 1000 ? '#800026' :
             d > 500 ? '#BD0026' :
-                d > 200 ? '#E31A1C' :
-                    d > 100 ? '#FC4E2A' :
-                        d > 50 ? '#FD8D3C' :
-                            d > 20 ? '#FEB24C' :
-                                d > 10 ? '#FED976' :
-                                    '#FFEDA0';
+            d > 200 ? '#E31A1C' :
+            d > 100 ? '#FC4E2A' :
+            d > 50 ? '#FD8D3C' :
+            d > 20 ? '#FEB24C' :
+            d > 10 ? '#FED976' :
+            '#FFEDA0';
     }
 
     function highlightFeature(e) {
@@ -107,6 +120,7 @@ $("document").ready(function () {
         }
     }
 
+
     function highlightPrecinctFeature(e) {
         var layer = e.target;
 
@@ -117,37 +131,40 @@ $("document").ready(function () {
             fillOpacity: 0.7
         });
 
+        loadPrecinctProperties(layer);
+
         if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
             layer.bringToFront();
         }
 
-        loadPrecinctProperties(layer)
     }
 
     function loadPrecinctProperties(layer){
         getData("/precinct/1/data",loadPrecinctPropertiesHelper)
     }
 
+
     function loadPrecinctPropertiesHelper(loadedJson){
-        obj=JSON.parse(loadedJson)
+        obj=loadedJson;
         if(obj['data']) {
-            if (obj['votingData']) {
-                var democratic = obj['voting_data']['DEMOCRATIC']
-                var republican = obj['voting_data']['REPUBLICAN']
-                var otherParties = obj['voting_data']['OTHERS']
+            if (obj['data']['votingData']) {
+                var democratic = obj['data']['votingData']['DEMOCRATIC']
+                var republican = obj['data']['votingData']['REPUBLICAN']
+                var otherParties = obj['data']['votingData']['OTHERS']
             } else {
                 var democratic = "N/A"
                 var republican = "N/A"
                 var others = "N/A"
             }
-            if (obj['demographic']) {
-                var all = obj['demographic']['ALL']
-                var otherRaces = obj['demographic']['OTHERS']
-                var caucasian = obj['demographic']['CAUCASIAN']
-                var asian = obj['demographic']['ASIAN_PACIFIC_AMERICAN']
-                var hispanic = obj['demographic']['HISPANIC_LATINO_AMERICAN']
-                var african = obj['demographic']['AFRICAN_AMERICAN']
-                var native = obj['demographic']['NATIVE_AMERICAN']
+            if (obj['data']['demographic']) {
+                var all = obj['data']['demographic']['ALL']
+                var otherRaces = obj['data']['demographic']['OTHERS']
+                var caucasian = obj['data']['demographic']['CAUCASIAN']
+                var asian = obj['data']['demographic']['ASIAN_PACIFIC_AMERICAN']
+                //console.log('aaaa');
+                var hispanic = obj['data']['demographic']['HISPANIC_LATINO_AMERICAN']
+                var african = obj['data']['demographic']['AFRICAN_AMERICAN']
+                var native = obj['data']['demographic']['NATIVE_AMERICAN']
             } else {
                 var all = "N/A"
                 var others = "N/A"
@@ -161,29 +178,12 @@ $("document").ready(function () {
         if(obj['name']){
             var name = obj['name']
         }
-
         info.update(democratic,republican,otherParties,all,otherRaces,caucasian,asian,hispanic,african,native,name)
     }
 
-    info.update = function(democratic,republican,otherParties,all,otherRaces,caucasian,asian,hispanic,african,native,name){
-        this._div.innerHTML = '<h4>Precinct Information</h4>' +  (all ?
-            '<b>Demographics</b><br>'
-            + 'Asian/Pacific Islander: ' + asian + '<br>'
-            + 'Caucasian: ' + caucasian + '<br>'
-            + 'Hispanic (of Any Race): ' + hispanic + '<br>'
-            + 'African-American: ' + african + '<br>'
-            + 'Native American: ' + native + '<br>'
-            + 'Other: ' + other + '<br>'
-            + '<br><b>Election</b><br>'
-            + 'Democratic' + democratic + '<br>'
-            + 'Republican' + republican + '<br>'
-            + 'OtherParties' + otherParties + '<br>'
-            + '<br><b>Population</b><br>'
-            + all['all']
-            :'Hover over a precinct');
-    }
-
     function resetHighlight(e) {
+        //info.update(null,null,null,null,null,null,null,null,null,null,null);
+        info.update();
         geojson.resetStyle(e.target);
     }
 
@@ -205,8 +205,6 @@ $("document").ready(function () {
         }
 
     }
-
-
     disables();
 });
 
