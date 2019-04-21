@@ -79,7 +79,8 @@ $("document").ready(function () {
 
         info.update = function(democratic,republican,otherParties,all,otherRaces,caucasian,asian,hispanic,african,native,name){
             this._div.innerHTML = '<h4>Precinct Information</h4>' +  (all ?
-                '<b>Demographics</b><br>'
+                  '<b>'+ name +'</b><br>'
+                + '<b>Demographics</b><br>'
                 + 'Asian/Pacific Islander: ' + asian + '<br>'
                 + 'Caucasian: ' + caucasian + '<br>'
                 + 'Hispanic (of Any Race): ' + hispanic + '<br>'
@@ -87,9 +88,9 @@ $("document").ready(function () {
                 + 'Native American: ' + native + '<br>'
                 + 'Other: ' + otherParties + '<br>'
                 + '<br><b>Election</b><br>'
-                + 'Democratic' + democratic + '<br>'
-                + 'Republican' + republican + '<br>'
-                + 'OtherParties' + otherParties + '<br>'
+                + 'Democratic: ' + democratic + '<br>'
+                + 'Republican: ' + republican + '<br>'
+                + 'OtherParties: ' + otherParties + '<br>'
                 + '<br><b>Population</b><br>'
                 + all
                 : 'No Precinct Selected');
