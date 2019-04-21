@@ -44,15 +44,16 @@ $("document").ready(function () {
 
 
         mymap.on("zoomend", function() {
-                if(mymap.getZoom() > 7 && mymap.hasLayer(districtGeojson)) {
+                if(mymap.getZoom() > 6 && mymap.hasLayer(districtGeojson)) {
                     districtGeojson.remove();
                     precinctGeojson = L.geoJson(MN_P, {
                         style: style,
                         onEachFeature: onEachPrecinctFeature
                     }).addTo(mymap);
                 }
-                console.log(mymap.getZoom() <= 7 && mymap.hasLayer(precinctGeojson));
-            if(mymap.getZoom() <= 7 && mymap.hasLayer(precinctGeojson)) {
+                //console.log(mymap.getZoom() <= 8 && mymap.hasLayer(precinctGeojson));
+            if(mymap.getZoom() <= 6 && mymap.hasLayer(precinctGeojson)) {
+                info.update();
                 precinctGeojson.remove();
                 districtGeojson = L.geoJson(MN_Dist, {
                     style: style,
@@ -91,7 +92,7 @@ $("document").ready(function () {
                 + 'OtherParties' + otherParties + '<br>'
                 + '<br><b>Population</b><br>'
                 + all
-                : 'Hover over a precinct');
+                : 'No Precinct Selected');
         }
 
         info.addTo(mymap);
