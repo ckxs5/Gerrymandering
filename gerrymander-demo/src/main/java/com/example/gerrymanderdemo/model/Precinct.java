@@ -12,13 +12,13 @@ import java.util.Set;
 public class Precinct implements ResponseObject {
 
 
-    String id;
+    private String id;
 
-    String name;
+    private String name;
 
-    Data data;
+    private Data data;
 
-    Set<Precinct> neigbours;
+    private Set<Precinct> neigbours;
 
     public Precinct() {
     }
