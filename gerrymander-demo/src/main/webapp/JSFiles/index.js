@@ -61,22 +61,25 @@ $("document").ready(function () {
                 }).addTo(mymap);
             }
 
-        })
+        });
 
-        $("#play-btn").on("click",function(){
+        $("#play-btn").click(function(){
+            console.log("play button");
+            var weights= ["compactness"];
             var playBtnJson = {
-                    "compactness": $("#compactness").value,
-                    "politicalFairness": $("#politicalFairness").value,
-                    "populationEquality": $("#populationEquality").value,
-                    "communityInterest": $("#communityInterest").value,
-                    "efficiencyGap": $("#efficiencyGap").value,
-                    "partisanFairness": $("#partisanFairness").value,
-                    "ethnicMinority": $("#ethnicMinority").value,
-                    "graphTheoretical": $("#graphTheoretical").value,
+                    "compactness": document.getElementById("compactness").value,
+                    "politicalFairness": document.getElementById("politicalFairness").value,
+                    "populationEquality": document.getElementById("populationEquality").value,
+                    "communityInterest": document.getElementById("communityInterest").value,
+                    "efficiencyGap": document.getElementById("communityInterest").value,
+                    "partisanFairness": document.getElementById("partisanFairness").value,
+                    "ethnicMinority": document.getElementById("ethnicMinority").value,
+                    "graphTheoretical": document.getElementById("graphTheoretical").value
             };
+            console.log(playBtnJson);
 
             postData(playBtnJson,"/setweights",printData);
-        })
+        });
 
     }
 
@@ -238,13 +241,13 @@ $("document").ready(function () {
             mouseout: resetPrecinctHighlight
         });
     }
-    function disables() {
-        if (sessionStorage.getItem("user") == null) {
-            $("#controllpane").find("*").prop("disabled", true);
-        }
-
-    }
-    disables();
+    // function disables() {
+    //     if (sessionStorage.getItem("user") == null) {
+    //         $("#controllpane").find("*").prop("disabled", true);
+    //     }
+    //
+    // }
+    // disables();
 });
 
 
