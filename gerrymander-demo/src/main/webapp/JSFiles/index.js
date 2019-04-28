@@ -65,17 +65,14 @@ $("document").ready(function () {
 
         $("#play-btn").click(function(){
             console.log("play button");
-            var weights= ["compactness"];
-            var playBtnJson = {
-                    "compactness": document.getElementById("compactness").value,
-                    "politicalFairness": document.getElementById("politicalFairness").value,
-                    "populationEquality": document.getElementById("populationEquality").value,
-                    "communityInterest": document.getElementById("communityInterest").value,
-                    "efficiencyGap": document.getElementById("communityInterest").value,
-                    "partisanFairness": document.getElementById("partisanFairness").value,
-                    "ethnicMinority": document.getElementById("ethnicMinority").value,
-                    "graphTheoretical": document.getElementById("graphTheoretical").value
-            };
+            const weights= [
+                "compactness", "politicalFairness", "populationEquality", "communityInterest",
+                "efficiencyGap", "partisanFairness", "ethnicMinority", "partisanFairness",
+                "ethnicMinority", "graphTheoretical"
+            ];
+            let playBtnJson = {};
+            for (let i in weights)
+                playBtnJson[weights[i]] = $("#" + weights[i]).val();
             console.log(playBtnJson);
 
             postData(playBtnJson,"/setweights",printData);
