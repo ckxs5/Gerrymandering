@@ -63,6 +63,21 @@ $("document").ready(function () {
 
         })
 
+        $("#play-btn").on("click",function(){
+            var playBtnJson = {
+                    "compactness": $("#compactness").value,
+                    "politicalFairness": $("#politicalFairness").value,
+                    "populationEquality": $("#populationEquality").value,
+                    "communityInterest": $("#communityInterest").value,
+                    "efficiencyGap": $("#efficiencyGap").value,
+                    "partisanFairness": $("#partisanFairness").value,
+                    "ethnicMinority": $("#ethnicMinority").value,
+                    "graphTheoretical": $("#graphTheoretical").value,
+            };
+
+            postData(playBtnJson,"/setweights",printData);
+        })
+
     }
 
     initalMap();
