@@ -9,15 +9,18 @@ import javax.persistence.*;
 import java.util.Set;
 
 
+@Entity
 public class Precinct implements ResponseObject {
 
-
+    @Id
     private String id;
 
     private String name;
 
+    @OneToOne
     private Data data;
 
+    @ManyToMany
     private Set<Precinct> neigbours;
 
     public Precinct() {

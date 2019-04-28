@@ -5,7 +5,13 @@ import com.example.gerrymanderdemo.model.Response.ResponseObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Demographic implements ResponseObject {
+    @Id
+    String id;
     int[] population;
 
     public Demographic(int[] population) {

@@ -1,20 +1,27 @@
 package com.example.gerrymanderdemo.model.Data;
 
 import com.example.gerrymanderdemo.model.Response.ResponseObject;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Boundary implements ResponseObject {
-    JSONObject geoJSON;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
-    public Boundary(JSONObject geoJSON) {
+@Entity
+public class Boundary implements ResponseObject {
+    @Id
+    String id;
+    String geoJSON;
+
+    public Boundary(String geoJSON) {
         this.geoJSON = geoJSON;
     }
 
-    public JSONObject getGeoJSON() {
+    public String getGeoJSON() {
         return geoJSON;
     }
 
-    public void setGeoJSON(JSONObject geoJSON) {
+    public void setGeoJSON(String geoJSON) {
         this.geoJSON = geoJSON;
     }
 
@@ -25,6 +32,11 @@ public class Boundary implements ResponseObject {
 
     @Override
     public JSONObject toJSONObject() {
-        return geoJSON;
+        try {
+            return new JSONObject(geoJSON);
+        }catch (JSONException ex) {
+            System.out.printf("Exception catched when returning a geoJSON: %s \n", ex.getMessage());
+            return null;
+        }
     }
 }

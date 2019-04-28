@@ -63,7 +63,7 @@ public class PrecinctPreprocesor {
     private Boundary prepareBoundary (int n) {
         try {
             JSONObject json  = new JSONObject(data.get("BOUNDARY").get(n));
-            return new Boundary(json);
+            return new Boundary(json.toString());
         } catch (JSONException ex) {
             System.out.printf("Error when getting boundary data from string : %s \n", ex);
             return null;

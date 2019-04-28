@@ -5,9 +5,14 @@ import com.example.gerrymanderdemo.model.Response.ResponseObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Arrays;
 
+@Entity
 public class Vote implements ResponseObject {
+    @Id
+    String id;
     int[] votes;
 
     public Vote(){}

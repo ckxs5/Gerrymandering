@@ -4,9 +4,22 @@ import com.example.gerrymanderdemo.model.Response.ResponseObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+
+@Entity
 public class Data implements ResponseObject {
+    @Id
+    String id;
+
+    @OneToOne
     Vote voteData;
+
+    @OneToOne
     Demographic demographic;
+
+    @OneToOne
     Boundary boundary;
 
     public Data() {
