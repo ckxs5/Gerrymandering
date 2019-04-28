@@ -20,15 +20,15 @@ $("document").ready(function () {
         mymap.setMaxBounds(maxBounds);
         //mymap.fitBounds(maxBounds);
 
-        districtGeojson = L.geoJson(FL_Dist, {
-            style: style,
-            onEachFeature: onEachDistrictFeature
-        }).addTo(mymap);
+        // districtGeojson = L.geoJson(FL_Dist, {
+        //     style: style,
+        //     onEachFeature: onEachDistrictFeature
+        // }).addTo(mymap);
 
-        districtGeojson = L.geoJson(MD_Dist, {
-            style: style,
-            onEachFeature: onEachDistrictFeature
-        }).addTo(mymap);
+        // districtGeojson = L.geoJson(MD_Dist, {
+        //     style: style,
+        //     onEachFeature: onEachDistrictFeature
+        // }).addTo(mymap);
 
         districtGeojson = L.geoJson(MN_Dist, {
             style: style,

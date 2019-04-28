@@ -6,8 +6,6 @@ import com.example.gerrymanderdemo.model.Data.Vote;
 import com.example.gerrymanderdemo.model.Enum.Party;
 import com.example.gerrymanderdemo.model.Enum.RaceType;
 import com.example.gerrymanderdemo.model.Precinct;
-import com.example.gerrymanderdemo.model.Response.Response;
-import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,5 +36,4 @@ public class PrecinctController {
         System.out.println(precinct.toJSONObject().toString());
         return precinct.toJSONObject().toString();
     }
-
 }

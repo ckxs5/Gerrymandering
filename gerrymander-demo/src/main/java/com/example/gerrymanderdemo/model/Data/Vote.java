@@ -10,6 +10,8 @@ import java.util.Arrays;
 public class Vote implements ResponseObject {
     int[] votes;
 
+    public Vote(){}
+
     public Vote(int[] votes) {
         if (votes.length != Party.values().length)
             throw new IndexOutOfBoundsException("Not enough elements in votes, at least " + Party.values().length);

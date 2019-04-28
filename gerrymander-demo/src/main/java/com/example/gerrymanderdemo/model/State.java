@@ -1,6 +1,7 @@
 package com.example.gerrymanderdemo.model;
 
 import com.example.gerrymanderdemo.model.Data.Data;
+import com.example.gerrymanderdemo.model.Enum.StateName;
 
 import javax.persistence.Entity;
 import java.util.Collection;
@@ -12,6 +13,7 @@ public class State {
     private Collection<District>districts;
     private int numDistricts;
     private int numMajMinDistricts;
+    private StateName name;
     private String id;
 
     public State(Data data){

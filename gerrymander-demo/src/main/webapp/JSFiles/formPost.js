@@ -19,10 +19,19 @@ function postForm(event, formId, postUrl, callback) {
 }
 
 function userlogin(logindata) {
-    // console.log(logindata);
-    sessionStorage.setItem("user", logindata["user"]);
-    // console.log(sessionStorage.getItem("user"));
-    window.location.href = '/';
+    console.log(logindata);
+    if (logindata["user"]) {
+        sessionStorage.setItem("user", logindata["user"]);
+        window.location.href = '/';
+        console.log(sessionStorage.getItem("user"));
+
+    }
+    else {
+        console.log("Error when login");
+        const message = $(".message");
+        message.css("color", "green");
+        message.html(logindata["error"]);
+    }
 }
 
 function userlogout(logoutdata) {
