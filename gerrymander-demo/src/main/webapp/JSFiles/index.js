@@ -20,15 +20,15 @@ $("document").ready(function () {
         mymap.setMaxBounds(maxBounds);
         //mymap.fitBounds(maxBounds);
 
-        districtGeojson = L.geoJson(FL_Dist, {
-            style: style,
-            onEachFeature: onEachDistrictFeature
-        }).addTo(mymap);
+        // districtGeojson = L.geoJson(FL_Dist, {
+        //     style: style,
+        //     onEachFeature: onEachDistrictFeature
+        // }).addTo(mymap);
 
-        districtGeojson = L.geoJson(MD_Dist, {
-            style: style,
-            onEachFeature: onEachDistrictFeature
-        }).addTo(mymap);
+        // districtGeojson = L.geoJson(MD_Dist, {
+        //     style: style,
+        //     onEachFeature: onEachDistrictFeature
+        // }).addTo(mymap);
 
         districtGeojson = L.geoJson(MN_Dist, {
             style: style,
@@ -61,6 +61,21 @@ $("document").ready(function () {
                 }).addTo(mymap);
             }
 
+        })
+
+        $("#play-btn").on("click",function(){
+            var playBtnJson = {
+                    "compactness": $("#compactness").value,
+                    "politicalFairness": $("#politicalFairness").value,
+                    "populationEquality": $("#populationEquality").value,
+                    "communityInterest": $("#communityInterest").value,
+                    "efficiencyGap": $("#efficiencyGap").value,
+                    "partisanFairness": $("#partisanFairness").value,
+                    "ethnicMinority": $("#ethnicMinority").value,
+                    "graphTheoretical": $("#graphTheoretical").value,
+            };
+
+            postData(playBtnJson,"/setweights",printData);
         })
 
     }

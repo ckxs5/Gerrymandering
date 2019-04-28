@@ -1,19 +1,14 @@
 package com.example.gerrymanderdemo.Service;
 
-import com.example.gerrymanderdemo.Repository.AdministratorRepository;
 import com.example.gerrymanderdemo.Repository.UserRepository;
 import com.example.gerrymanderdemo.model.User.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    private AdministratorRepository administratorRepository;
+    @Autowired
     private UserRepository userRepository;
-
-    public UserService(AdministratorRepository administratorRepository, UserRepository userRepository) {
-        this.administratorRepository = administratorRepository;
-        this.userRepository = userRepository;
-    }
 
     public User find(String userEmail, String password) {
         return userRepository.findByEmailAndPassword(userEmail, password);
