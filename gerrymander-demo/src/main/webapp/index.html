@@ -39,86 +39,55 @@
     <script type="text/javascript" src="geoJson/MD_Precincts.js"></script>
     <script type="text/javascript" src="geoJson/MN_CongressionalDistrict.js"></script>
     <script type="text/javascript" src="geoJson/MN_Precincts.js"></script>
+
     <div id="map"></div>
+
     <div class="card border-dark mb-1" id="controllpane" style="max-width: 25rem;">
         <div class="card-body text-dark">
-
-            <div aria-label="Toolbar with button groups" class="btn-toolbar mb-1" role="toolbar">
-                <div aria-label="First group" class="btn-group btn-group-sm" role="group">
-                    <button class="btn btn-secondary aaa" type="button">Play</button>
-                    <button class="btn btn-secondary" type="button">Update</button>
-                    <button class="btn btn-secondary" type="button">Stop</button>
-                    <button class="btn btn-secondary" type="button">Pause</button>
-<!--                    <button class="btn btn-secondary" type="button">Save Maps</button>-->
-<!--                    <button class="btn btn-secondary" type="button">View Maps</button>-->
-<!--                    <button class="btn btn-secondary" type="button">Load Maps</button>-->
-<!--                    <button class="btn btn-secondary" type="button">Delete Maps</button>-->
-                </div>
+            <div aria-label="First group" class="btn-group" role="group">
+                <button class="btn btn-secondary aaa" type="button">Play</button>
+                <button class="btn btn-secondary" type="button">Update</button>
+                <button class="btn btn-secondary" type="button">Stop</button>
+                <button class="btn btn-secondary" type="button">Pause</button>
             </div>
-
-
-<!--            <div aria-label="Toolbar with button groups" class="btn-toolbar mb-1" role="toolbar">-->
-<!--                <div aria-label="First group" class="btn-group btn-group-sm" role="group">-->
-<!--                    <button class="btn btn-secondary" type="button">Save Weights</button>-->
-<!--                    <button class="btn btn-secondary" type="button">View Weights</button>-->
-<!--                    <button class="btn btn-secondary" type="button">Load Weights</button>-->
+            <div class="dropdown btn-major">
+                <button aria-expanded="false" aria-haspopup="true" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" id="dropdownMenuButton1" type="button">
+                    Majority-Minority
+                </button>
+                <li aria-labelledby="dropdownMenuButton1" class="dropdown-menu">
+                    <label class="alignmentCC">
+                        <input type="checkbox"> African-American
+                    </label>
+                    <br>
+                    <label class="alignmentCC">
+                        <input type="checkbox"> Hispanic-American
+                    </label>
+                    <br>
+                    <label class="alignmentCC">
+                        <input type="checkbox"> Asian-American
+                    </label>
+                    <br>
+                    <label class="alignmentCC">
+                        <input type="checkbox"> Others
+                    </label>
+                </li>
+            </div>
+            <div class="dropdown btn-states">
+<!--                <button aria-expanded="false" aria-haspopup="true" class="btn btn-secondary dropdown-toggle"-->
+<!--                        data-toggle="dropdown" id="dropdownMenuButton2" type="button">-->
+<!--                    Select a State to Display-->
+<!--                </button>-->
+<!--                <div aria-labelledby="dropdownMenuButton2" class="dropdown-menu">-->
+<!--                    <button class="dropdown-item" type="button">MINNESOTA</button>-->
+<!--                    <button class="dropdown-item" type="button">MARYLAND</button>-->
+<!--                    <button class="dropdown-item" type="button">FLORIDA</button>-->
 <!--                </div>-->
-<!--            </div>-->
-
-
-            <div class="btn-container">
-                <div class="dropdown btn-align">
-                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        ALIGNMENT
-                    </button>
-                    <li class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <label class="alignmentCC">
-                            <input type="checkbox">  County&Cities
-                        </label>
-                        <br>
-                        <label class="alignmentCC">
-                            <input type="checkbox">  Highways
-                        </label>
-                        <br>
-                        <label class="alignmentCC">
-                            <input type="checkbox">  Rivers
-                        </label>
-                        <br>
-                        <label class="alignmentCC">
-                            <input type="checkbox">  Mountains
-                        </label>
-                    </li>
-                </div>
-
-                <div class="dropdown btn-major">
-                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Majority-Minority
-                    </button>
-                    <li class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                        <label class="alignmentCC">
-                            <input type="checkbox">  African-American
-                        </label>
-                        <br>
-                        <label class="alignmentCC">
-                            <input type="checkbox">  Hispanic-American
-                        </label>
-                        <br>
-                        <label class="alignmentCC">
-                            <input type="checkbox">  Asian-American
-                        </label>
-                        <br>
-                        <label class="alignmentCC">
-                            <input type="checkbox">  Others
-                        </label>
-                    </li>
-                </div>
-                    <input class="custom-range major" id="majorityMinority" type="range">
-                <div class="custom-switch" id="compare">
-                    <input class="custom-control-input" id="customSwitch1" type="checkbox">
-                    <label class="custom-control-label" for="customSwitch1">COMPARISON</label>
-                </div>
+                <select class="btn btn-secondary dropdown-toggle">
+                    <option value="MINNESOTA">MINNESOTA</option>
+                    <option value="MARYLAND">MARYLAND</option>
+                    <option value="FLORIDA">FLORIDA</option>
+                </select>
             </div>
-
             <div>
                 <label for="compactness" class="ranges">COMPACTNESS</label>
                 <input class="custom-range" id="compactness" type="range">
@@ -141,11 +110,11 @@
     </div>
 </div>
 
-<script crossorigin="anonymous"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script crossorigin="anonymous"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script crossorigin="anonymous"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script crossorigin="anonymous"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
