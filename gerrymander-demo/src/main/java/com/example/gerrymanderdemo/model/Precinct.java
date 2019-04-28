@@ -13,6 +13,7 @@ import java.util.Set;
 public class Precinct implements ResponseObject {
 
     @Id
+    @Column(length = 100)
     private String id;
 
     private String name;
@@ -21,6 +22,10 @@ public class Precinct implements ResponseObject {
     private Data data;
 
     @ManyToMany
+    @JoinTable(
+            name = "precinct_precinct",
+            joinColumns = @JoinColumn(name = "precinct1_id"),
+            inverseJoinColumns = @JoinColumn(name = "precinct2_id"))
     private Set<Precinct> neigbours;
 
     public Precinct() {
