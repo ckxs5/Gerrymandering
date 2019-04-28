@@ -22,16 +22,18 @@ public class HelloController {
         this.userService = userService;
     }
 
-    @RequestMapping("/")
+    @RequestMapping(value = {"/", "/index"})
     public String index(HttpSession session){
         User user = (User) session.getAttribute("user");
-       System.out.println(session.getAttribute("user"));
+        System.out.println(session.getAttribute("user"));
         if(user == null) {
             System.out.println("return login ");
             return "login";
         }
-        else
+        else {
+            System.out.println("return index ");
             return "index";
+        }
     }
 
     @GetMapping("/login")
@@ -62,8 +64,8 @@ public class HelloController {
 
     @PostMapping("/logout")
     public ResponseEntity<Response> logout(HttpSession session) {
-        session.setAttribute("user", null);
-        System.out.println(session.getAttribute("user"));
+        System.out.println("logout");
+        session.removeAttribute("user");
         return ResponseEntity.ok(new OKResponse());
     }
 
