@@ -22,9 +22,8 @@ function userlogin(logindata) {
     console.log(logindata);
     if (logindata["user"]) {
         sessionStorage.setItem("user", logindata["user"]);
-        window.location.href = '/';
+        window.location.href = '/index';
         console.log(sessionStorage.getItem("user"));
-
     }
     else {
         console.log("Error when login");
@@ -36,7 +35,8 @@ function userlogin(logindata) {
 
 function userlogout(logoutdata) {
     sessionStorage.clear();
-    window.location.href = '/';
+    console.log("logout")
+    window.location.href = '/login';
 }
 
 function usersignup(signupdata) {
