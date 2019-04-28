@@ -64,7 +64,6 @@ $("document").ready(function () {
         });
 
         $("#play-btn").click(function(){
-            console.log("play button");
             var weights= ["compactness"];
             var playBtnJson = {
                     "compactness": document.getElementById("compactness").value,
