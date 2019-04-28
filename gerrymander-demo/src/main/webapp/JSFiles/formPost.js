@@ -41,7 +41,8 @@ function userlogout(logoutdata) {
 
 function usersignup(signupdata) {
     console.log(signupdata);
-    if (sessionStorage.getItem("id") == null){
+    console.log(sessionStorage);
+    if (signupdata["status"] && signupdata["status"] != "OK"){
         document.getElementById('userExist').innerText = "User Exists";
     }else{
         window.location.href = '/';

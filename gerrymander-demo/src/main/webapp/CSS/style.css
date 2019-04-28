@@ -172,18 +172,31 @@ body, html{
     float: left;
 }
 
-.btn-major{
-    float: right;
-}
 .major{
     width: 145px;
     float: right;
+}
+.btn-group{
+    alignment: center;
+    display: flex !important;
+    margin-bottom: 10px;
+}
+.dropdown-menu{
+    min-width: 20rem !important;
+    text-align: center;
+}
+
+.btn-major, .btn-states{
+    display: grid !important;
+    margin-bottom: 10px;
 }
 
 .custom-control-label, .ranges{
     color: ghostwhite;
 }
+.custom-range{
 
+}
 .disabledbutton {
     pointer-events: none;
     opacity: 0.4;
