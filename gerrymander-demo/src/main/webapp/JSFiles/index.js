@@ -3,7 +3,6 @@ $("document").ready(function () {
     var precinctGeojson;
     var mymap;
     var info;
-    var states = ['MARYLAND','MINNESOTA', 'FLORIDA'];
 
     function initalMap() {
         mymap = L.map('map').setView([39.8283, -100.5795], 4.5);
@@ -41,25 +40,25 @@ $("document").ready(function () {
         //     onEachFeature: onEachDistrictFeature
         // }).addTo(mymap);
 
-        mymap.on("zoomend", function () {
-            if (mymap.getZoom() > 6 && mymap.hasLayer(districtGeojson)) {
-                districtGeojson.remove();
-                precinctGeojson = L.geoJson(MN_P, {
-                    style: style,
-                    onEachFeature: onEachPrecinctFeature
-                }).addTo(mymap);
-            }
-            //console.log(mymap.getZoom() <= 8 && mymap.hasLayer(precinctGeojson));
-            if (mymap.getZoom() <= 6 && mymap.hasLayer(precinctGeojson)) {
-                info.update();
-                precinctGeojson.remove();
-                districtGeojson = L.geoJson(MN_Dist, {
-                    style: style,
-                    onEachFeature: onEachDistrictFeature
-                }).addTo(mymap);
-            }
-
-        });
+        // mymap.on("zoomend", function () {
+        //     if (mymap.getZoom() > 6 && mymap.hasLayer(districtGeojson)) {
+        //         districtGeojson.remove();
+        //         precinctGeojson = L.geoJson(MN_P, {
+        //             style: style,
+        //             onEachFeature: onEachPrecinctFeature
+        //         }).addTo(mymap);
+        //     }
+        //     //console.log(mymap.getZoom() <= 8 && mymap.hasLayer(precinctGeojson));
+        //     if (mymap.getZoom() <= 6 && mymap.hasLayer(precinctGeojson)) {
+        //         info.update();
+        //         precinctGeojson.remove();
+        //         districtGeojson = L.geoJson(MN_Dist, {
+        //             style: style,
+        //             onEachFeature: onEachDistrictFeature
+        //         }).addTo(mymap);
+        //     }
+        //
+        // });
 
         $("#play-btn").click(function () {
             console.log("play button");
@@ -75,26 +74,47 @@ $("document").ready(function () {
             postData(playBtnJson, "/setweights", printData);
         });
 
-        // for(let i in states){
-        //     console.log("asdads");
-        //     $("#states[i]").click(function() {
-        //         document.getElementById("dropdownMenuButton2").innerText = "MINNESOTA";
-        //     });
-        // }
-        // $("#MINNESOTA").click(function() {
-        //     document.getElementById("dropdownMenuButton2").innerText = "MINNESOTA";
-        // });
-        //
-        // $("#MARYLAND").click(function() {
-        //     document.getElementById("dropdownMenuButton2").innerText = "MARYLAND";
-        // });
-        //
-        // $("#FLORIDA").click(function() {
-        //     document.getElementById("dropdownMenuButton2").innerText = "FLORIDA";
-        // });
+        $("#states").click(function() {
+            // var sel = document.getElementById("states");
+            // var sv = sel.options[sel.selectedIndex].value;
+            // console.log(sel.text);
+            // console.log(sv);
+            if(document.getElementById("states").value == "ALLSTATES"){
+                console.log("a");
+            }else if(document.getElementById("states").value == "MINNESOTA"){
+                console.log("b");
+            }else if(document.getElementById("states").value == "MARYLAND"){
+                console.log("c");
+            }else{
+                console.log("d");
+            }
+            console.log(document.getElementById("states").value);
+        });
     }
 
     initalMap();
+
+    function zooming(){
+        mymap.on("zoomend", function () {
+            if (mymap.getZoom() > 6 && mymap.hasLayer(districtGeojson)) {
+                districtGeojson.remove();
+                precinctGeojson = L.geoJson(MN_P, {
+                    style: style,
+                    onEachFeature: onEachPrecinctFeature
+                }).addTo(mymap);
+            }
+
+            if (mymap.getZoom() <= 6 && mymap.hasLayer(precinctGeojson)) {
+                info.update();
+                precinctGeojson.remove();
+                districtGeojson = L.geoJson(MN_Dist, {
+                    style: style,
+                    onEachFeature: onEachDistrictFeature
+                }).addTo(mymap);
+            }
+        });
+    }
+    zooming();
 
     function infoWindow() {
         // control that shows state info on hover
@@ -131,15 +151,14 @@ $("document").ready(function () {
     infoWindow();
 
 
-    function style(feature) {
+    function style() {
         return {
             // fillColor: getColor(feature.properties.density),
             fillColor: '#FD8D3C',
-            weight: 2,
-            opacity: 1,
+            weight: 1,
+            // opacity: 1,
             color: 'white',
-            dashArray: '3',
-            fillOpacity: 0.7
+            // fillOpacity:
         };
     }
 
@@ -158,9 +177,9 @@ $("document").ready(function () {
         var layer = e.target;
 
         layer.setStyle({
-            weight: 5,
-            color: '#666',
-            dashArray: '',
+            weight: 2,
+            color: '#fff',
+            // dashArray: '',
             fillOpacity: 0.7
         });
 
@@ -174,9 +193,9 @@ $("document").ready(function () {
         var layer = e.target;
 
         layer.setStyle({
-            weight: 5,
-            color: '#666',
-            dashArray: '',
+            weight: 2,
+            color: '#fff',
+            // dashArray: '',
             fillOpacity: 0.7
         });
 
