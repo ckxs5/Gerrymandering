@@ -65,13 +65,13 @@ $("document").ready(function () {
 
         $("#play-btn").click(function(){
             console.log("play button");
-            const weights= [
+            var weights= [
                 "compactness", "politicalFairness", "populationEquality", "communityInterest",
                 "efficiencyGap", "partisanFairness", "ethnicMinority", "partisanFairness",
                 "ethnicMinority", "graphTheoretical"
             ];
-            let playBtnJson = {};
-            for (let i in weights)
+            var playBtnJson = {};
+            for (var i in weights)
                 playBtnJson[weights[i]] = $("#" + weights[i]).val();
             console.log(playBtnJson);
 
