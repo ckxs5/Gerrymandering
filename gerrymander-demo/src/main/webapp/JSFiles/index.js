@@ -40,19 +40,71 @@ $("document").ready(function () {
         //     onEachFeature: onEachDistrictFeature
         // }).addTo(mymap);
 
+        // mymap.on("zoomend", function () {
+        //     if (mymap.getZoom() > 6 && mymap.hasLayer(districtGeojson)) {
+        //         districtGeojson.remove();
+        //         precinctGeojson = L.geoJson(MN_P, {
+        //             style: style,
+        //             onEachFeature: onEachPrecinctFeature
+        //         }).addTo(mymap);
+        //     }
+        //     //console.log(mymap.getZoom() <= 8 && mymap.hasLayer(precinctGeojson));
+        //     if (mymap.getZoom() <= 6 && mymap.hasLayer(precinctGeojson)) {
+        //         info.update();
+        //         precinctGeojson.remove();
+        //         districtGeojson = L.geoJson(MN_Dist, {
+        //             style: style,
+        //             onEachFeature: onEachDistrictFeature
+        //         }).addTo(mymap);
+        //     }
+        //
+        // });
 
+        $("#play-btn").click(function () {
+            console.log("play button");
+            const weights = [
+                "compactness", "politicalFairness", "populationEquality", "communityInterest",
+                "efficiencyGap", "partisanFairness", "ethnicMinority", "partisanFairness",
+                "ethnicMinority", "graphTheoretical"];
+            let playBtnJson = {};
+            for (let i in weights)
+                playBtnJson[weights[i]] = $("#" + weights[i]).val();
+            console.log(playBtnJson);
 
+            postData(playBtnJson, "/setweights", printData);
+        });
 
-        mymap.on("zoomend", function() {
-                if(mymap.getZoom() > 6 && mymap.hasLayer(districtGeojson)) {
-                    districtGeojson.remove();
-                    precinctGeojson = L.geoJson(MN_P, {
-                        style: style,
-                        onEachFeature: onEachPrecinctFeature
-                    }).addTo(mymap);
-                }
-                //console.log(mymap.getZoom() <= 8 && mymap.hasLayer(precinctGeojson));
-            if(mymap.getZoom() <= 6 && mymap.hasLayer(precinctGeojson)) {
+        $("#states").click(function() {
+            // var sel = document.getElementById("states");
+            // var sv = sel.options[sel.selectedIndex].value;
+            // console.log(sel.text);
+            // console.log(sv);
+            if(document.getElementById("states").value == "ALLSTATES"){
+                console.log("a");
+            }else if(document.getElementById("states").value == "MINNESOTA"){
+                console.log("b");
+            }else if(document.getElementById("states").value == "MARYLAND"){
+                console.log("c");
+            }else{
+                console.log("d");
+            }
+            console.log(document.getElementById("states").value);
+        });
+    }
+
+    initalMap();
+
+    function zooming(){
+        mymap.on("zoomend", function () {
+            if (mymap.getZoom() > 6 && mymap.hasLayer(districtGeojson)) {
+                districtGeojson.remove();
+                precinctGeojson = L.geoJson(MN_P, {
+                    style: style,
+                    onEachFeature: onEachPrecinctFeature
+                }).addTo(mymap);
+            }
+
+            if (mymap.getZoom() <= 6 && mymap.hasLayer(precinctGeojson)) {
                 info.update();
                 precinctGeojson.remove();
                 districtGeojson = L.geoJson(MN_Dist, {
@@ -60,27 +112,9 @@ $("document").ready(function () {
                     onEachFeature: onEachDistrictFeature
                 }).addTo(mymap);
             }
-
         });
-
-        $("#play-btn").click(function(){
-            console.log("play button");
-            var weights= [
-                "compactness", "politicalFairness", "populationEquality", "communityInterest",
-                "efficiencyGap", "partisanFairness", "ethnicMinority", "partisanFairness",
-                "ethnicMinority", "graphTheoretical"
-            ];
-            var playBtnJson = {};
-            for (var i in weights)
-                playBtnJson[weights[i]] = $("#" + weights[i]).val();
-            console.log(playBtnJson);
-
-            postData(playBtnJson,"/setweights",printData);
-        });
-
     }
-
-    initalMap();
+    zooming();
 
     function infoWindow() {
         // control that shows state info on hover
@@ -92,9 +126,9 @@ $("document").ready(function () {
             return this._div;
         };
 
-        info.update = function(democratic,republican,otherParties,all,otherRaces,caucasian,asian,hispanic,african,native,name){
-            this._div.innerHTML = '<h4>Precinct Information</h4>' +  (all ?
-                  '<b>'+ name +'</b><br>'
+        info.update = function (democratic, republican, otherParties, all, otherRaces, caucasian, asian, hispanic, african, native, name) {
+            this._div.innerHTML = '<h4>Precinct Information</h4>' + (all ?
+                '<b>' + name + '</b><br>'
                 + '<b>Demographics</b><br>'
                 + 'Asian/Pacific Islander: ' + asian + '<br>'
                 + 'Caucasian: ' + caucasian + '<br>'
@@ -109,7 +143,7 @@ $("document").ready(function () {
                 + '<br><b>Population</b><br>'
                 + all
                 : 'No Precinct Selected');
-        }
+        };
 
         info.addTo(mymap);
     }
@@ -117,36 +151,35 @@ $("document").ready(function () {
     infoWindow();
 
 
-    function style(feature) {
+    function style() {
         return {
             // fillColor: getColor(feature.properties.density),
             fillColor: '#FD8D3C',
-            weight: 2,
-            opacity: 1,
+            weight: 1,
+            // opacity: 1,
             color: 'white',
-            dashArray: '3',
-            fillOpacity: 0.7
+            // fillOpacity:
         };
     }
 
     function getColor(d) {
         return d > 1000 ? '#800026' :
             d > 500 ? '#BD0026' :
-            d > 200 ? '#E31A1C' :
-            d > 100 ? '#FC4E2A' :
-            d > 50 ? '#FD8D3C' :
-            d > 20 ? '#FEB24C' :
-            d > 10 ? '#FED976' :
-            '#FFEDA0';
+                d > 200 ? '#E31A1C' :
+                    d > 100 ? '#FC4E2A' :
+                        d > 50 ? '#FD8D3C' :
+                            d > 20 ? '#FEB24C' :
+                                d > 10 ? '#FED976' :
+                                    '#FFEDA0';
     }
 
     function highlightFeature(e) {
         var layer = e.target;
 
         layer.setStyle({
-            weight: 5,
-            color: '#666',
-            dashArray: '',
+            weight: 2,
+            color: '#fff',
+            // dashArray: '',
             fillOpacity: 0.7
         });
 
@@ -160,9 +193,9 @@ $("document").ready(function () {
         var layer = e.target;
 
         layer.setStyle({
-            weight: 5,
-            color: '#666',
-            dashArray: '',
+            weight: 2,
+            color: '#fff',
+            // dashArray: '',
             fillOpacity: 0.7
         });
 
@@ -174,46 +207,46 @@ $("document").ready(function () {
 
     }
 
-    function loadPrecinctProperties(layer){
-        getData("/precinct/1/data",loadPrecinctPropertiesHelper)
+    function loadPrecinctProperties(layer) {
+        getData("/precinct/1/data", loadPrecinctPropertiesHelper)
     }
 
 
-    function loadPrecinctPropertiesHelper(loadedJson){
-        obj=loadedJson;
-        if(obj['data']) {
+    function loadPrecinctPropertiesHelper(loadedJson) {
+        obj = loadedJson;
+        if (obj['data']) {
             if (obj['data']['votingData']) {
-                var democratic = obj['data']['votingData']['DEMOCRATIC']
-                var republican = obj['data']['votingData']['REPUBLICAN']
+                var democratic = obj['data']['votingData']['DEMOCRATIC'];
+                var republican = obj['data']['votingData']['REPUBLICAN'];
                 var otherParties = obj['data']['votingData']['OTHERS']
             } else {
-                var democratic = "N/A"
-                var republican = "N/A"
+                var democratic = "N/A";
+                var republican = "N/A";
                 var others = "N/A"
             }
             if (obj['data']['demographic']) {
-                var all = obj['data']['demographic']['ALL']
-                var otherRaces = obj['data']['demographic']['OTHERS']
-                var caucasian = obj['data']['demographic']['CAUCASIAN']
-                var asian = obj['data']['demographic']['ASIAN_PACIFIC_AMERICAN']
+                var all = obj['data']['demographic']['ALL'];
+                var otherRaces = obj['data']['demographic']['OTHERS'];
+                var caucasian = obj['data']['demographic']['CAUCASIAN'];
+                var asian = obj['data']['demographic']['ASIAN_PACIFIC_AMERICAN'];
                 //console.log('aaaa');
-                var hispanic = obj['data']['demographic']['HISPANIC_LATINO_AMERICAN']
-                var african = obj['data']['demographic']['AFRICAN_AMERICAN']
+                var hispanic = obj['data']['demographic']['HISPANIC_LATINO_AMERICAN'];
+                var african = obj['data']['demographic']['AFRICAN_AMERICAN'];
                 var native = obj['data']['demographic']['NATIVE_AMERICAN']
             } else {
-                var all = "N/A"
-                var others = "N/A"
-                var caucasian = "N/A"
-                var asian = "N/A"
-                var hispanic = "N/A"
-                var african = "N/A"
+                var all = "N/A";
+                var others = "N/A";
+                var caucasian = "N/A";
+                var asian = "N/A";
+                var hispanic = "N/A";
+                var african = "N/A";
                 var native = "N/A"
             }
         }
-        if(obj['name']){
+        if (obj['name']) {
             var name = obj['name']
         }
-        info.update(democratic,republican,otherParties,all,otherRaces,caucasian,asian,hispanic,african,native,name)
+        info.update(democratic, republican, otherParties, all, otherRaces, caucasian, asian, hispanic, african, native, name)
     }
 
     function resetPrecinctHighlight(e) {
@@ -232,12 +265,14 @@ $("document").ready(function () {
             mouseout: resetDistrictHighlight
         });
     }
+
     function onEachPrecinctFeature(feature, layer) {
         layer.on({
             mouseover: highlightPrecinctFeature,
             mouseout: resetPrecinctHighlight
         });
     }
+
     // function disables() {
     //     if (sessionStorage.getItem("user") == null) {
     //         $("#controllpane").find("*").prop("disabled", true);

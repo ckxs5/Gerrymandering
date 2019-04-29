@@ -50,38 +50,56 @@
                 <button class="btn btn-secondary" type="button">Pause</button>
                 <button class="btn btn-secondary" type="button">Update</button>
             </div>
+<!--            <div class="dropdown btn-major">-->
+<!--                <button aria-expanded="false" aria-haspopup="true" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" id="dropdownMenuButton1" type="button">-->
+<!--                    Majority-Minority-->
+<!--                </button>-->
+<!--                <li aria-labelledby="dropdownMenuButton1" class="dropdown-menu">-->
+<!--                    <label class="alignmentCC">-->
+<!--                        <input type="checkbox"> African-American-->
+<!--                    </label>-->
+<!--                    <br>-->
+<!--                    <label class="alignmentCC">-->
+<!--                        <input type="checkbox"> Hispanic-American-->
+<!--                    </label>-->
+<!--                    <br>-->
+<!--                    <label class="alignmentCC">-->
+<!--                        <input type="checkbox"> Asian-American-->
+<!--                    </label>-->
+<!--                    <br>-->
+<!--                    <label class="alignmentCC">-->
+<!--                        <input type="checkbox"> Others-->
+<!--                    </label>-->
+<!--                </li>-->
+<!--            </div>-->
             <div class="dropdown btn-major">
-                <button aria-expanded="false" aria-haspopup="true" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" id="dropdownMenuButton1" type="button">
-                    Majority-Minority
-                </button>
-                <li aria-labelledby="dropdownMenuButton1" class="dropdown-menu">
-                    <label class="alignmentCC">
-                        <input type="checkbox"> African-American
-                    </label>
-                    <br>
-                    <label class="alignmentCC">
-                        <input type="checkbox"> Hispanic-American
-                    </label>
-                    <br>
-                    <label class="alignmentCC">
-                        <input type="checkbox"> Asian-American
-                    </label>
-                    <br>
-                    <label class="alignmentCC">
-                        <input type="checkbox"> Others
-                    </label>
-                </li>
+                <select class="btn btn-secondary dropdown-toggle select-css">
+                    <option value="DEFAULT">Majority Minority</option>
+                    <option value="asian">Asian/Pacific Islander</option>
+                    <option value="caucasian">Caucasian</option>
+                    <option value="hispanic">Hispanic (of Any Race)</option>
+                    <option value="african">African American</option>
+                    <option value="native">Native American</option>
+                    <option value="other">Other</option>
+                </select>
             </div>
+
             <div class="dropdown btn-states">
-                <button aria-expanded="false" aria-haspopup="true" class="btn btn-secondary dropdown-toggle states"
-                        data-toggle="dropdown" id="dropdownMenuButton2" type="button">
-                    Select a State to Display
-                </button>
-                <div aria-labelledby="dropdownMenuButton2" class="dropdown-menu">
-                    <button class="dropdown-item" type="button">MINNESOTA</button>
-                    <button class="dropdown-item" type="button">MARYLAND</button>
-                    <button class="dropdown-item" type="button">FLORIDA</button>
-                </div>
+                <select id="states" class="btn btn-secondary dropdown-toggle select-css">
+                    <option value="ALLSTATES">Select a State to Display</option>
+                    <option value="MINNESOTA">MINNESOTA</option>
+                    <option value="MARYLAND">MARYLAND</option>
+                    <option value="FLORIDA">FLORIDA</option>
+                </select>
+<!--                <button aria-expanded="false" aria-haspopup="true" class="btn btn-secondary dropdown-toggle"-->
+<!--                        data-toggle="dropdown" id="dropdownMenuButton2" type="button">-->
+<!--                    Select a State to Display-->
+<!--                </button>-->
+<!--                <div aria-labelledby="dropdownMenuButton2" class="dropdown-menu">-->
+<!--                    <button class="dropdown-item" type="button" id="MINNESOTA">MINNESOTA</button>-->
+<!--                    <button class="dropdown-item" type="button" id="MARYLAND">MARYLAND</button>-->
+<!--                    <button class="dropdown-item" type="button" id="FLORIDA">FLORIDA</button>-->
+<!--                </div>-->
             </div>
             <div>
                 <label for="compactness" class="ranges">COMPACTNESS</label>
