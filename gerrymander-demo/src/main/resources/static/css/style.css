@@ -25,7 +25,9 @@ body, html{
     background-color: #232a30 !important;
     height: 100%;
 }
-
+.container-fluid{
+    height: 90% !important;
+}
 
 .col-md{
     float: right;
@@ -40,7 +42,7 @@ body, html{
 }
 #map {
     width: 75%;
-    height: 700px;
+    height: 100%;
     float: left;
 }
 .info {
@@ -57,7 +59,7 @@ body, html{
 
 .card{
     width: 25%;
-    height: 700px;
+    height: 100%;
     background-color: #232a30;
     float: right;
 }
@@ -227,6 +229,9 @@ body, html{
 #weights{
     list-style: none;
     padding-inline-start: 0;
+}
+li{
+    display: block;
 }
 
 

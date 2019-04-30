@@ -34,7 +34,7 @@
     </div>
 </nav>
 
-<div id="container-fluid">
+<div class="container-fluid">
     <script type="text/javascript" th:src="@{/geoJson/us-states.js}"></script>
     <script type="text/javascript" th:src="@{/geoJson/FL_Dist.js}"></script>
     <script type="text/javascript" th:src="@{/geoJson/MD_CongressionalDistrict.js}"></script>
@@ -63,7 +63,7 @@
                     <option th:each="state : ${states}" th:value="${state}" th:text="${state.toString()} == 'ALL' ? 'Select a State to Display' : ${state}"></option>
                 </select>
             </div>
-            <div>
+            <div class="weightsblock">
                 <ul id="weights">
                     <li th:each="weight : ${weights}">
                         <label th:for="${weight}" class="ranges" th:text="${weight}"></label>
