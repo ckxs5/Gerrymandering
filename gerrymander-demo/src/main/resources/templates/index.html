@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerrymandering</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" type="text/javascript"></script>
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
+    <link crossorigin="" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+          integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+          rel="stylesheet"/>
+    <script crossorigin=""
+            integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+            src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+    <script th:src="@{/js/index.js}" type="text/javascript"></script>
+    <script th:src="@{/js/helper.js}" type="text/javascript"></script>
+    <script th:src="@{/js/formPost.js}" type="text/javascript"></script>
+</head>
+<body>
+
+<nav id="fixed-top">
+    <div class="row">
+        <div class="col">
+            <img class="rounded float-left" src="Images/Oriole.jpg">
+        </div>
+        <div class="col">
+            <p class="h3">Gerrymandering</p>
+        </div>
+        <div class="col-md">
+            <input class="btn btn-primary" onclick=postData(null,"/logout",userlogout) type="button" value="Log Out">
+        </div>
+    </div>
+</nav>
+
+<div id="container-fluid">
+<!--    <script type="text/javascript" src="geoJson/FL_Dist.js"></script>-->
+<!--    <script type="text/javascript" src="geoJson/MD_CongressionalDistrict.js"></script>-->
+<!--    <script type="text/javascript" src="geoJson/MD_Precincts.js"></script>-->
+    <script type="text/javascript" th:src="@{/geoJson/MN_CongressionalDistrict.js}"></script>
+    <script type="text/javascript" th:src="@{/geoJson/MN_Precincts.js}"></script>
+
+    <div id="map"></div>
+
+    <div class="card border-dark mb-1" id="controllpane" style="max-width: 25rem;">
+        <div class="card-body text-dark">
+            <div aria-label="First group" class="btn-group" role="group">
+                <button class="btn btn-secondary aaa" type="button" id="play-btn">Play</button>
+                <button class="btn btn-secondary" type="button">Stop</button>
+                <button class="btn btn-secondary" type="button">Pause</button>
+                <button class="btn btn-secondary" type="button">Update</button>
+            </div>
+<!--            <div class="dropdown btn-major">-->
+<!--                <button aria-expanded="false" aria-haspopup="true" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" id="dropdownMenuButton1" type="button">-->
+<!--                    Majority-Minority-->
+<!--                </button>-->
+<!--                <li aria-labelledby="dropdownMenuButton1" class="dropdown-menu">-->
+<!--                    <label class="alignmentCC">-->
+<!--                        <input type="checkbox"> African-American-->
+<!--                    </label>-->
+<!--                    <br>-->
+<!--                    <label class="alignmentCC">-->
+<!--                        <input type="checkbox"> Hispanic-American-->
+<!--                    </label>-->
+<!--                    <br>-->
+<!--                    <label class="alignmentCC">-->
+<!--                        <input type="checkbox"> Asian-American-->
+<!--                    </label>-->
+<!--                    <br>-->
+<!--                    <label class="alignmentCC">-->
+<!--                        <input type="checkbox"> Others-->
+<!--                    </label>-->
+<!--                </li>-->
+<!--            </div>-->
+            <div class="dropdown btn-major">
+                <select class="btn btn-secondary dropdown-toggle select-css">
+                    <option th:each="community : ${communities}" th:value="${community}" th:text="${community.toString()} == 'ALL' ? 'Select a Majority Minority' : ${community}"></option>
+                </select>
+            </div>
+
+            <div class="dropdown btn-states">
+                <select id="states" class="btn btn-secondary dropdown-toggle select-css">
+                    <option th:each="state : ${states}" th:value="${state}" th:text="${state.toString()} == 'ALL' ? 'Select a State to Display' : ${state}"></option>
+                </select>
+<!--                <button aria-expanded="false" aria-haspopup="true" class="btn btn-secondary dropdown-toggle"-->
+<!--                        data-toggle="dropdown" id="dropdownMenuButton2" type="button">-->
+<!--                    Select a State to Display-->
+<!--                </button>-->
+<!--                <div aria-labelledby="dropdownMenuButton2" class="dropdown-menu">-->
+<!--                    <button class="dropdown-item" type="button" id="MINNESOTA">MINNESOTA</button>-->
+<!--                    <button class="dropdown-item" type="button" id="MARYLAND">MARYLAND</button>-->
+<!--                    <button class="dropdown-item" type="button" id="FLORIDA">FLORIDA</button>-->
+<!--                </div>-->
+            </div>
+            <div>
+                <ul id="weights">
+                    <li th:each="weight : ${weights}">
+                        <label th:for="${weight}" class="ranges" th:text="${weight}"></label>
+                        <input class="custom-range" th:id="${weight}" th:name="${weight}" type="range">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script crossorigin="anonymous"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script crossorigin="anonymous"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
