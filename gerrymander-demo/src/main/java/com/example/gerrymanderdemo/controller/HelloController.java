@@ -1,6 +1,9 @@
 package com.example.gerrymanderdemo.controller;
 
 import com.example.gerrymanderdemo.Service.UserService;
+import com.example.gerrymanderdemo.model.Enum.RaceType;
+import com.example.gerrymanderdemo.model.Enum.StateName;
+import com.example.gerrymanderdemo.model.Enum.WeightType;
 import com.example.gerrymanderdemo.model.Response.ErrorResponse;
 import com.example.gerrymanderdemo.model.Response.OKResponse;
 import com.example.gerrymanderdemo.model.Response.OKUserResponse;
@@ -9,6 +12,7 @@ import com.example.gerrymanderdemo.model.User.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 
@@ -22,18 +26,23 @@ public class HelloController {
         this.userService = userService;
     }
 
-    @RequestMapping(value = {"/", "/index"})
-    public String index(HttpSession session){
+    @GetMapping(value = {"/", "/index"})
+    public ModelAndView index(HttpSession session){
         User user = (User) session.getAttribute("user");
         System.out.println(session.getAttribute("user"));
+        ModelAndView mav;
         if(user == null) {
             System.out.println("return login ");
-            return "login";
+            mav = new ModelAndView("login");
         }
         else {
             System.out.println("return index ");
-            return "index";
+            mav = new ModelAndView("index");
+            mav.addObject("weights", WeightType.values());
+            mav.addObject("states", StateName.values());
+            mav.addObject("communities", RaceType.values());
         }
+        return mav;
     }
 
     @GetMapping("/login")

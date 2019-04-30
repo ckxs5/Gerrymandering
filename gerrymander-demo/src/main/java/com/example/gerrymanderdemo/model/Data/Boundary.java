@@ -35,7 +35,7 @@ public class Boundary implements ResponseObject {
         try {
             return new JSONObject(geoJSON);
         }catch (JSONException ex) {
-            System.out.printf("Exception catched when returning a geoJSON: %s \n", ex.getMessage());
+            System.out.printf("Exception catched when returning a geoJson: %s \n", ex.getMessage());
             return null;
         }
     }

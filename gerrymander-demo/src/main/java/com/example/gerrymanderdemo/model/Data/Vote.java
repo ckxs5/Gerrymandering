@@ -12,8 +12,8 @@ import java.util.Arrays;
 @Entity
 public class Vote implements ResponseObject {
     @Id
-    String id;
-    int[] votes;
+    private String id;
+    private int[] votes;
 
     public Vote(){}
 

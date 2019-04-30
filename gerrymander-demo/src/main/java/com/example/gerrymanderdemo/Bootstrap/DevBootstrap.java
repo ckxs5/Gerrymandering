@@ -20,7 +20,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         //TODO
         ClusterManager cm = new ClusterManager();
-        cm.test();
+//        cm.test();
     }
 
     private void initData(){

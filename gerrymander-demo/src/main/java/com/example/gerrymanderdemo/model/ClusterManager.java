@@ -13,7 +13,7 @@ public class ClusterManager {
 
 
 
-    public Collection<Cluster> filterClusters(int idealClusterPop){ //TODO: parameter is from state object
+    public void filterClusters(int idealClusterPop){ //TODO: parameter is from state object
         Iterator<Cluster> iterator = clusters.iterator();
 
         while (iterator.hasNext()) {
