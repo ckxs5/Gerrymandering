@@ -89,7 +89,6 @@ $("document").ready(function () {
     }
     infoWindow();
 
-    function zooming(){
         mymap.on("zoomend", function () {
             console.log(mymap.getZoom());
             if (mymap.getZoom() >= districtZoomLevel && mymap.hasLayer(stateLayer)){
@@ -119,10 +118,7 @@ $("document").ready(function () {
                 fitStateBounds(FL_Dist);
             }
         });
-    }
-    zooming();
 
-    function playButtonCollectsWeights(){
         $("#play-btn").click(function () {
             console.log("play button");
             const weights = [
@@ -136,10 +132,7 @@ $("document").ready(function () {
 
             postData(playBtnJson, "/setweights", printData);
         });
-    }
-    playButtonCollectsWeights();
 
-    function selectStatesToDisplay(){
         $("#states").change(function() {
             if(document.getElementById("states").value === "FLORIDA"){
                 fitStateBounds(FL_Dist);
@@ -151,21 +144,16 @@ $("document").ready(function () {
                 mymap.fitBounds(maxBounds);
             }
         });
-    }
-    selectStatesToDisplay();
 
     function fitStateBounds(statebounds){
         var statebounds = L.geoJson(statebounds);
         mymap.fitBounds(statebounds.getBounds());
     }
 
-    function getMajorityMinority(){
         $("#majorMinor").change(function(){
             return document.getElementById("majorMinor").value;
         });
-    }
-    getMajorityMinority();
-
+    
     function style() {
         console.log("style");
         return {
@@ -207,7 +195,6 @@ $("document").ready(function () {
         }
     }
 
-
     function highlightPrecinctFeature(e) {
         highlightFeature(e);
         loadPrecinctProperties(e.target);
@@ -215,7 +202,6 @@ $("document").ready(function () {
         if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
             (e.target).bringToFront();
         }
-
     }
 
     function loadPrecinctProperties(layer) {
