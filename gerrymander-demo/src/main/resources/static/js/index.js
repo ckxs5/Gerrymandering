@@ -122,37 +122,37 @@ $("document").ready(function () {
     }
     zooming();
 
-    function playButtonCollectsWeights(){
-        $("#play-btn").click(function () {
-            console.log("play button");
-            const weights = [
-                "compactness", "politicalFairness", "populationEquality", "communityInterest",
-                "efficiencyGap", "partisanFairness", "ethnicMinority", "partisanFairness",
-                "ethnicMinority", "graphTheoretical"];
-            let playBtnJson = {};
-            for (let i in weights)
-                playBtnJson[weights[i]] = $("#" + weights[i]).val();
-            console.log(playBtnJson);
-
-            postData(playBtnJson, "/setweights", printData);
+    $("#play-btn").on("click", function () {
+        console.log("play button");
+        weights = {};
+        $("#weights input").each(function () {
+            console.log($(this).attr("id") + " : " + $(this).val());
+            weights[$(this).attr("id")] = $(this).val();
         });
-    }
-    playButtonCollectsWeights();
+        postData(weights, "/setweights", printData);
+    });
 
-    function selectStatesToDisplay(){
-        $("#states").change(function() {
-            if(document.getElementById("states").value === "FLORIDA"){
-                fitStateBounds(FL_Dist);
-            }else if(document.getElementById("states").value === "MARYLAND"){
-                fitStateBounds(MD_Dist);
-            }else if(document.getElementById("states").value === "MINNESOTA"){
-                fitStateBounds(MN_Dist);
-            }else{
-                mymap.fitBounds(maxBounds);
-            }
-        });
-    }
-    selectStatesToDisplay();
+    $("#states").on("change", function() {
+        const state = $("#states").val()
+        if (state === "ALL")
+            mymap.fitBounds(maxBounds);
+        let map = {
+            "FLORIDA" : FL_Dist,
+            "MARYLAND" : MD_Dist,
+            "MINNESOTA" : MN_Dist,
+        };
+        fitStateBounds(map[state]);
+
+        // if(state === "FLORIDA"){
+        //     fitStateBounds(FL_Dist);
+        // }else if(state === "MARYLAND"){
+        //     fitStateBounds(MD_Dist);
+        // }else if(state === "MINNESOTA"){
+        //     fitStateBounds(MN_Dist);
+        // }else{
+        //     mymap.fitBounds(maxBounds);
+        // }
+    });
 
     function fitStateBounds(statebounds){
         var statebounds = L.geoJson(statebounds);
