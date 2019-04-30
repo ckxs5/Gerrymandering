@@ -17,6 +17,7 @@ public class Cluster {
 
     public Cluster(Cluster c1, Cluster c2){
         // Todo
+
     }
 
     public Data getData() {
