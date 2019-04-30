@@ -1,6 +1,7 @@
 package com.example.gerrymanderdemo.model;
 
 import com.example.gerrymanderdemo.model.Data.Data;
+import com.example.gerrymanderdemo.model.Enum.RaceType;
 import com.example.gerrymanderdemo.model.Enum.StateName;
 
 import javax.persistence.Entity;
@@ -15,6 +16,8 @@ public class State {
     private int numMajMinDistricts;
     private StateName name;
     private String id;
+    private int idealClusterPop;    //TODO
+    private double districtPopulationVariant = 1.2;     //TODO: How to get it from properties file
 
     public State(Data data){
 
@@ -43,5 +46,12 @@ public class State {
     public double getGerrymanderingScore(){
         // Todo
         return 0;
+    }
+
+    //TODO:check
+    public int getIdealClusterPop(){
+        int totalPop = data.getDemographic().getPopulationByRace(RaceType.ALL);
+        idealClusterPop = totalPop/numDistricts;
+        return idealClusterPop;
     }
 }
