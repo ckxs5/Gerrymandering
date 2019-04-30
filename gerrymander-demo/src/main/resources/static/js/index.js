@@ -89,7 +89,6 @@ $("document").ready(function () {
     }
     infoWindow();
 
-    function zooming(){
         mymap.on("zoomend", function () {
             console.log(mymap.getZoom());
             if (mymap.getZoom() >= districtZoomLevel && mymap.hasLayer(stateLayer)){
@@ -119,8 +118,6 @@ $("document").ready(function () {
                 fitStateBounds(FL_Dist);
             }
         });
-    }
-    zooming();
 
     $("#play-btn").on("click", function () {
         console.log("play button");
@@ -132,39 +129,29 @@ $("document").ready(function () {
         postData(weights, "/setweights", printData);
     });
 
-    $("#states").on("change", function() {
-        const state = $("#states").val()
-        if (state === "ALL")
-            mymap.fitBounds(maxBounds);
-        let map = {
-            "FLORIDA" : FL_Dist,
-            "MARYLAND" : MD_Dist,
-            "MINNESOTA" : MN_Dist,
-        };
-        fitStateBounds(map[state]);
-
-        // if(state === "FLORIDA"){
-        //     fitStateBounds(FL_Dist);
-        // }else if(state === "MARYLAND"){
-        //     fitStateBounds(MD_Dist);
-        // }else if(state === "MINNESOTA"){
-        //     fitStateBounds(MN_Dist);
-        // }else{
-        //     mymap.fitBounds(maxBounds);
-        // }
-    });
+/**
+ * @todo Revise the function.
+ */
+$("#states").on("change", function() {
+    const state = $("#states").val();
+    if (state === "ALL")
+        mymap.fitBounds(maxBounds);
+    let stateBounds = {
+        "FLORIDA" : FL_Dist,
+        "MARYLAND" : MD_Dist,
+        "MINNESOTA" : MN_Dist,
+    };
+    fitStateBounds(stateBounds[state]);
+});
 
     function fitStateBounds(statebounds){
         var statebounds = L.geoJson(statebounds);
         mymap.fitBounds(statebounds.getBounds());
     }
 
-    function getMajorityMinority(){
         $("#majorMinor").change(function(){
             return document.getElementById("majorMinor").value;
         });
-    }
-    getMajorityMinority();
 
     function style() {
         console.log("style");
@@ -207,7 +194,6 @@ $("document").ready(function () {
         }
     }
 
-
     function highlightPrecinctFeature(e) {
         highlightFeature(e);
         loadPrecinctProperties(e.target);
@@ -215,7 +201,6 @@ $("document").ready(function () {
         if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
             (e.target).bringToFront();
         }
-
     }
 
     function loadPrecinctProperties(layer) {
