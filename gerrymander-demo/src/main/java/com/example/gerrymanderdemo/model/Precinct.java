@@ -18,6 +18,9 @@ public class Precinct implements ResponseObject {
 
     private String name;
 
+    //TODO: extract the county this precinct belongs to,  will be used for countyJoinability in Edge
+    private String county;
+
     @OneToOne
     private Data data;
 
@@ -37,6 +40,10 @@ public class Precinct implements ResponseObject {
         this.data = data;
         this.neigbours = neigbours;
     }
+
+    public String getCounty(){ return county; }
+
+    public void setCounty(String county){ this.county = county; }
 
     public String getId() {
         return id;
