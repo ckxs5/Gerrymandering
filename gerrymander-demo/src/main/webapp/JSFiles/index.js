@@ -1,65 +1,60 @@
 $("document").ready(function () {
-    var districtGeojson;
-    var precinctGeojson;
+    var states = L.layerGroup();
+    var districts = L.layerGroup();
+    var precincts = L.layerGroup();
+    var stateLayer, districtLayer, precinctLayer;
     var mymap;
     var info;
 
+    var maxBounds;
+    var districtZoomLevel = 6;
+    var DEFALUTZOOMLEVEL = 4;
+    var precinctZoomLevel = 8;
+
     function initalMap() {
-        mymap = L.map('map').setView([39.8283, -100.5795], 4.5);
+        mymap = L.map('map', {layers: states}).setView([39.8283, -100.5795], DEFALUTZOOMLEVEL);
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
             maxZoom: 18,
             minZoom: 4,
             id: 'mapbox.light'
         }).addTo(mymap);
 
-        var maxBounds = L.latLngBounds(
+        maxBounds = L.latLngBounds(
             L.latLng(53.5300, -131.1267),
             L.latLng(22.2008, -62.3436)
         );
 
         mymap.setMaxBounds(maxBounds);
-        //mymap.fitBounds(maxBounds);
+        mymap.fitBounds(maxBounds);
 
-        // districtGeojson = L.geoJson(FL_Dist, {
-        //     style: style,
-        //     onEachFeature: onEachDistrictFeature
-        // }).addTo(mymap);
+        stateLayer = L.geoJson(statesData, {
+            style:style,
+            onEachFeature: onEachStateFeature
+        }).addTo(states);
 
-        // districtGeojson = L.geoJson(MD_Dist, {
-        //     style: style,
-        //     onEachFeature: onEachDistrictFeature
-        // }).addTo(mymap);
-
-        districtGeojson = L.geoJson(MN_Dist, {
+        districtLayer = L.geoJson(FL_Dist, {
             style: style,
             onEachFeature: onEachDistrictFeature
-        }).addTo(mymap);
+        }).addTo(districts);
 
-        // geojson = L.geoJson(MD_P, {
-        //     style: style,
-        //     onEachFeature: onEachDistrictFeature
-        // }).addTo(mymap);
+        districtLayer = L.geoJson(MD_Dist, {
+            style: style,
+            onEachFeature: onEachDistrictFeature
+        }).addTo(districts);
 
-        // mymap.on("zoomend", function () {
-        //     if (mymap.getZoom() > 6 && mymap.hasLayer(districtGeojson)) {
-        //         districtGeojson.remove();
-        //         precinctGeojson = L.geoJson(MN_P, {
-        //             style: style,
-        //             onEachFeature: onEachPrecinctFeature
-        //         }).addTo(mymap);
-        //     }
-        //     //console.log(mymap.getZoom() <= 8 && mymap.hasLayer(precinctGeojson));
-        //     if (mymap.getZoom() <= 6 && mymap.hasLayer(precinctGeojson)) {
-        //         info.update();
-        //         precinctGeojson.remove();
-        //         districtGeojson = L.geoJson(MN_Dist, {
-        //             style: style,
-        //             onEachFeature: onEachDistrictFeature
-        //         }).addTo(mymap);
-        //     }
-        //
-        // });
+        precinctLayer = L.geoJson(MD_P, {
+            style: style,
+            onEachFeature: onEachPrecinctFeature
+        }).addTo(precincts);
 
+        districtLayer = L.geoJson(MN_Dist, {
+            style: style,
+            onEachFeature: onEachDistrictFeature
+        }).addTo(districts);
+    }
+    initalMap();
+
+    function playButtonCollectsWeights(){
         $("#play-btn").click(function () {
             console.log("play button");
             const weights = [
@@ -73,51 +68,70 @@ $("document").ready(function () {
 
             postData(playBtnJson, "/setweights", printData);
         });
-
-        $("#states").click(function() {
-            // var sel = document.getElementById("states");
-            // var sv = sel.options[sel.selectedIndex].value;
-            // console.log(sel.text);
-            // console.log(sv);
-            if(document.getElementById("states").value == "ALLSTATES"){
-                console.log("a");
-            }else if(document.getElementById("states").value == "MINNESOTA"){
-                console.log("b");
-            }else if(document.getElementById("states").value == "MARYLAND"){
-                console.log("c");
-            }else{
-                console.log("d");
-            }
-            console.log(document.getElementById("states").value);
-        });
     }
-
-    initalMap();
+    playButtonCollectsWeights();
 
     function zooming(){
         mymap.on("zoomend", function () {
-            if (mymap.getZoom() > 6 && mymap.hasLayer(districtGeojson)) {
-                districtGeojson.remove();
-                precinctGeojson = L.geoJson(MN_P, {
-                    style: style,
-                    onEachFeature: onEachPrecinctFeature
-                }).addTo(mymap);
+            console.log(mymap.getZoom());
+            if (mymap.getZoom() > districtZoomLevel && mymap.hasLayer(stateLayer)){
+                mymap.removeLayer(states);
+                mymap.addLayer(districts);
             }
+            if (mymap.getZoom() > precinctZoomLevel && mymap.hasLayer(districtLayer)){
+                mymap.removeLayer(districts);
+                mymap.addLayer(precincts);
+            }
+            if (mymap.getZoom() <= precinctZoomLevel && mymap.hasLayer(precinctLayer)){
+                mymap.removeLayer(precincts);
+                mymap.addLayer(districts);
+            }
+            if (mymap.getZoom() <= districtZoomLevel && mymap.hasLayer(districtLayer)){
+                mymap.removeLayer(districts);
+                mymap.addLayer(states);
+            }
+        });
 
-            if (mymap.getZoom() <= 6 && mymap.hasLayer(precinctGeojson)) {
-                info.update();
-                precinctGeojson.remove();
-                districtGeojson = L.geoJson(MN_Dist, {
-                    style: style,
-                    onEachFeature: onEachDistrictFeature
-                }).addTo(mymap);
+        mymap.on("click", function(e){
+            if(L.geoJson(MN_Dist).getBounds().contains(e.latlng)){
+                fitStateBounds(MN_Dist);
+            }else if(L.geoJson(MD_Dist).getBounds().contains(e.latlng)){
+                fitStateBounds(MD_Dist);
+            }else if(L.geoJson(FL_Dist).getBounds().contains(e.latlng)){
+                fitStateBounds(FL_Dist);
             }
         });
     }
     zooming();
 
+    function selectStatesToDisplay(){
+        $("#states").change(function() {
+            if(document.getElementById("states").value === "FLORIDA"){
+                fitStateBounds(FL_Dist);
+            }else if(document.getElementById("states").value === "MARYLAND"){
+                fitStateBounds(MD_Dist);
+            }else if(document.getElementById("states").value === "MINNESOTA"){
+                fitStateBounds(MN_Dist);
+            }else{
+                mymap.fitBounds(maxBounds);
+            }
+        });
+    }
+    selectStatesToDisplay();
+
+    function fitStateBounds(statebounds){
+        var statebounds = L.geoJson(statebounds);
+        mymap.fitBounds(statebounds.getBounds());
+    }
+
+    function getMajorityMinority(){
+        $("#majorMinor").change(function(){
+            return document.getElementById("majorMinor").value;
+        });
+    }
+    getMajorityMinority();
+
     function infoWindow() {
-        // control that shows state info on hover
         info = L.control();
 
         info.onAdd = function (mymap) {
@@ -144,42 +158,30 @@ $("document").ready(function () {
                 + all
                 : 'No Precinct Selected');
         };
-
         info.addTo(mymap);
     }
-
     infoWindow();
-
 
     function style() {
         return {
-            // fillColor: getColor(feature.properties.density),
-            fillColor: '#FD8D3C',
+            fillColor: getColor(),
+            // fillColor: '#FD8D3C',
             weight: 1,
-            // opacity: 1,
             color: 'white',
-            // fillOpacity:
+            fillOpacity: 0.7,
         };
     }
 
-    function getColor(d) {
-        return d > 1000 ? '#800026' :
-            d > 500 ? '#BD0026' :
-                d > 200 ? '#E31A1C' :
-                    d > 100 ? '#FC4E2A' :
-                        d > 50 ? '#FD8D3C' :
-                            d > 20 ? '#FEB24C' :
-                                d > 10 ? '#FED976' :
-                                    '#FFEDA0';
+    function getColor() {
+        return randomColor();
     }
 
     function highlightFeature(e) {
         var layer = e.target;
 
         layer.setStyle({
-            weight: 2,
-            color: '#fff',
-            // dashArray: '',
+            weight: 4,
+            color: 'darkgrey',
             fillOpacity: 0.7
         });
 
@@ -198,7 +200,6 @@ $("document").ready(function () {
             // dashArray: '',
             fillOpacity: 0.7
         });
-
         loadPrecinctProperties(layer);
 
         if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
@@ -246,17 +247,16 @@ $("document").ready(function () {
         if (obj['name']) {
             var name = obj['name']
         }
-        info.update(democratic, republican, otherParties, all, otherRaces, caucasian, asian, hispanic, african, native, name)
+        info.update(democratic, republican, otherParties, all, otherRaces, caucasian, asian, hispanic, african, native, name);
     }
 
     function resetPrecinctHighlight(e) {
-        //info.update(null,null,null,null,null,null,null,null,null,null,null);
         info.update();
-        precinctGeojson.resetStyle(e.target);
+        precinctLayer.resetStyle(e.target);
     }
 
     function resetDistrictHighlight(e) {
-        districtGeojson.resetStyle(e.target);
+        districtLayer.resetStyle(e.target);
     }
 
     function onEachDistrictFeature(feature, layer) {
@@ -271,6 +271,17 @@ $("document").ready(function () {
             mouseover: highlightPrecinctFeature,
             mouseout: resetPrecinctHighlight
         });
+    }
+
+    function onEachStateFeature(feature, layer) {
+        layer.on({
+            mouseover: highlightFeature,
+            mouseout: resetStateHighlight
+        });
+    }
+
+    function resetStateHighlight(e) {
+        stateLayer.resetStyle(e.target);
     }
 
     // function disables() {
