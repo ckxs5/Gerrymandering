@@ -3,7 +3,9 @@ package com.example.gerrymanderdemo.model;
 import com.example.gerrymanderdemo.model.Enum.RaceType;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 
 public class ClusterManager {
@@ -13,7 +15,7 @@ public class ClusterManager {
 
     //TODO: return type,argument insistent with class diagram
     public Collection<Cluster> filterClusters(int idealClusterPop){ //TODO: parameter is from state object
-        Collection<Cluster> filteredClusters =  new Collection<Cluster>();
+        Collection<Cluster> filteredClusters = new ArrayList<>();
         Iterator<Cluster> iterator = clusters.iterator();
 
         while (iterator.hasNext()) {
