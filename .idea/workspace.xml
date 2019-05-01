@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8cf23e9f-213d-40b4-8185-c1cc376b5cde" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gerrymander-demo/data files/MN/2016-minnesota-precinct-president-preprocessed.csv" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,8 +17,13 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gerrymander-demo/src/main/java/com/example/gerrymanderdemo/GerrymanderDemoApplication.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
+            <state relative-caret-position="221">
               <caret line="13" selection-start-line="13" selection-end-line="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#268#269#0" expanded="true" />
+                <element signature="e#345#346#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -28,11 +33,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/gerrymander-demo/data files/marylandvoting.json" />
+      </list>
+    </option>
+  </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="526" />
-    <option name="y" value="10" />
-    <option name="width" value="979" />
-    <option name="height" value="1040" />
+    <option name="x" value="145" />
+    <option name="y" value="255" />
+    <option name="width" value="1615" />
+    <option name="height" value="880" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -40,68 +52,58 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane" />
       <pane id="Scope">
         <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
           <expand>
             <path>
-              <item name="CSE" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="CSE308" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="CSE" type="2674bda8:ScopeViewTreeModel$GroupNode" />
             </path>
             <path>
-              <item name="CSE" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="CSE" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="gerrymander-demo" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="CSE" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="CSE308" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="CSE" type="2674bda8:ScopeViewTreeModel$GroupNode" />
               <item name="gerrymander-demo" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
             <path>
-              <item name="CSE" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="CSE308" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="CSE" type="2674bda8:ScopeViewTreeModel$GroupNode" />
               <item name="gerrymander-demo" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="data files" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
             <path>
-              <item name="CSE" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="CSE308" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="CSE" type="2674bda8:ScopeViewTreeModel$GroupNode" />
               <item name="gerrymander-demo" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
             <path>
-              <item name="CSE" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="CSE308" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="CSE" type="2674bda8:ScopeViewTreeModel$GroupNode" />
               <item name="gerrymander-demo" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="resources" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
             <path>
-              <item name="CSE" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="CSE" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="gerrymander-demo" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="webapp" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="CSE" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="CSE308" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="CSE" type="2674bda8:ScopeViewTreeModel$GroupNode" />
               <item name="gerrymander-demo" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="test" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
+            <path>
+              <item name="CSE308" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="CSE" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="gerrymander-demo" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="test" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -141,16 +143,22 @@
       <workItem from="1552261564743" duration="268000" />
       <workItem from="1552267904152" duration="19000" />
       <workItem from="1554335604106" duration="88000" />
+      <workItem from="1556571898935" duration="753000" />
+      <workItem from="1556598173247" duration="1318000" />
+      <workItem from="1556629751397" duration="1261000" />
+      <workItem from="1556633154657" duration="36000" />
+      <workItem from="1556640457014" duration="131000" />
+      <workItem from="1556672584042" duration="71000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="381000" />
+    <option name="totallyTimeSpent" value="3951000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25771812" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.28120807" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -170,7 +178,7 @@
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="10" visible="true" weight="0.33142856" />
       <window_info anchor="bottom" id="Database Changes" order="11" />
-      <window_info anchor="bottom" id="Version Control" order="12" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="12" visible="true" weight="0.3286119" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -198,10 +206,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/gerrymander-demo/data files/2016-minnesota-precinct-president-preprocessed.csv" />
+    <entry file="file://$PROJECT_DIR$/gerrymander-demo/data files/2016-minnesota-precinct-geo-preprocessed.csv" />
+    <entry file="file://$PROJECT_DIR$/gerrymander-demo/data files/marylanddemographics.json" />
+    <entry file="file://$PROJECT_DIR$/gerrymander-demo/data files/marylandvoting.json" />
+    <entry file="file://$PROJECT_DIR$/gerrymander-demo/data files/MN/minnesota_precinct_geo.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/gerrymander-demo/src/main/java/com/example/gerrymanderdemo/GerrymanderDemoApplication.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
+        <state relative-caret-position="221">
           <caret line="13" selection-start-line="13" selection-end-line="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#268#269#0" expanded="true" />
+            <element signature="e#345#346#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
