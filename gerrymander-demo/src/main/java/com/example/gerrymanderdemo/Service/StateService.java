@@ -12,9 +12,10 @@ public class StateService {
     public StateService(StateRepository stateRepository) {
         this.stateRepository = stateRepository;
     }
-
-    public boolean save(State state) {
-        return stateRepository.save(state) != null;
+    //TODO
+    public State saveState(State state) {
+        //return stateRepository.save(state) != null;
+        return null;
     }
 //    private StateRepository stateRepository;
 //
@@ -27,5 +28,6 @@ public class StateService {
 //    public State findById(String id) {
 //        return stateRepository.findById(id).orElse(null);
 //    }
-
+    //TODO
+    public State getOriginState(Number stateName){ return null;}
 }
