@@ -1,86 +1,104 @@
 package com.example.gerrymanderdemo.model;
 
+import com.example.gerrymanderdemo.Properties;
+import com.example.gerrymanderdemo.model.Enum.JoinabilityMeasureType;
 import com.example.gerrymanderdemo.model.Enum.RaceType;
 
-public class Edge implements Comparable{
+import java.util.HashSet;
+import java.util.Set;
+
+public class Edge extends Pair<Cluster> implements Comparable{
     //TODO: check if joinability's datatype is ok
     private double joinability;
-    private double countyJoinabilityFactor;
-    private double raceJoinabilityFactor;
-    private Pair pair;
+    private RaceType communityOfInterest;
 
-    public Edge(Cluster c1, Cluster c2){
-        pair = new Pair(c1,c2);
-        countyJoinabilityFactor = 0.5;
-        raceJoinabilityFactor = 0.5;
-        this.updateJoinabilityValue();
+    public Edge(Cluster ele1, Cluster ele2, RaceType communityOfInterest) {
+        super(ele1, ele2);
+        this.communityOfInterest = communityOfInterest;
+        this.setJoinability();
     }
 
-    public Pair getPair() {
-        return pair;
+    @Override
+    public void setElement1(Cluster element1) {
+        super.setElement1(element1);
+        setJoinability();
     }
 
-    public void setPair(Pair pair) {
-        this.pair = pair;
+    @Override
+    public void setElement2(Cluster element2) {
+        super.setElement2(element2);
+        setJoinability();
+    }
+
+    @Override
+    public boolean updateElment(Cluster orgE, Cluster newE) {
+        if (super.updateElment(orgE, newE)) {
+            setJoinability();
+            return true;
+        }
+        return false;
+    }
+
+    public RaceType getCommunityOfInterest() {
+        return communityOfInterest;
+    }
+
+    public void setCommunityOfInterest(RaceType communityOfInterest) {
+        this.communityOfInterest = communityOfInterest;
+        setJoinability();
     }
 
     public double getJoinability() {
         return this.joinability;
     }
 
-    //TODO: change parameter from joinability to community
-    public void setJoinability(RaceType community) {
-        double countyJoinability;
-        double raceJoinability;
+    public void setJoinability() {
+        this.joinability = JoinabilityMeasureType.values().length / getTotalJoinability();
+    }
 
-        //set countyJoinability
-        String p1County = pair.getElement1().getPrecinct().getCounty();
-        String p2County = pair.getElement2().getPrecinct().getCounty();
-        if(p1County.equals(p2County)) {
-            countyJoinability = 1;
-        }else{
-            countyJoinability = 0;
+    private double getTotalJoinability() {
+        double sum = 0;
+        for (JoinabilityMeasureType measureType: JoinabilityMeasureType.values()) {
+            int rate = Properties.getJoinabilityMeasureRatio(measureType);
+            double val = 0;
+            switch (measureType) {
+                case RACE_JOINABILITY:
+                    val = getRaceJoinability() ;
+                    break;
+                case COUNTY_JOINABILITY:
+                    val = getCountyJoinability();
+                    break;
+                default:
+                    break;
+            }
+            sum += val * rate;
         }
-
-        //set raceJoinability
-        double p1CommunityRatio = pair.getElement1().getPrecinct().getData().getDemographic().getPercentByRace(community);
-        double p2CommunityRatio = pair.getElement2().getPrecinct().getData().getDemographic().getPercentByRace(community);
-        raceJoinability = 1-Math.abs(p1CommunityRatio-p2CommunityRatio);
-
-        this.joinability = countyJoinability*this.countyJoinabilityFactor+raceJoinability*this.raceJoinabilityFactor;
+        return sum;
     }
 
-    public Cluster getNeighbor(Cluster c){
-        return this.pair.getOtherEle(c);
+    private double getCountyJoinability() {
+        Set<String> e1County = this.getElement1().getCounties();
+        Set<String> e2County = this.getElement2().getCounties();
+        Set<String> intersection = new HashSet<>(e1County);
+        intersection.retainAll(e2County);
+        return (double) intersection.size() / Math.min(e1County.size(), e2County.size());
     }
 
-    public void updateEdge(Cluster c1, Cluster c2){
-        pair.setElement1(c1);
-        pair.setElement2(c2);
+    private double getRaceJoinability() {
+        double p1CommunityRatio = this.getElement1().getData().getDemographic().getPercentByRace(communityOfInterest);
+        double p2CommunityRatio = this.getElement2().getData().getDemographic().getPercentByRace(communityOfInterest);
+        return  (1 - Math.abs(p1CommunityRatio - p2CommunityRatio)) / 1;
     }
 
-    public void updateJoinabilityValue(){
-
-    }
-
-    public Cluster getElement1(){
-        return this.getPair().getElement1();
-    }
-
-    public Cluster getElement2(){
-        return this.getPair().getElement2();
+    public boolean isRedundant() {
+        return getElement1().equals(getElement2());
     }
 
     @Override
     public int compareTo(Object o) {
         if(o instanceof Edge){
             Edge e2 = (Edge) o;
-            if(this.joinability < e2.getJoinability())
-                return -1;
-            else if(this.joinability > e2.getJoinability())
-                return 1;
-            else
-                return 0;
+            return Double.compare(this.joinability, e2.getJoinability());
         }
         else{
             return -1;

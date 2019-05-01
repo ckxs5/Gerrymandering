@@ -14,6 +14,13 @@ public class Boundary implements ResponseObject {
     String id;
     String geoJSON;
 
+    public Boundary() {
+    }
+
+    public Boundary(Boundary boundary) {
+        geoJSON = boundary.getGeoJSON();
+    }
+
     public Boundary(String geoJSON) {
         this.geoJSON = geoJSON;
     }
@@ -28,6 +35,11 @@ public class Boundary implements ResponseObject {
 
     public void setGeoJSON(String geoJSON) {
         this.geoJSON = geoJSON;
+    }
+
+    public void add(Boundary other) {
+        //TODO: Implement graph
+        geoJSON += other;
     }
 
     @Override

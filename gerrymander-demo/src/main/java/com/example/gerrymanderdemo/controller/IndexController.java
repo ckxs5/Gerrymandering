@@ -2,7 +2,7 @@ package com.example.gerrymanderdemo.controller;
 
 import com.example.gerrymanderdemo.model.Enum.RaceType;
 import com.example.gerrymanderdemo.model.Enum.StateName;
-import com.example.gerrymanderdemo.model.Enum.WeightType;
+import com.example.gerrymanderdemo.model.Enum.PreferenceType;
 import com.example.gerrymanderdemo.model.Enum.UserType;
 import com.example.gerrymanderdemo.model.User.User;
 import org.springframework.stereotype.Controller;
@@ -29,7 +29,7 @@ public class IndexController {
         else {
             System.out.println("return index ");
             mav = new ModelAndView("index");
-            mav.addObject("weights", WeightType.values());
+            mav.addObject("weights", PreferenceType.values());
             mav.addObject("states", StateName.values());
             mav.addObject("communities", RaceType.values());
         }
