@@ -1,40 +1,53 @@
 package com.example.gerrymanderdemo.model;
 
+import com.example.gerrymanderdemo.Service.PrecinctService;
 import com.example.gerrymanderdemo.Service.StateService;
+import com.example.gerrymanderdemo.model.Enum.PreferenceType;
+import com.example.gerrymanderdemo.model.Enum.RaceType;
+import com.example.gerrymanderdemo.model.Enum.StateName;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
 
 public class BatchManager {
     private State orgState;
-    private Algorithm algorithm;
     private Collection<SummaryObject> summaries;
-    private Map<String, Number> userPreference;
+    private Map<String, String> userPreference;
+    private PrecinctService precinctService;
     private StateService stateService;
+    private Range<Double> majMinRange;
 
-    public BatchManager(Map<String, Number> userPreference, StateService stateService, Algorithm algorithm){
+    public BatchManager(Map<String, String> userPreference, StateService stateService, PrecinctService precinctService){
         this.stateService = stateService;
         this.userPreference = userPreference;
-        Number state = this.userPreference.get("stateName");
+        this.precinctService = precinctService;
+        StateName state = StateName.valueOf(this.userPreference.get(PreferenceType.STATE_NAME.toString()));
         this.orgState = stateService.getOriginState(state);
-        this.algorithm = algorithm;
-        this.summaries = null;
+        this.summaries = new ArrayList<>();
+        this.majMinRange = new Range<>(
+                Double.parseDouble(userPreference.get(PreferenceType.MAJMIN_LOW.toString())),
+                Double.parseDouble(userPreference.get(PreferenceType.MAJMIN_UP.toString()))
+                );
     }
 
     public void runBatch(){
-        State s = new State(orgState);
-        State intermediateState = algorithm.runAlgorithm(s,userPreference);
-        State stateWithId = stateService.saveState(intermediateState);
-        Number numMM = userPreference.get("number of districts");
-        float objValue = algorithm.getOF();
-        SummaryObject so = new SummaryObject(stateWithId,objValue,numMM.intValue());
-        addSummary(so);
+
     }
 
-    public void addSummary(SummaryObject so){
-        summaries.add(so);
+    private void runAlgorithm() {
+        State s = new State(orgState);
+        Algorithm algorithm = new Algorithm(userPreference, s, precinctService);
+        State intermediateState = algorithm.runAlgorithm();
+        State stateWithId = stateService.saveState(intermediateState);
+        int numMM = intermediateState.getNumMajMinDistricts(
+                RaceType.valueOf(userPreference.get(PreferenceType.COMMUNITY_OF_INTEREST.toString())), majMinRange);
+        float objValue = algorithm.getOF();
+        SummaryObject so = new SummaryObject(stateWithId,objValue,numMM);
+        this.summaries.add(so);
     }
+
 
 
 }
