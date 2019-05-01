@@ -36,4 +36,9 @@ public class IndexController {
         return mav;
     }
 
+    @GetMapping("/homepage")
+    public String homepage(){
+        return "index";
+    }
+
 }

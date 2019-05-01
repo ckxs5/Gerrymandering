@@ -1,11 +1,16 @@
 package com.example.gerrymanderdemo.Service;
 
 import com.example.gerrymanderdemo.Repository.UserRepository;
+import com.example.gerrymanderdemo.model.Exception.PasswordIncorrectException;
+import com.example.gerrymanderdemo.model.Exception.UserExistException;
+import com.example.gerrymanderdemo.model.Exception.UserNotFoundException;
 import com.example.gerrymanderdemo.model.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -13,25 +18,30 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-
-    public User find(String userEmail, String password) {
-        return userRepository.findByEmailAndPassword(userEmail, password);
+    public User find(String userEmail, String password) throws UserNotFoundException, PasswordIncorrectException {
+        Optional<User> user = userRepository.findByEmail(userEmail);
+        if (user.isPresent()) {
+            if (user.get().getPassword().equals(password)) {
+                return user.get();
+            } else {
+                throw new PasswordIncorrectException();
+            }
+        } else {
+            throw new UserNotFoundException();
+        }
     }
 
-
-    public User addUser(User user) {
+    public User addUser(User user) throws UserExistException{
         System.out.println("User: "+user);
-        User add = userRepository.findByEmail(user.getEmail());
-        System.out.println("Add: "+ add);
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         System.out.println(hashedPassword);
 
-        if (add != null) {
-            return null;
-        }else{
-           return userRepository.save(user);
-       }
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new UserExistException();
+        } else {
+            return userRepository.save(user);
+        }
     }
 }
