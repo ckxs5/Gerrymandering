@@ -29,8 +29,9 @@ public class Demographic implements ResponseObject {
     }
 
     public Demographic(int[] population) {
-        if (population.length != RaceType.values().length)
+        if (population.length != RaceType.values().length) {
             throw new IndexOutOfBoundsException();
+        }
         System.arraycopy(population, 0, this.population, 0, population.length);
 
     }

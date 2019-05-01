@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -23,6 +24,17 @@ public class District {
     private double tRatio;
 
     public District(){
+    }
+
+    public District(District dist){
+        this.id = dist.getId();
+        this.data = new Data(dist.getData());
+        this.isMajorityMinority = dist.isMajorityMinority();
+        this.tRatio = dist.getTRatio();
+        this.precincts = new HashSet<>();
+        for(Precinct c: dist.getPrecincts()){
+            this.precincts.add(new Precinct(c));
+        }
     }
 
     public Data getData() {
@@ -57,7 +69,7 @@ public class District {
         isMajorityMinority = majorityMinority;
     }
 
-    public double gettRatio() {
+    public double getTRatio() {
         return tRatio;
     }
 
