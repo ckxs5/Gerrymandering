@@ -31,6 +31,10 @@ public class Data implements ResponseObject {
         this.boundary = boundary;
     }
 
+    public Data(Data a, Data b){
+
+    }
+
     public Vote getVoteData() {
         return voteData;
     }
