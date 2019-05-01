@@ -59,7 +59,9 @@ public class ClusterManager {
     }
 
     public void removeClusterFromCollection(Cluster removedCluster){
-        clusters.remove(removedCluster);
+        if(clusters.contains(removedCluster)) {
+            clusters.remove(removedCluster);
+        }
     }
 
     public void addClusterToCollection(Cluster newCluster){

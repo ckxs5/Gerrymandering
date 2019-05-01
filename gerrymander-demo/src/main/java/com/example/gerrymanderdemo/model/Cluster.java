@@ -4,6 +4,7 @@ import com.example.gerrymanderdemo.model.Data.Data;
 import com.example.gerrymanderdemo.model.Enum.Order;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 public class Cluster {
     private Data data;
@@ -16,8 +17,9 @@ public class Cluster {
     }
 
     public Cluster(Cluster c1, Cluster c2){
-        // Todo
-
+        data = new Data(c1.data, c2.data);
+        addChildren(c1,c2);
+        constructEdges(c1.getEdges(),c2.getEdges(),c1,c2);
     }
 
     public Data getData() {
@@ -28,9 +30,7 @@ public class Cluster {
         this.data = data;
     }
 
-    public Collection<Edge> getEdges() {
-        return edges;
-    }
+    public Collection<Edge> getEdges() { return edges; }
 
     public void setEdges(Collection<Edge> edges) {
         this.edges = edges;
@@ -60,13 +60,14 @@ public class Cluster {
     public  void sortEdgesByJoinability(Order order){
         // Todo
     }
-
+    //TODO: argument inconsistent with class diagram
     public void constructEdges(Collection<Edge> c1Edges, Collection<Edge> c2Edges){
-        // Todo
+
     }
 
     public void addChildren(Cluster c1, Cluster c2){
-        // Todo
+        children.add(c1);
+        children.add(c2);
     }
 
     public District toDistrict(){

@@ -22,7 +22,8 @@ public class Data implements ResponseObject {
     @OneToOne
     Boundary boundary;
 
-    public Data() {
+    public Data(Data d1, Data d2) {
+        //TODO
     }
 
     public Data(Vote voteData, Demographic demographic, Boundary boundary) {

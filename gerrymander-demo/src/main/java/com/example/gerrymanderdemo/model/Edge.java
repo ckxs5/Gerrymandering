@@ -5,14 +5,10 @@ import com.example.gerrymanderdemo.model.Enum.RaceType;
 public class Edge {
     //TODO: check if joinability's datatype is ok
     private double joinability;
-    private double countyJoinabilityFactor;
-    private double raceJoinabilityFactor;
     private Pair pair;
 
     public Edge(Cluster c1, Cluster c2){
         pair = new Pair(c1,c2);
-        countyJoinabilityFactor = 0.5;
-        raceJoinabilityFactor = 0.5;
         this.updateJoinabilityValue();
     }
 
@@ -47,7 +43,7 @@ public class Edge {
         double pTwoCommunityRatio = pair.getElement2().getPrecinct().getData().getDemographic().getPercentByRace(community);
         raceJoinability = 1-Math.abs(pOneCommunityRatio-pTwoCommunityRatio);
 
-        this.joinability = countyJoinability*this.countyJoinabilityFactor+raceJoinability*this.raceJoinabilityFactor;
+        this.joinability = countyJoinability+raceJoinability;
     }
 
     public Cluster getNeighbor(Cluster c){
