@@ -1,10 +1,7 @@
 package com.example.gerrymanderdemo.model;
 
 import com.example.gerrymanderdemo.model.Data.Data;
-import com.example.gerrymanderdemo.model.Enum.Order;
 import com.example.gerrymanderdemo.model.Enum.RaceType;
-
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,7 +21,8 @@ public class Cluster implements Comparable{
     public Cluster(Cluster c1, Cluster c2){
         this.data = new Data(c1.getData(),c2.getData());
         this.constructEdges(c1,c2);
-        this.addChildren(c1,c2);
+        this.addChildren(c1);
+        this.addChildren(c2);
     }
 
     public Data getData() {
@@ -41,6 +39,10 @@ public class Cluster implements Comparable{
 
     public void setEdges(List<Edge> edges) {
         this.edges = edges;
+    }
+
+    public void addEdge(Edge edge) {
+        this.edges.add(edge);
     }
 
     public Precinct getPrecinct() {
@@ -77,7 +79,7 @@ public class Cluster implements Comparable{
     }
 
     // add ClassDiagram
-    public void passEdges(Cluster parentCluster){
+    private void passEdges(Cluster parentCluster){
         for (Edge e : edges) {
             e.updateElment(this, parentCluster);
         }
@@ -86,9 +88,8 @@ public class Cluster implements Comparable{
         parentCluster.setEdges(temp);
     }
 
-    public void addChildren(Cluster c1, Cluster c2){
-        children.add(c1);
-        children.add(c2);
+    public void addChildren(Cluster c){
+        children.add(c);
     }
 
     public Set<Precinct> getPrecincts() {

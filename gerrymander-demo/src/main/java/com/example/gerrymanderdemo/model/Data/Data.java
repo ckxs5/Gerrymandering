@@ -30,6 +30,8 @@ public class Data implements ResponseObject {
 
     public Data(Data d1, Data d2) {
         this.voteData = new Vote(d1.getVoteData(), d2.getVoteData());
+        this.demographic = new Demographic(d1.getDemographic(), d2.getDemographic());
+        this.boundary = new Boundary(d1.getBoundary(), d2.getBoundary());
     }
 
     public Data(Vote voteData, Demographic demographic, Boundary boundary) {

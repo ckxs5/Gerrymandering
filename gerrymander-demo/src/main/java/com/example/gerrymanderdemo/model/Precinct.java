@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -20,13 +21,12 @@ public class Precinct implements ResponseObject {
     private String county;
     @OneToOne
     private Data data;
-
     @ManyToMany
     @JoinTable(
             name = "precinct_precinct",
             joinColumns = @JoinColumn(name = "precinct1_id"),
             inverseJoinColumns = @JoinColumn(name = "precinct2_id"))
-    private Set<Precinct> neigbours;
+    private Set<Precinct> neighbors;
 
     public Precinct() {
     }
@@ -35,13 +35,14 @@ public class Precinct implements ResponseObject {
         this.name = precinct.getName();
         this.county = precinct.getCounty();
         this.data = new Data(precinct.getData());
+        this.neighbors = precinct.getNeighbors();
     }
 
-    public Precinct(String id, String name, Data data, Set<Precinct> neigbours) {
+    public Precinct(String id, String name, Data data, Set<Precinct> neighbors) {
         this.id = id;
         this.name = name;
         this.data = data;
-        this.neigbours = neigbours;
+        this.neighbors = neighbors;
     }
 
     public String getCounty(){ return county; }
@@ -64,12 +65,12 @@ public class Precinct implements ResponseObject {
         this.data = data;
     }
 
-    public Set<Precinct> getNeigbours() {
-        return neigbours;
+    public Set<Precinct> getNeighbors() {
+        return neighbors;
     }
 
-    public void setNeigbours(Set<Precinct> neigbours) {
-        this.neigbours = neigbours;
+    public void setNeighbors(Set<Precinct> neighbors) {
+        this.neighbors = neighbors;
     }
 
     public String getBoundary() {
