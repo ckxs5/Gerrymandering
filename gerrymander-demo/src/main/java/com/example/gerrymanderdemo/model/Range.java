@@ -26,12 +26,13 @@ public class Range implements Comparable{
         this.max = max;
     }
 
-    public boolean within(double n) {
+    public boolean isWithin(double n) {
         return (min < n && max > n);
     }
 
     @Override
     public int compareTo(Object o) {
+
         return 0;
     }
 }

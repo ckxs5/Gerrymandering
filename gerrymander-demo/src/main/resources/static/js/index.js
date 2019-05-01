@@ -7,11 +7,10 @@ $("document").ready(function () {
     var info;
     var maxBounds;
     var districtZoomLevel = 6;
-    var DEFALUTZOOMLEVEL = 4;
+    var DefaultZoomLevel = 4;
     var precinctZoomLevel = 8;
 
-    function initalMap() {
-        mymap = L.map('map', {layers: states}).setView([39.8283, -100.5795], DEFALUTZOOMLEVEL);
+        mymap = L.map('map', {layers: states}).setView([39.8283, -100.5795], DefaultZoomLevel);
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
             maxZoom: 18,
             minZoom: 4,
@@ -55,10 +54,8 @@ $("document").ready(function () {
             style: style,
             onEachFeature: onEachPrecinctFeature
         }).addTo(precincts);
-    }
-    initalMap();
 
-    function infoWindow() {
+
         info = L.control();
 
         info.onAdd = function () {
@@ -86,8 +83,6 @@ $("document").ready(function () {
                 : 'No Precinct Selected');
         };
         info.addTo(mymap);
-    }
-    infoWindow();
 
         mymap.on("zoomend", function () {
             console.log(mymap.getZoom());
@@ -154,7 +149,6 @@ $("#states").on("change", function() {
         });
 
     function style() {
-        console.log("style");
         return {
             fillColor: getColor(),
             weight: 1,

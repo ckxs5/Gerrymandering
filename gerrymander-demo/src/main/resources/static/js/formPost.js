@@ -14,37 +14,16 @@ function postForm(event, formId, postUrl, callback) {
         form = $("form");
     event.preventDefault();
     postData(objectizeFormArray(form.serializeArray()), postUrl, callback);
-    // if (formId != null)
-    //     window.location.href = redirectUrl;
 }
 
 function userlogin(logindata) {
-    console.log(logindata);
-    if (logindata["user"]) {
-        sessionStorage.setItem("user", logindata["user"]);
-        window.location.href = '/index';
-        console.log(sessionStorage.getItem("user"));
-    }
-    else {
-        console.log("Error when login");
-        const message = $(".message");
-        message.css("color", "green");
-        message.html(logindata["error"]);
-    }
+    window.location.href = '/index';
 }
 
 function userlogout(logoutdata) {
-    sessionStorage.clear();
-    console.log("logout")
     window.location.href = '/login';
 }
 
 function usersignup(signupdata) {
-    console.log(signupdata);
-    console.log(sessionStorage);
-    if (signupdata["status"] && signupdata["status"] != "OK"){
-        document.getElementById('userExist').innerText = "User Exists";
-    }else{
-        window.location.href = '/';
-    }
+    window.location.href = '/';
 }

@@ -3,8 +3,10 @@ package com.example.gerrymanderdemo.Repository;
 import com.example.gerrymanderdemo.model.User.User;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.Optional;
+
 public interface UserRepository extends CrudRepository<User, Long> {
-    User findByEmailAndPassword(String email, String password);
-//    User findByNameOrEmail(String name, String email);
-    User findByEmail(String email);
+    Optional<User> findByEmailAndPassword(String email, String password);
+    Optional<User> findByEmail(String email);
+    Optional<User> findByUserType(String userType);
 }
