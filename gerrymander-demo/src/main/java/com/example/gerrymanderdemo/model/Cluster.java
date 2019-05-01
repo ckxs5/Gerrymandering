@@ -4,10 +4,8 @@ import com.example.gerrymanderdemo.model.Data.Data;
 import com.example.gerrymanderdemo.model.Enum.Order;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Cluster{
     private Data data;
@@ -24,7 +22,7 @@ public class Cluster{
 
     public Cluster(Cluster c1, Cluster c2){
         this.data = new Data(c1.getData(),c2.getData());
-        this.constructEdges(c1,c2,this);
+        this.constructEdges(c1,c2);
         this.addChildren(c1,c2);
     }
 
@@ -62,7 +60,7 @@ public class Cluster{
 
     public Pair getBestPair(){
         sortEdgesByJoinability();
-        return this.edges.get(0).getPair();
+        return this.edges.get(0);
     }
 
     // Class Diagram:
@@ -71,25 +69,20 @@ public class Cluster{
     }
 
     // add ClassDiagram
-    public void constructEdges(Cluster c1, Cluster c2, Cluster newCluster){
-        updateClusterEdge(c1,c2,newCluster);
-        updateClusterEdge(c2,c1,newCluster);
+    public void constructEdges(Cluster c1, Cluster c2){
+        c1.passEdges(this);
+        c2.passEdges(this);
+        edges = edges.stream().filter(edge -> !edge.isRedundant()).collect(Collectors.toList());
     }
 
     // add ClassDiagram
-    public void updateClusterEdge(Cluster oldC1, Cluster oldC2, Cluster newCluster){
-        for(Edge edge: oldC1.getEdges()){
-            Cluster c1 = edge.getElement1();
-            Cluster c2 = edge.getElement2();
-            if(c1 == oldC1){
-                edge.updateEdge(newCluster,c2);
-            }
-            else{
-                edge.updateEdge(c1,newCluster);
-            }
-            if(!((c1 == oldC1 && c2 == oldC2) || (c1 == oldC2 && c2 == oldC1)))
-                newCluster.getEdges().add(edge);
+    public void passEdges(Cluster parentCluster){
+        for (Edge e : edges) {
+            e.updateElment(this, parentCluster);
         }
+        List<Edge> temp = edges;
+        this.edges = null;
+        parentCluster.setEdges(temp);
     }
 
     public void addChildren(Cluster c1, Cluster c2){
@@ -97,21 +90,31 @@ public class Cluster{
         children.add(c2);
     }
 
+    public Set<Precinct> getPrecincts() {
+        Set<Precinct> set = new HashSet<>();
+        if (precinct != null) {
+            set.add(precinct);
+        } else {
+            for (Cluster child : children) {
+                set.addAll(child.getPrecincts());
+            }
+        }
+        return set;
+    }
+
+    public Set<String> getCounties() {
+        Set<String> counties = new HashSet<>();
+        Set<Precinct> precincts = getPrecincts();
+        for (Precinct p : precincts) {
+            counties.add(p.getCounty());
+        }
+        return counties;
+    }
+
     public District toDistrict(){
         District d = new District();
-
-        ArrayList<Cluster> openList = new ArrayList<>();
-        openList.addAll(this.children);
-        while(!openList.isEmpty()){
-            ArrayList<Cluster> tempList = new ArrayList<>();
-            for(Cluster c: openList){
-                if(c.getPrecinct() != null){
-                    d.addPrecinct(c.getPrecinct());
-                }
-                tempList.addAll(c.getChildren());
-            }
-            openList = tempList;
-        }
+        d.setData(this.data);
+        d.setPrecincts(this.getPrecincts());
         return d;
     }
 

@@ -4,21 +4,28 @@ import com.example.gerrymanderdemo.model.Data.Data;
 import com.example.gerrymanderdemo.model.Enum.RaceType;
 import com.example.gerrymanderdemo.model.Enum.StateName;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.util.Collection;
 
+@Entity
 public class State {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(length = 100)
+    private String id;
+    @OneToOne
     private Data data;
-    private Collection<Cluster> clusterManager;
-    private Collection<District> orgDistricts;
+    @OneToMany
     private Collection<District>districts;
     private int numDistricts;
     //TODO: See Whether if we need this?
     private int numMajMinDistricts;
     private StateName name;
-    private String id;
     private int idealClusterPop;    //TODO
     private double districtPopulationVariant = 1.2;     //TODO: How to get it from properties file
+
+    public State() {
+    }
 
     public State(Data data){
 
@@ -26,8 +33,6 @@ public class State {
 
     public State(State s){
         this.data = s.data;
-        this.clusterManager = s.clusterManager;  // Todo: Need Deep Clone
-        this.orgDistricts = s.orgDistricts;      // Todo: Need Deep Clone
         this.districts = s.districts;            // Todo: Need Deep Clone
         this.numDistricts = s.numDistricts;
         this.numMajMinDistricts = s.numMajMinDistricts;
@@ -40,22 +45,6 @@ public class State {
 
     public void setData(Data data) {
         this.data = data;
-    }
-
-    public Collection<Cluster> getClusterManager() {
-        return clusterManager;
-    }
-
-    public void setClusterManager(Collection<Cluster> clusterManager) {
-        this.clusterManager = clusterManager;
-    }
-
-    public Collection<District> getOrgDistricts() {
-        return orgDistricts;
-    }
-
-    public void setOrgDistricts(Collection<District> orgDistricts) {
-        this.orgDistricts = orgDistricts;
     }
 
     public Collection<District> getDistricts() {
@@ -133,7 +122,7 @@ public class State {
 
     //TODO:check
     public int getIdealClusterPop(){
-        int totalPop = data.getDemographic().getPopulationByRace(RaceType.ALL);
+        int totalPop = data.getDemographic().getPopulation(RaceType.ALL);
         idealClusterPop = totalPop/numDistricts;
         return idealClusterPop;
     }

@@ -5,14 +5,21 @@ import com.example.gerrymanderdemo.model.Response.ResponseObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Demographic implements ResponseObject {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(length = 100)
     String id;
-    int[] population = new int[RaceType.values().length];
+    private int[] population = new int[RaceType.values().length];
+
+    public Demographic(Demographic d1, Demographic d2) {
+        for (RaceType raceType: RaceType.values()) {
+            setPopulation(raceType, d1.getPopulation(raceType) + d2.getPopulation(raceType));
+        }
+    }
 
     public Demographic(int[] population) {
         if (population.length != RaceType.values().length)
@@ -29,7 +36,9 @@ public class Demographic implements ResponseObject {
         System.arraycopy(population, 0, this.population, 0, population.length);
     }
 
-    public int getPopulationByRace(RaceType race) {
+    public void setPopulation(RaceType raceType, int pop) { population[raceType.ordinal()] = pop; }
+
+    public int getPopulation(RaceType race) {
         return population[race.ordinal()];
     }
 

@@ -10,4 +10,6 @@ public class Algorithm {
         this.weights = weights;
         this.state = state;
     }
+
+
 }

@@ -4,17 +4,22 @@ import com.example.gerrymanderdemo.model.Response.ResponseObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Boundary implements ResponseObject {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(length = 100)
     String id;
     String geoJSON;
 
     public Boundary(String geoJSON) {
         this.geoJSON = geoJSON;
+    }
+
+    public Boundary(Boundary b1, Boundary b2) {
+        geoJSON = b1.geoJSON + b2.geoJSON;
     }
 
     public String getGeoJSON() {

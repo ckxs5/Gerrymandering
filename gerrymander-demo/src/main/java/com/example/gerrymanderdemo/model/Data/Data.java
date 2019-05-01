@@ -4,21 +4,18 @@ import com.example.gerrymanderdemo.model.Response.ResponseObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 public class Data implements ResponseObject {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(length = 100)
     String id;
-
     @OneToOne
     Vote voteData;
-
     @OneToOne
     Demographic demographic;
-
     @OneToOne
     Boundary boundary;
 
@@ -26,7 +23,7 @@ public class Data implements ResponseObject {
     }
 
     public Data(Data d1, Data d2) {
-        //TODO
+        this.voteData = new Vote(d1.getVoteData(), d2.getVoteData());
     }
 
     public Data(Vote voteData, Demographic demographic, Boundary boundary) {

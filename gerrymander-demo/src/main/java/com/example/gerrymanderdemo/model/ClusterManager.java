@@ -10,8 +10,11 @@ import java.util.Iterator;
 
 public class ClusterManager {
     Collection<Cluster> clusters;
-    Collection<Pair> clusterPairs;
+    Collection<Pair<Cluster>> clusterPairs;
 
+    public ClusterManager(Collection<Cluster> clusters) {
+        this.clusters = clusters;
+    }
 
     //TODO: return type,argument insistent with class diagram
     public Collection<Cluster> filterClusters(int idealClusterPop){ //TODO: parameter is from state object
@@ -20,7 +23,7 @@ public class ClusterManager {
 
         while (iterator.hasNext()) {
             Cluster clusterElement = iterator.next();
-            int totalPop = clusterElement.getData().getDemographic().getPopulationByRace(RaceType.ALL);
+            int totalPop = clusterElement.getData().getDemographic().getPopulation(RaceType.ALL);
             if (totalPop <= idealClusterPop)
             filteredClusters.add(clusterElement);
         }
@@ -29,7 +32,7 @@ public class ClusterManager {
     }
 
     //TODO
-    public void addClusterPairs(Collection<Cluster> filteredClusters){
+    private void addClusterPairs(Collection<Cluster> filteredClusters){
         if (!filteredClusters.isEmpty()) {
             Pair bestPair = filteredClusters.iterator().next().getBestPair();
             clusterPairs.add(bestPair);
@@ -38,7 +41,7 @@ public class ClusterManager {
         }
     }
 
-    public void removePairFromCandidates(Collection<Cluster> filteredClusters, Pair clusterPair){
+    private void removePairFromCandidates(Collection<Cluster> filteredClusters, Pair<Cluster> clusterPair){
         Cluster c1 = clusterPair.getElement1();
         Cluster c2 = clusterPair.getElement2();
         filteredClusters.remove(c1);
@@ -47,10 +50,10 @@ public class ClusterManager {
 
     //TODO: parameter inconsistent with class diagram
     public void combineClusters(){
-        Iterator<Pair> iterator = clusterPairs.iterator();
+        Iterator<Pair<Cluster>> iterator = clusterPairs.iterator();
 
         while (iterator.hasNext()) {
-            Pair pair = iterator.next();
+            Pair<Cluster> pair = iterator.next();
             Cluster c1 = pair.getElement1();
             Cluster c2 = pair.getElement2();
             Cluster newCluster = new Cluster(c1,c2);

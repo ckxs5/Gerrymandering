@@ -5,17 +5,23 @@ import com.example.gerrymanderdemo.model.Response.ResponseObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Arrays;
 
 @Entity
 public class Vote implements ResponseObject {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(length = 100)
     private String id;
     private int[] votes;
 
-    public Vote(){}
+    public Vote(Vote v1, Vote v2){
+        for (Party party: Party.values()) {
+            setVote(party, v1.getVote(party) + v2.getVote(party));
+        }
+    }
+
 
     public Vote(int[] votes) {
         if (votes.length != Party.values().length)
@@ -31,6 +37,8 @@ public class Vote implements ResponseObject {
     public void setVotes(int[] votes) {
         this.votes = votes;
     }
+
+    public void setVote(Party party, int vote) { votes[party.ordinal()] = vote; }
 
     public int getVote(Party party) {
         return votes[party.ordinal()];

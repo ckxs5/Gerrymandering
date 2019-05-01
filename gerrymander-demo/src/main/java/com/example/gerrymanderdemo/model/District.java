@@ -1,28 +1,28 @@
 package com.example.gerrymanderdemo.model;
 
 import com.example.gerrymanderdemo.model.Data.Data;
-import com.example.gerrymanderdemo.model.Data.Demographic;
-import com.example.gerrymanderdemo.model.Data.Vote;
 import com.example.gerrymanderdemo.model.Enum.Order;
-import com.example.gerrymanderdemo.model.Enum.Party;
 import com.example.gerrymanderdemo.model.Enum.RaceType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.persistence.*;
 import java.util.Collection;
+import java.util.Set;
 
-@Controller
+@Entity
 public class District {
-    private Data data;
-    private Collection<Precinct> precincts;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(length = 100)
     private String id;
+    @OneToOne
+    private Data data;
+    @OneToMany
+    private Set<Precinct> precincts;
     private boolean isMajorityMinority;
     private double tRatio;
 
     public District(){
-        // Todo
     }
 
     public Data getData() {
@@ -33,11 +33,11 @@ public class District {
         this.data = data;
     }
 
-    public Collection<Precinct> getPrecincts() {
+    public Set<Precinct> getPrecincts() {
         return precincts;
     }
 
-    public void setPrecincts(Collection<Precinct> precincts) {
+    public void setPrecincts(Set<Precinct> precincts) {
         this.precincts = precincts;
     }
 

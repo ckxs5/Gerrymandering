@@ -1,10 +1,21 @@
 package com.example.gerrymanderdemo.Service;
 
+import com.example.gerrymanderdemo.Repository.StateRepository;
+import com.example.gerrymanderdemo.model.State;
 import org.springframework.stereotype.Service;
 
 @Service
 public class StateService {
 
+    private StateRepository stateRepository;
+
+    public StateService(StateRepository stateRepository) {
+        this.stateRepository = stateRepository;
+    }
+
+    public boolean save(State state) {
+        return stateRepository.save(state) != null;
+    }
 //    private StateRepository stateRepository;
 //
 //    final static String orgId = "00000";
