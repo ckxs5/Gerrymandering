@@ -62,8 +62,7 @@ public class Vote implements ResponseObject {
     }
 
     public Party getResult() {
-        return votes[Party.DEMOCRATIC.ordinal()] > votes[Party.REPUBLICAN.ordinal()] ?
-                Party.DEMOCRATIC : Party.REPUBLICAN;
+        return votes[Party.DEMOCRATIC.ordinal()] > votes[Party.REPUBLICAN.ordinal()] ? Party.DEMOCRATIC : Party.REPUBLICAN;
     }
 
     public void add(Vote other) {
@@ -76,8 +75,9 @@ public class Vote implements ResponseObject {
     public JSONObject toJSONObject() {
         JSONObject json = new JSONObject();
         try {
-            for (Party party : Party.values())
+            for (Party party : Party.values()) {
                 json.put(party.toString(), votes[party.ordinal()]);
+            }
         }catch (JSONException ex) {
             System.out.println("Unexpected error occurs when converting a Vote object to JSON object");
             return null;

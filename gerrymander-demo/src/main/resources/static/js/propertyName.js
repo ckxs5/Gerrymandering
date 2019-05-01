@@ -1,5 +1,5 @@
 const districtZoomLevel = 6;
-const DefaultZoomLevel = 4;
+const defaultZoomLevel = 4;
 const precinctZoomLevel = 8;
 const MAXZOOM = 18;
 const MINZOOM = 4;

@@ -14,8 +14,9 @@ public class Properties {
     }
 
     public static int getJoinabilityMeasureRatio (JoinabilityMeasureType measureType) {
-        if (properties == null)
+        if (properties == null) {
             properties = new Properties();
+        }
         return joinabilityMeasureRatio[measureType.ordinal()];
     }
 }
