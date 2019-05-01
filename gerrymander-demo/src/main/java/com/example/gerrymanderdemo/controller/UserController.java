@@ -34,7 +34,7 @@ public class UserController {
             session.setAttribute("user", userService.find(user.getEmail(), user.getPassword()));
             return new ResponseEntity<>((HttpStatus.OK));
         } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error Message");
         }
     }
 

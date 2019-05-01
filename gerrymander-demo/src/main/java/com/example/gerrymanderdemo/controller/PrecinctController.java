@@ -1,4 +1,4 @@
-package com.example.gerrymanderdemo.Controller;
+package com.example.gerrymanderdemo.controller;
 
 import com.example.gerrymanderdemo.model.Data.Data;
 import com.example.gerrymanderdemo.model.Data.Demographic;
@@ -17,7 +17,7 @@ public class PrecinctController {
     public PrecinctController() {
     }
 
-        @RequestMapping(value = "/precinct/{name}/data", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/precinct/{name}/data", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     //TODO Subjected to change for production
     public String getPrecinct(@PathVariable String name) {

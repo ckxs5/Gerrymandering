@@ -1,4 +1,4 @@
-package com.example.gerrymanderdemo.Controller;
+package com.example.gerrymanderdemo.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +13,7 @@ public class AlgorithmController {
 
     @PostMapping(value = "/setweights", consumes = "application/json")
     @ResponseBody
-    public String setWeights(@RequestBody HashMap<String, String> weights) {
+    public String setWeights(@RequestBody HashMap<String, Number> weights) {
         System.out.println("Hello Haofeng");
         System.out.println(weights);
         return null;
