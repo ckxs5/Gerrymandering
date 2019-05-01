@@ -31,6 +31,12 @@ public class Precinct implements ResponseObject {
     public Precinct() {
     }
 
+    public Precinct(Precinct precinct) {
+        this.name = precinct.getName();
+        this.county = precinct.getCounty();
+        this.data = new Data(precinct.getData());
+    }
+
     public Precinct(String id, String name, Data data, Set<Precinct> neigbours) {
         this.id = id;
         this.name = name;

@@ -16,12 +16,21 @@ public class Vote implements ResponseObject {
     private String id;
     private int[] votes;
 
+    public Vote() {
+    }
+
+    public Vote(Vote vote) {
+        votes = new int[Party.values().length];
+        for(Party p : Party.values()){
+            votes[p.ordinal()] = vote.getVote(p);
+        }
+    }
+
     public Vote(Vote v1, Vote v2){
         for (Party party: Party.values()) {
             setVote(party, v1.getVote(party) + v2.getVote(party));
         }
     }
-
 
     public Vote(int[] votes) {
         if (votes.length != Party.values().length)
@@ -57,16 +66,10 @@ public class Vote implements ResponseObject {
                 Party.DEMOCRATIC : Party.REPUBLICAN;
     }
 
-    public String toJSON() {
-        StringBuffer json = new StringBuffer();
-        json.append("{");
-        for (Party party : Party.values())
-            json.append(String.format("%s: %d,", party.toString(), votes[party.ordinal()]));
-
-        // Delete the last COMMA
-        json.deleteCharAt(json.length() - 1);
-        json.append("}");
-        return json.toString();
+    public void add(Vote other) {
+        for(Party p : Party.values()){
+            votes[p.ordinal()] += other.getVote(p);
+        }
     }
 
     @Override

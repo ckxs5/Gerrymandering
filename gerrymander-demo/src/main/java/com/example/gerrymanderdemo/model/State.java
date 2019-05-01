@@ -1,10 +1,15 @@
 package com.example.gerrymanderdemo.model;
 
+import com.example.gerrymanderdemo.model.Data.Boundary;
 import com.example.gerrymanderdemo.model.Data.Data;
+import com.example.gerrymanderdemo.model.Data.Demographic;
+import com.example.gerrymanderdemo.model.Data.Vote;
+import com.example.gerrymanderdemo.model.Enum.Party;
 import com.example.gerrymanderdemo.model.Enum.RaceType;
 import com.example.gerrymanderdemo.model.Enum.StateName;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
@@ -21,19 +26,23 @@ public class State {
     //TODO: See Whether if we need this?
     private int numMajMinDistricts;
     private StateName name;
-    private int idealClusterPop;    //TODO
     private double districtPopulationVariant = 1.2;     //TODO: How to get it from properties file
 
     public State() {
     }
 
-    public State(Data data){
-
+    public State(StateName name, Collection<District> districts) {
+        this.name = name;
+        this.districts = districts;
+        updateData();
     }
 
     public State(State s){
-        this.data = s.data;
-        this.districts = s.districts;            // Todo: Need Deep Clone
+        this.data = new Data(s.getData());
+        this.districts = new ArrayList<>();// Todo: Need Deep Clone
+        for(District d : s.getDistricts()) {
+            districts.add(new District());
+        }
         this.numDistricts = s.numDistricts;
         this.numMajMinDistricts = s.numMajMinDistricts;
         this.id = s.id;
@@ -47,12 +56,22 @@ public class State {
         this.data = data;
     }
 
+    private void updateData(){
+        data = new Data(new Vote(new int[Party.values().length]),
+                new Demographic(new int[RaceType.values().length]),
+                new Boundary(""));
+        for (District d : districts) {
+            data.add(d.getData());
+        }
+    }
+
     public Collection<District> getDistricts() {
         return districts;
     }
 
     public void setDistricts(Collection<District> districts) {
         this.districts = districts;
+        updateData();
     }
 
     public int getNumDistricts() {
@@ -93,10 +112,6 @@ public class State {
         this.id = id;
     }
 
-    public void setIdealClusterPop(int idealClusterPop) {
-        this.idealClusterPop = idealClusterPop;
-    }
-
     public double getDistrictPopulationVariant() {
         return districtPopulationVariant;
     }
@@ -120,10 +135,4 @@ public class State {
         return 0;
     }
 
-    //TODO:check
-    public int getIdealClusterPop(){
-        int totalPop = data.getDemographic().getPopulation(RaceType.ALL);
-        idealClusterPop = totalPop/numDistricts;
-        return idealClusterPop;
-    }
 }

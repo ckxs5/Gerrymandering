@@ -2,12 +2,13 @@ package com.example.gerrymanderdemo.model;
 
 import com.example.gerrymanderdemo.model.Data.Data;
 import com.example.gerrymanderdemo.model.Enum.Order;
+import com.example.gerrymanderdemo.model.Enum.RaceType;
 
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Cluster{
+public class Cluster implements Comparable{
     private Data data;
     private List<Edge> edges;
     private Precinct precinct;
@@ -58,7 +59,7 @@ public class Cluster{
         this.children = children;
     }
 
-    public Pair getBestPair(){
+    public Edge getBestEdge(){
         sortEdgesByJoinability();
         return this.edges.get(0);
     }
@@ -118,4 +119,13 @@ public class Cluster{
         return d;
     }
 
+    @Override
+    public int compareTo(Object o) {
+        if (o instanceof Cluster) {
+            return Integer.compare(data.getDemographic().getPopulation(RaceType.ALL),
+                    ((Cluster) o).getData().getDemographic().getPopulation(RaceType.ALL));
+        } else {
+            return -1;
+        }
+    }
 }

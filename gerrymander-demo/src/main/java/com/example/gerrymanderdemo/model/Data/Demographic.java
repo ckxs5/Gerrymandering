@@ -15,6 +15,13 @@ public class Demographic implements ResponseObject {
     String id;
     private int[] population = new int[RaceType.values().length];
 
+    public Demographic() {
+    }
+
+    public Demographic(Demographic demographic) {
+        demographic.add(demographic);
+    }
+
     public Demographic(Demographic d1, Demographic d2) {
         for (RaceType raceType: RaceType.values()) {
             setPopulation(raceType, d1.getPopulation(raceType) + d2.getPopulation(raceType));
@@ -48,6 +55,12 @@ public class Demographic implements ResponseObject {
 
     public double getPercentByRace(RaceType race) {
         return (double)(population[race.ordinal()] / population[RaceType.ALL.ordinal()]);
+    }
+
+    public void add(Demographic other) {
+        for(RaceType r : RaceType.values()){
+            population[r.ordinal()] += other.getPopulation(r);
+        }
     }
 
     @Override
