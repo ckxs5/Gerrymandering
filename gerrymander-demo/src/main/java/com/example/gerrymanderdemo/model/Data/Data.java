@@ -22,13 +22,11 @@ public class Data implements ResponseObject {
     @OneToOne
     Boundary boundary;
 
-    public Data(Data d1, Data d2) {
-        //TODO
+    public Data() {
     }
 
-    //TODO
-    public Data(){
-
+    public Data(Data d1, Data d2) {
+        //TODO
     }
 
     public Data(Vote voteData, Demographic demographic, Boundary boundary) {
@@ -36,6 +34,7 @@ public class Data implements ResponseObject {
         this.demographic = demographic;
         this.boundary = boundary;
     }
+
 
     public Vote getVoteData() {
         return voteData;

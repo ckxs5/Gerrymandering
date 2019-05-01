@@ -44,6 +44,11 @@ public class Vote implements ResponseObject {
         return Arrays.stream(votes).reduce(Integer::sum).orElse(0);
     }
 
+    public Party getResult() {
+        return votes[Party.DEMOCRATIC.ordinal()] > votes[Party.REPUBLICAN.ordinal()] ?
+                Party.DEMOCRATIC : Party.REPUBLICAN;
+    }
+
     public String toJSON() {
         StringBuffer json = new StringBuffer();
         json.append("{");
