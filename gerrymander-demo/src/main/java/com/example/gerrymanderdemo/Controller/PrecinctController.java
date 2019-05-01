@@ -17,7 +17,7 @@ public class PrecinctController {
     public PrecinctController() {
     }
 
-        @RequestMapping(value = "/precinct/{name}/data", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/precinct/{name}/data", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     //TODO Subjected to change for production
     public String getPrecinct(@PathVariable String name) {
