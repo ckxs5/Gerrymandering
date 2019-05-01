@@ -1,9 +1,7 @@
 package com.example.gerrymanderdemo.controller;
 
 import com.example.gerrymanderdemo.Service.UserService;
-import com.example.gerrymanderdemo.model.Enum.RaceType;
-import com.example.gerrymanderdemo.model.Enum.StateName;
-import com.example.gerrymanderdemo.model.Enum.WeightType;
+import com.example.gerrymanderdemo.model.Enum.UserType;
 import com.example.gerrymanderdemo.model.Response.ErrorResponse;
 import com.example.gerrymanderdemo.model.Response.OKResponse;
 import com.example.gerrymanderdemo.model.Response.OKUserResponse;
@@ -12,37 +10,16 @@ import com.example.gerrymanderdemo.model.User.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 
-
 @Controller
-public class HelloController {
+public class UserController {
 
     private UserService userService;
 
-    public HelloController (UserService userService) {
+    public UserController (UserService userService) {
         this.userService = userService;
-    }
-
-    @GetMapping(value = {"/", "/index"})
-    public ModelAndView index(HttpSession session){
-        User user = (User) session.getAttribute("user");
-        System.out.println(session.getAttribute("user"));
-        ModelAndView mav;
-        if(user == null) {
-            System.out.println("return login ");
-            mav = new ModelAndView("login");
-        }
-        else {
-            System.out.println("return index ");
-            mav = new ModelAndView("index");
-            mav.addObject("weights", WeightType.values());
-            mav.addObject("states", StateName.values());
-            mav.addObject("communities", RaceType.values());
-        }
-        return mav;
     }
 
     @GetMapping("/login")
@@ -56,7 +33,7 @@ public class HelloController {
         user = userService.find(user.getEmail(), user.getPassword());
         if (user != null) {
             session.setAttribute("user", user);
-            System.out.printf("User: %s login\n", user);
+            System.out.printf("UserType: %s login\n", user);
             return ResponseEntity.ok(new OKUserResponse(user));
         }
         else return ResponseEntity.ok(new ErrorResponse("Could not found user"));
@@ -64,9 +41,11 @@ public class HelloController {
 
     @PostMapping("/signup")
     public ResponseEntity<Response> signup(@RequestBody User user) {
+        user.setUserType(UserType.USER);
+        System.out.printf("Adding User to: %s login\n", user);
         user = userService.addUser(user);
         if (user == null)
-            return ResponseEntity.ok(new ErrorResponse("User Exist"));
+            return ResponseEntity.ok(new ErrorResponse("UserType Exist"));
         else
             return ResponseEntity.ok(new OKResponse());
     }
@@ -78,10 +57,8 @@ public class HelloController {
         return ResponseEntity.ok(new OKResponse());
     }
 
-
     @GetMapping("/homepage")
     public String homepage(){
         return "index";
     }
-
 }

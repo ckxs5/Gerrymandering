@@ -19,7 +19,7 @@
     <!-- <a class="text-white navbar-brand toggle-btn" onclick="toggleNav()">&#9776;</a> -->
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="nav-item nav-link text-light" href="http://localhost:8080/">Home <span
+            <a class="nav-item nav-link text-light" href="http://localhost:8080/login">Home <span
                     class="sr-only">(current)</span></a>
         </div>
     </div>
@@ -50,6 +50,7 @@
                     <th scope="col">Actions</th>
                 </tr>
                 </thead>
+
                 <tbody>
                 <tr th:each="user : ${listOfUsers}">
                     <!-- <td name="usernameRow" th:text="${user.getUsername()}"></td> -->

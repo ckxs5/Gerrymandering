@@ -1,5 +1,6 @@
 package com.example.gerrymanderdemo.model.User;
 
+import com.example.gerrymanderdemo.model.Enum.UserType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -15,6 +16,9 @@ public class User {
     private Long id;
 
     @Column(updatable = false, nullable = false)
+    private UserType userType;
+
+    @Column(updatable = false, nullable = false)
     private String email;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -24,7 +28,8 @@ public class User {
     public User() {
     }
 
-    public User(String email, String password) {
+    public User(UserType userType, String email, String password) {
+        this.userType = userType;
         this.email = email;
         this.password = password;
     }
@@ -37,9 +42,7 @@ public class User {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() { return email; }
 
     public void setEmail(String email) {
         this.email = email;
@@ -52,6 +55,10 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public UserType getUserType() {return userType; }
+
+    public void setUserType(UserType userType) { this.userType = userType; }
 
     @Override
     public boolean equals(Object o) {
@@ -69,10 +76,11 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserType{" +
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", userType='" + userType + '\'' +
                 '}';
     }
 }
