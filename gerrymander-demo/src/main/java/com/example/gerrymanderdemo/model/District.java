@@ -11,18 +11,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Controller
 public class District {
     private Data data;
-    private Collection<Precinct> precincts;
+    private List<Precinct> precincts;
     private String id;
     private boolean isMajorityMinority;
     private double tRatio;
 
     public District(){
-        // Todo
+        this.precincts = new ArrayList<>();
     }
 
     public Data getData() {
@@ -33,11 +35,11 @@ public class District {
         this.data = data;
     }
 
-    public Collection<Precinct> getPrecincts() {
+    public List<Precinct> getPrecincts() {
         return precincts;
     }
 
-    public void setPrecincts(Collection<Precinct> precincts) {
+    public void setPrecincts(ArrayList<Precinct> precincts) {
         this.precincts = precincts;
     }
 
@@ -79,16 +81,22 @@ public class District {
     }
 
     public void addPrecinct(Precinct precinct){
-        // Todo
+        this.precincts.add(precinct);
     }
 
     public Precinct removePrecinct(Precinct precinct){
-        // Todo
-        return null;
+        Precinct p = null;
+        for(int i=0;i<this.precincts.size();i++){
+            if(this.precincts.get(i) == precinct){
+                p = this.precincts.remove(i);
+                break;
+            }
+        }
+        return p;
     }
 
     public int compareMinorityRatio(double tRatio){
-        // Todo
+
         return 0;
     }
 
@@ -102,8 +110,8 @@ public class District {
         return null;
     }
 
-    public double isMajorityMinorityDistrict(RaceType type, Range range){
-        // Todo
-        return 0;
+    public boolean isMajorityMinorityDistrict(RaceType type, Range range){
+        double ratio = (double) this.data.getDemographic().getPopulationByRace(type) / this.data.getDemographic().getPopulationByRace(RaceType.ALL);
+        return ratio > range.getMin() && ratio < range.getMax();
     }
 }
