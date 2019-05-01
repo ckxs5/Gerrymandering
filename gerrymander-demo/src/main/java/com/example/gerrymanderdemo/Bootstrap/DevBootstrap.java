@@ -16,9 +16,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        //TODO
-        ClusterManager cm = new ClusterManager();
-//        cm.test();
+
     }
 
 //    private void initData(){

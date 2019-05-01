@@ -32,7 +32,7 @@ public class Data implements ResponseObject {
     }
 
     public Data(Data a, Data b){
-        // Todo: Combine Data
+
     }
 
     public Vote getVoteData() {

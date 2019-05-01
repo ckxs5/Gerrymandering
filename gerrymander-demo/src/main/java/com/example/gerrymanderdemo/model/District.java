@@ -11,20 +11,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @Controller
 public class District {
     private Data data;
-    private List<Precinct> precincts;
+    private Collection<Precinct> precincts;
     private String id;
     private boolean isMajorityMinority;
     private double tRatio;
 
     public District(){
-        this.precincts = new ArrayList<>();
+        // Todo
     }
 
     public Data getData() {
@@ -35,11 +33,11 @@ public class District {
         this.data = data;
     }
 
-    public List<Precinct> getPrecincts() {
+    public Collection<Precinct> getPrecincts() {
         return precincts;
     }
 
-    public void setPrecincts(ArrayList<Precinct> precincts) {
+    public void setPrecincts(Collection<Precinct> precincts) {
         this.precincts = precincts;
     }
 
@@ -81,22 +79,16 @@ public class District {
     }
 
     public void addPrecinct(Precinct precinct){
-        this.precincts.add(precinct);
+        // Todo
     }
 
     public Precinct removePrecinct(Precinct precinct){
-        Precinct p = null;
-        for(int i=0;i<this.precincts.size();i++){
-            if(this.precincts.get(i) == precinct){
-                p = this.precincts.remove(i);
-                break;
-            }
-        }
-        return p;
+        // Todo
+        return null;
     }
 
     public int compareMinorityRatio(double tRatio){
-
+        // Todo
         return 0;
     }
 
@@ -110,8 +102,8 @@ public class District {
         return null;
     }
 
-    public boolean isMajorityMinorityDistrict(RaceType type, Range range){
-        double ratio = (double) this.data.getDemographic().getPopulationByRace(type) / this.data.getDemographic().getPopulationByRace(RaceType.ALL);
-        return ratio > range.getMin() && ratio < range.getMax();
+    public double isMajorityMinorityDistrict(RaceType type, Range range){
+        // Todo
+        return 0;
     }
 }

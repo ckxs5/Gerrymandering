@@ -11,16 +11,13 @@ import java.util.Set;
 
 @Entity
 public class Precinct implements ResponseObject {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(length = 100)
     private String id;
-
     private String name;
-
     //TODO: extract the county this precinct belongs to,  will be used for countyJoinability in Edge
     private String county;
-
     @OneToOne
     private Data data;
 

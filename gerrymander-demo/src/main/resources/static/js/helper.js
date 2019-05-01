@@ -5,13 +5,20 @@ function postData(data, url, callback) {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        success: function (sucMsg) {
-            if (callback != null) {
-                callback(sucMsg);
+        statusCode:{
+            200: function (response) {
+                console.log("Arrived");
+                if (callback != null) {
+                    callback(response);
+                }
+            },
+            400: function (response) {
+                
+                alert("BAD REQUEST");
+            },
+            404: function (response) {
+                alert("NOT FOUND");
             }
-        },
-        failure: function (errMsg) {
-            alert(errMsg);
         }
     });
 }

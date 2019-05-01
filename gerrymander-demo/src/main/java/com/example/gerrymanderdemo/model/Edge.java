@@ -28,20 +28,8 @@ public class Edge implements Comparable{
         return this.joinability;
     }
 
-    public void setJoinability(double joinability) {
-        this.joinability = joinability;
-    }
-
-    public Cluster getNeighbor(Cluster c){
-        return this.pair.getOtherEle(c);
-    }
-
-    public void updateEdge(Cluster c1, Cluster c2){
-        pair.setElement1(c1);
-        pair.setElement2(c2);
-    }
-
-    public void updateJoinabilityValue(RaceType community){
+    //TODO: change parameter from joinability to community
+    public void setJoinability(RaceType community) {
         double countyJoinability;
         double raceJoinability;
 
@@ -60,6 +48,19 @@ public class Edge implements Comparable{
         raceJoinability = 1-Math.abs(p1CommunityRatio-p2CommunityRatio);
 
         this.joinability = countyJoinability*this.countyJoinabilityFactor+raceJoinability*this.raceJoinabilityFactor;
+    }
+
+    public Cluster getNeighbor(Cluster c){
+        return this.pair.getOtherEle(c);
+    }
+
+    public void updateEdge(Cluster c1, Cluster c2){
+        pair.setElement1(c1);
+        pair.setElement2(c2);
+    }
+
+    public void updateJoinabilityValue(){
+
     }
 
     public Cluster getElement1(){

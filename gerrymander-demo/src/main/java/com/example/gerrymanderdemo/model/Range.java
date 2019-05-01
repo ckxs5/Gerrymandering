@@ -1,38 +1,40 @@
 package com.example.gerrymanderdemo.model;
 
-public class Range implements Comparable{
+public class Range<T extends Comparable<? super T>>{
 
-    private double min;
-    private double max;
+    private T v1;
+    private T v2;
 
-    public Range(double min, double max){
-        this.min = min;
-        this.max = max;
+    public Range(T v1, T v2) {
+        this.v1 = v1;
+        this.v2 = v2;
     }
 
-    public double getMin() {
-        return min;
+    public T getV1() {
+        return v1;
     }
 
-    public void setMin(double min) {
-        this.min = min;
+    public void setV1(T v1) {
+        this.v1 = v1;
     }
 
-    public double getMax() {
-        return max;
+    public T getV2() {
+        return v2;
     }
 
-    public void setMax(double max) {
-        this.max = max;
+    public void setV2(T v2) {
+        this.v2 = v2;
     }
 
-    public boolean isWithin(double n) {
-        return (min < n && max > n);
+    public T getLowerBound() {
+        return v1.compareTo(v2) >= 0 ? v1 : v2;
     }
 
-    @Override
-    public int compareTo(Object o) {
+    public T getUpperBound() {
+        return v1.compareTo(v2) < 0 ? v1 : v2;
+    }
 
-        return 0;
+    public boolean isIncluding(T x) {
+        return x.compareTo(getLowerBound()) >= 0 && x.compareTo(getUpperBound()) <= 0;
     }
 }
