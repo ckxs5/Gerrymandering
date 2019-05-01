@@ -4,6 +4,9 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 public class StateController {
+    public StateController(){
+
+    }
 //    @Autowired
 //    private StateService stateService;
 //

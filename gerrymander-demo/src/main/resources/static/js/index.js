@@ -7,7 +7,7 @@ $("document").ready(function () {
     var info;
     var maxBounds;
 
-    mymap = L.map('map', {layers: states}).setView(USCENTER, DefaultZoomLevel);
+    mymap = L.map('map', {layers: states}).setView(USCENTER, defaultZoomLevel);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
         maxZoom: MAXZOOM,
         minZoom: MINZOOM,
@@ -37,10 +37,10 @@ $("document").ready(function () {
         onEachFeature: onEachDistrictFeature
     }).addTo(districts);
 
-    precinctLayer = L.geoJson(MD_P, {
-        style: style,
-        onEachFeature: onEachPrecinctFeature
-    }).addTo(precincts);
+    // precinctLayer = L.geoJson(MD_P, {
+    //     style: style,
+    //     onEachFeature: onEachPrecinctFeature
+    // }).addTo(precincts);
 
     districtLayer = L.geoJson(MN_Dist, {
         style: style,

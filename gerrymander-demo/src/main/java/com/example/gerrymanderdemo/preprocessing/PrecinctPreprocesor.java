@@ -37,8 +37,9 @@ public class PrecinctPreprocesor {
             BufferedReader reader = new BufferedReader(new FileReader(new File(filename)));
             String[] headers = reader.readLine().split(",");
             data = new HashMap<>();
-            for (String field : headers)
+            for (String field : headers) {
                 data.put(field, new ArrayList<>());
+            }
         } catch (FileNotFoundException e1) {
             System.out.printf("File not found : %s \n", e1.getMessage());
         } catch (IOException e2) {
@@ -48,15 +49,17 @@ public class PrecinctPreprocesor {
 
     private Vote prepareVote (int n) {
         int[] votes = new int[Party.values().length];
-        for (Party party : Party.values())
+        for (Party party : Party.values()) {
             votes[party.ordinal()] = Integer.parseInt(data.get(party.name()).get(n));
+        }
         return new Vote(votes);
     }
 
     private Demographic prepareDemograpgic (int n) {
         int[] demo = new int[RaceType.values().length];
-        for (RaceType raceType : RaceType.values())
+        for (RaceType raceType : RaceType.values()) {
             demo[raceType.ordinal()] = Integer.parseInt(data.get(raceType.name()).get(n));
+        }
         return new Demographic(demo);
     }
 

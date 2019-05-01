@@ -9,7 +9,7 @@ public class Algorithm {
     private Map<String, Number> preference;
     private State state;
     private ClusterManager clusterManager;
-
+    float tempObjectiveFunctionValue;
 
     public Algorithm(Map<String, Number> preference, State state, PrecinctService service) {
         this.preference = preference;
@@ -22,7 +22,10 @@ public class Algorithm {
         state.setDistricts(clusterManager.toDistricts());
         return state;
     }
-
+    //TODO
+    public State runAlgorithm(State s, Map<String, Number> userPreference){return null;}
+    //TODO
+    public float getOF(){return tempObjectiveFunctionValue;}
 
 
 

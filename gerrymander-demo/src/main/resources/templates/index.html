@@ -13,7 +13,7 @@
             integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
             src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.5.4/randomColor.min.js"></script>
-    <script th:src="@{/js/constantVariable.js}" type="text/javascript"></script>
+    <script th:src="@{/js/propertyName.js}" type="text/javascript"></script>
     <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
     <script th:src="@{/js/index.js}" type="text/javascript"></script>
     <script th:src="@{/js/helper.js}" type="text/javascript"></script>
@@ -44,7 +44,6 @@
     <script type="text/javascript" th:src="@{/geoJson/MN_Precincts.js}"></script>
 
     <div id="map"></div>
-
     <div class="card border-dark mb-1" id="controllpane" style="max-width: 25rem;">
         <div class="card-body text-dark">
             <div aria-label="First group" class="btn-group" role="group">
@@ -58,12 +57,17 @@
                     <option th:each="community : ${communities}" th:value="${community}" th:text="${community.toString()} == 'ALL' ? 'Select a Majority Minority' : ${community}"></option>
                 </select>
             </div>
-
             <div class="dropdown btn-states">
                 <select id="states" class="btn btn-secondary dropdown-toggle select-css">
                     <option th:each="state : ${states}" th:value="${state}" th:text="${state.toString()} == 'ALL' ? 'Select a State to Display' : ${state}"></option>
                 </select>
             </div>
+            <div class="dropdown btn-compactness">
+                <select id="compactness" class="btn btn-secondary dropdown-toggle select-css">
+                    <option th:each="compactness : ${compactness}" th:value="${compactness}" th:text="${compactness.toString()} == 'ALL' ? 'Compactness' : ${compactness}"></option>
+                </select>
+            </div>
+
             <div class="weightsblock">
                 <ul id="weights">
                     <li th:each="weight : ${weights}">
