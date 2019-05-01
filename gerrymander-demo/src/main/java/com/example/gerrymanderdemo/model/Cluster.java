@@ -61,17 +61,13 @@ public class Cluster{
     }
 
     public Pair getBestPair(){
-
-        return null;
+        sortEdgesByJoinability();
+        return this.edges.get(0).getPair();
     }
 
-    public  void sortEdgesByJoinability(Order order){
-        if(order == Order.ASCENDING){
-            Collections.sort(this.edges);
-        }
-        else{
-            Collections.reverse(this.edges);
-        }
+    // Class Diagram:
+    public  void sortEdgesByJoinability(){
+        Collections.sort(this.edges);
     }
 
     // add ClassDiagram
