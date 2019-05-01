@@ -6,113 +6,114 @@ $("document").ready(function () {
     var mymap;
     var info;
     var maxBounds;
-    var districtZoomLevel = 6;
-    var DefaultZoomLevel = 4;
-    var precinctZoomLevel = 8;
 
-        mymap = L.map('map', {layers: states}).setView([39.8283, -100.5795], DefaultZoomLevel);
-        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-            maxZoom: 18,
-            minZoom: 4,
-            id: 'mapbox.light'
-        }).addTo(mymap);
+    mymap = L.map('map', {layers: states}).setView(USCENTER, DefaultZoomLevel);
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+        maxZoom: MAXZOOM,
+        minZoom: MINZOOM,
+        id: 'mapbox.light'
+    }).addTo(mymap);
 
-        maxBounds = L.latLngBounds(
-            L.latLng(53.5300, -131.1267),
-            L.latLng(22.2008, -62.3436)
-        );
+    maxBounds = L.latLngBounds(
+        L.latLng(NORTHWEST),
+        L.latLng(SOUTHEAST)
+    );
 
-        mymap.setMaxBounds(maxBounds);
-        mymap.fitBounds(maxBounds);
+    mymap.setMaxBounds(maxBounds);
+    mymap.fitBounds(maxBounds);
 
-        stateLayer = L.geoJson(statesData, {
-            style:style,
-            onEachFeature: onEachStateFeature
-        }).addTo(states);
+    stateLayer = L.geoJson(statesData, {
+        style:style,
+        onEachFeature: onEachStateFeature
+    }).addTo(states);
 
-        districtLayer = L.geoJson(FL_Dist, {
-            style: style,
-            onEachFeature: onEachDistrictFeature
-        }).addTo(districts);
+    districtLayer = L.geoJson(FL_Dist, {
+        style: style,
+        onEachFeature: onEachDistrictFeature
+    }).addTo(districts);
 
-        districtLayer = L.geoJson(MD_Dist, {
-            style: style,
-            onEachFeature: onEachDistrictFeature
-        }).addTo(districts);
+    districtLayer = L.geoJson(MD_Dist, {
+        style: style,
+        onEachFeature: onEachDistrictFeature
+    }).addTo(districts);
 
-        precinctLayer = L.geoJson(MD_P, {
-            style: style,
-            onEachFeature: onEachPrecinctFeature
-        }).addTo(precincts);
+    precinctLayer = L.geoJson(MD_P, {
+        style: style,
+        onEachFeature: onEachPrecinctFeature
+    }).addTo(precincts);
 
-        districtLayer = L.geoJson(MN_Dist, {
-            style: style,
-            onEachFeature: onEachDistrictFeature
-        }).addTo(districts);
+    districtLayer = L.geoJson(MN_Dist, {
+        style: style,
+        onEachFeature: onEachDistrictFeature
+    }).addTo(districts);
 
-        precinctLayer = L.geoJson(MN_P, {
-            style: style,
-            onEachFeature: onEachPrecinctFeature
-        }).addTo(precincts);
+    precinctLayer = L.geoJson(MN_P, {
+        style: style,
+        onEachFeature: onEachPrecinctFeature
+    }).addTo(precincts);
 
+    mymap.on("zoomend", function () {
+        console.log(mymap.getZoom());
+        if (mymap.getZoom() >= districtZoomLevel && mymap.hasLayer(stateLayer)){
+            mymap.removeLayer(states);
+            mymap.addLayer(districts);
+        }
+        if (mymap.getZoom() > precinctZoomLevel && mymap.hasLayer(districtLayer)){
+            mymap.removeLayer(districts);
+            mymap.addLayer(precincts);
+        }
+        if (mymap.getZoom() <= precinctZoomLevel && mymap.hasLayer(precinctLayer)){
+            mymap.removeLayer(precincts);
+            mymap.addLayer(districts);
+        }
+        if (mymap.getZoom() < districtZoomLevel && mymap.hasLayer(districtLayer)){
+            mymap.removeLayer(districts);
+            mymap.addLayer(states);
+        }
+    });
 
-        info = L.control();
+    mymap.on("click", function(e){
+        if(L.geoJson(MN_Dist).getBounds().contains(e.latlng)){
+            fitStateBounds(MN_Dist);
+        }else if(L.geoJson(MD_Dist).getBounds().contains(e.latlng)){
+            fitStateBounds(MD_Dist);
+        }else if(L.geoJson(FL_Dist).getBounds().contains(e.latlng)){
+            fitStateBounds(FL_Dist);
+        }
+    });
 
-        info.onAdd = function () {
-            this._div = L.DomUtil.create('div', 'info');
-            this.update();
-            return this._div;
-        };
+    function fitStateBounds(statebounds){
+        var statebounds = L.geoJson(statebounds);
+        mymap.fitBounds(statebounds.getBounds());
+    }
 
-        info.update = function (democratic, republican, otherParties, all, otherRaces, caucasian, asian, hispanic, african, native, name) {
-            this._div.innerHTML = '<h4>Precinct Information</h4>' + (all ?
-                '<b>' + name + '</b><br>'
-                + '<b>Demographics</b><br>'
-                + 'Asian/Pacific Islander: ' + asian + '<br>'
-                + 'Caucasian: ' + caucasian + '<br>'
-                + 'Hispanic (of Any Race): ' + hispanic + '<br>'
-                + 'African-American: ' + african + '<br>'
-                + 'Native American: ' + native + '<br>'
-                + 'Other: ' + otherParties + '<br>'
-                + '<br><b>Election</b><br>'
-                + 'Democratic: ' + democratic + '<br>'
-                + 'Republican: ' + republican + '<br>'
-                + 'OtherParties: ' + otherParties + '<br>'
-                + '<br><b>Population</b><br>'
-                + all
-                : 'No Precinct Selected');
-        };
-        info.addTo(mymap);
+    info = L.control();
 
-        mymap.on("zoomend", function () {
-            console.log(mymap.getZoom());
-            if (mymap.getZoom() >= districtZoomLevel && mymap.hasLayer(stateLayer)){
-                mymap.removeLayer(states);
-                mymap.addLayer(districts);
-            }
-            if (mymap.getZoom() > precinctZoomLevel && mymap.hasLayer(districtLayer)){
-                mymap.removeLayer(districts);
-                mymap.addLayer(precincts);
-            }
-            if (mymap.getZoom() <= precinctZoomLevel && mymap.hasLayer(precinctLayer)){
-                mymap.removeLayer(precincts);
-                mymap.addLayer(districts);
-            }
-            if (mymap.getZoom() < districtZoomLevel && mymap.hasLayer(districtLayer)){
-                mymap.removeLayer(districts);
-                mymap.addLayer(states);
-            }
-        });
+    info.onAdd = function () {
+        this._div = L.DomUtil.create('div', 'info');
+        this.update();
+        return this._div;
+    };
 
-        mymap.on("click", function(e){
-            if(L.geoJson(MN_Dist).getBounds().contains(e.latlng)){
-                fitStateBounds(MN_Dist);
-            }else if(L.geoJson(MD_Dist).getBounds().contains(e.latlng)){
-                fitStateBounds(MD_Dist);
-            }else if(L.geoJson(FL_Dist).getBounds().contains(e.latlng)){
-                fitStateBounds(FL_Dist);
-            }
-        });
+    info.update = function (democratic, republican, otherParties, all, otherRaces, caucasian, asian, hispanic, african, native, name) {
+        this._div.innerHTML = '<h4>Precinct Information</h4>' + (all ?
+            '<b>' + name + '</b><br>'
+            + '<b>Demographics</b><br>'
+            + 'Asian/Pacific Islander: ' + asian + '<br>'
+            + 'Caucasian: ' + caucasian + '<br>'
+            + 'Hispanic (of Any Race): ' + hispanic + '<br>'
+            + 'African-American: ' + african + '<br>'
+            + 'Native American: ' + native + '<br>'
+            + 'Other: ' + otherParties + '<br>'
+            + '<br><b>Election</b><br>'
+            + 'Democratic: ' + democratic + '<br>'
+            + 'Republican: ' + republican + '<br>'
+            + 'OtherParties: ' + otherParties + '<br>'
+            + '<br><b>Population</b><br>'
+            + all
+            : 'No Precinct Selected');
+    };
+    info.addTo(mymap);
 
     $("#play-btn").on("click", function () {
         console.log("play button");
@@ -124,30 +125,29 @@ $("document").ready(function () {
         postData(weights, "/setweights", printData);
     });
 
-/**
- * @todo Revise the function.
- */
-$("#states").on("change", function() {
-    const state = $("#states").val();
-    if (state === "ALL")
-        mymap.fitBounds(maxBounds);
-    let stateBounds = {
-        "FLORIDA" : FL_Dist,
-        "MARYLAND" : MD_Dist,
-        "MINNESOTA" : MN_Dist,
-    };
-    fitStateBounds(stateBounds[state]);
-});
+    /**
+     * @todo Revise the function.
+     * @todo Revise stateBounds.
+     */
+    $("#states").on("change", function() {
+        const state = $("#states").val();
+        if (state === "ALL")
+            mymap.fitBounds(maxBounds);
+        let stateBounds = {
+            "FLORIDA" : FL_Dist,
+            "MARYLAND" : MD_Dist,
+            "MINNESOTA" : MN_Dist,
+        };
+        fitStateBounds(stateBounds[state]);
+    });
 
-    function fitStateBounds(statebounds){
-        var statebounds = L.geoJson(statebounds);
-        mymap.fitBounds(statebounds.getBounds());
-    }
+    $("#majorMinor").change(function(){
+        return document.getElementById("majorMinor").value;
+    });
 
-        $("#majorMinor").change(function(){
-            return document.getElementById("majorMinor").value;
-        });
-
+    /**
+     * @todo Generate Color based on measurements in future
+     */
     function style() {
         return {
             fillColor: getColor(),
