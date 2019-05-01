@@ -58,11 +58,11 @@ $("document").ready(function () {
             mymap.removeLayer(states);
             mymap.addLayer(districts);
         }
-        if (mymap.getZoom() >= precinctZoomLevel && mymap.hasLayer(districtLayer)){
+        if (mymap.getZoom() > precinctZoomLevel && mymap.hasLayer(districtLayer)){
             mymap.removeLayer(districts);
             mymap.addLayer(precincts);
         }
-        if (mymap.getZoom() < precinctZoomLevel && mymap.hasLayer(precinctLayer)){
+        if (mymap.getZoom() <= precinctZoomLevel && mymap.hasLayer(precinctLayer)){
             mymap.removeLayer(precincts);
             mymap.addLayer(districts);
         }
