@@ -2,6 +2,7 @@ package com.example.gerrymanderdemo.model;
 
 import com.example.gerrymanderdemo.Service.PrecinctService;
 import com.example.gerrymanderdemo.model.Enum.PreferenceType;
+import com.example.gerrymanderdemo.model.Enum.RaceType;
 
 import java.util.Map;
 
@@ -15,8 +16,8 @@ public class Algorithm {
         this.preference = preference;
         this.state = state;
         this.clusterManager = new ClusterManager(service,
-                PreferenceType.valueOf(preference.get(PreferenceType.COMMUNITY_OF_INTEREST.toString())),
-                preference.get(PreferenceType.NUM_DISTRICTS));
+                RaceType.valueOf(preference.get(preference.get(PreferenceType.NUM_DISTRICTS.toString()))),
+                Integer.parseInt(preference.get(PreferenceType.NUM_DISTRICTS.toString())));
     }
 
     public State graphPartician() {
@@ -25,7 +26,7 @@ public class Algorithm {
         return state;
     }
     //TODO
-    public State runAlgorithm(State s, Map<String, Number> userPreference){return null;}
+    public State runAlgorithm(){return null;}
     //TODO
     public float getOF(){return tempObjectiveFunctionValue;}
 
