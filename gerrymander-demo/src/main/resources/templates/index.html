@@ -62,6 +62,12 @@
                     <option th:each="state : ${states}" th:value="${state}" th:text="${state.toString()} == 'ALL' ? 'Select a State to Display' : ${state}"></option>
                 </select>
             </div>
+            <div class="dropdown btn-compactness">
+                <select id="compactness" class="btn btn-secondary dropdown-toggle select-css">
+                    <option th:each="compactness : ${compactness}" th:value="${compactness}" th:text="${compactness.toString()} == 'ALL' ? 'Compactness' : ${compactness}"></option>
+                </select>
+            </div>
+
             <div class="weightsblock">
                 <ul id="weights">
                     <li th:each="weight : ${weights}">
