@@ -25,5 +25,6 @@ function userlogout(logoutdata) {
 }
 
 function usersignup(signupdata) {
+    console.log("sign up data");
     window.location.href = '/';
 }
