@@ -22,9 +22,9 @@ public class Data implements ResponseObject {
     @OneToOne
     Boundary boundary;
 
-//    public Data(Data d1, Data d2) {
-//        //TODO
-//    }
+    public Data(Data d1, Data d2) {
+        //TODO
+    }
 
     //TODO
     public Data(){
