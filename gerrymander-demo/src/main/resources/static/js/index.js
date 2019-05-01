@@ -149,7 +149,6 @@ $("#states").on("change", function() {
         });
 
     function style() {
-        console.log("style");
         return {
             fillColor: getColor(),
             weight: 1,

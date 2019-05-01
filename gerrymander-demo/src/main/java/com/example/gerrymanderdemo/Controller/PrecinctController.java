@@ -1,4 +1,4 @@
-package com.example.gerrymanderdemo.Controller;
+package com.example.gerrymanderdemo.controller;
 
 import com.example.gerrymanderdemo.model.Data.Data;
 import com.example.gerrymanderdemo.model.Data.Demographic;

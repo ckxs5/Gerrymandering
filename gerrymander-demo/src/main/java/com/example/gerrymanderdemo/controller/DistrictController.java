@@ -1,4 +1,4 @@
-package com.example.gerrymanderdemo.controller;
+package com.example.gerrymanderdemo.Controller;
 
 public class DistrictController {
 }
