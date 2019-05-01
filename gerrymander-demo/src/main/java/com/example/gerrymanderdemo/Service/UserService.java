@@ -33,10 +33,11 @@ public class UserService {
 
     public User addUser(User user) throws UserExistException{
         String orginPassword = user.getPassword();
+        System.out.println("orginPassword: "+orginPassword);
         String hashedPassword = BCrypt.hashpw(orginPassword, BCrypt.gensalt());
         user.setUserType(UserType.USER);
         user.setPassword(hashedPassword);
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+        if (userRepository.findByEmail(user.getEmail()).isPresent() || orginPassword == null) {
             throw new UserExistException();
         } else {
             return userRepository.save(user);
