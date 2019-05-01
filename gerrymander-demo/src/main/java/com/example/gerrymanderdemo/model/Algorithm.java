@@ -6,15 +6,17 @@ import com.example.gerrymanderdemo.model.Enum.PreferenceType;
 import java.util.Map;
 
 public class Algorithm {
-    private Map<String, Number> preference;
+    private Map<String, String> preference;
     private State state;
     private ClusterManager clusterManager;
     float tempObjectiveFunctionValue;
 
-    public Algorithm(Map<String, Number> preference, State state, PrecinctService service) {
+    public Algorithm(Map<String, String> preference, State state, PrecinctService service) {
         this.preference = preference;
         this.state = state;
-        this.clusterManager = new ClusterManager(service, preference.get(PreferenceType.NUM_DISTRICTS.toString()).intValue());
+        this.clusterManager = new ClusterManager(service,
+                PreferenceType.valueOf(preference.get(PreferenceType.COMMUNITY_OF_INTEREST.toString())),
+                preference.get(PreferenceType.NUM_DISTRICTS));
     }
 
     public State graphPartician() {
