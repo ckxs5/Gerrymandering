@@ -22,13 +22,18 @@ public class Data implements ResponseObject {
     @OneToOne
     Boundary boundary;
 
-    public Data() {
+    public Data(Data d1, Data d2) {
+        //TODO
     }
 
     public Data(Vote voteData, Demographic demographic, Boundary boundary) {
         this.voteData = voteData;
         this.demographic = demographic;
         this.boundary = boundary;
+    }
+
+    public Data(Data a, Data b){
+
     }
 
     public Vote getVoteData() {

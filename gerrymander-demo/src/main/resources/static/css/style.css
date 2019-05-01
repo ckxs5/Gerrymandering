@@ -229,6 +229,7 @@ body, html{
 #weights{
     list-style: none;
     padding-inline-start: 0;
+    font-size: 12px;
 }
 li{
     display: block;

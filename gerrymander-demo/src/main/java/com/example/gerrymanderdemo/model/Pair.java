@@ -27,12 +27,11 @@ public class Pair {
     }
 
     public Pair getPair(){
-        // Todo
-        return null;
+        return this;
     }
 
-    public Cluster getOther(Cluster ele){
-        // Todo
-        return null;
+    public Cluster getOtherEle(Cluster ele){
+        return (this.element1 == ele)?this.element1:this.element2;
     }
+
 }
