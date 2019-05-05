@@ -23,7 +23,6 @@ public class District {
     }
 
     public District(District dist){
-        this.id = dist.getId();
         this.data = new Data(dist.getData());
         this.precincts = new HashSet<>();
         this.precincts.addAll(dist.getPrecincts());
