@@ -31,8 +31,8 @@ public class Edge extends Pair<Cluster> implements Comparable{
     }
 
     @Override
-    public boolean updateElment(Cluster orgE, Cluster newE) {
-        if (super.updateElment(orgE, newE)) {
+    public boolean updateElement(Cluster orgE, Cluster newE) {
+        if (super.updateElement(orgE, newE)) {
             setJoinability();
             return true;
         }

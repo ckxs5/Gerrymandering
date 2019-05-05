@@ -52,27 +52,29 @@
                 <button class="btn btn-secondary" type="button">Pause</button>
                 <button class="btn btn-secondary" type="button">Update</button>
             </div>
-            <div class="dropdown btn-major">
-                <select class="btn btn-secondary dropdown-toggle select-css">
-                    <option th:each="community : ${communities}" th:value="${community}" th:text="${community.toString()} == 'ALL' ? 'Select a Majority Minority' : ${community}"></option>
-                </select>
-            </div>
-            <div class="dropdown btn-states">
-                <select id="states" class="btn btn-secondary dropdown-toggle select-css">
-                    <option th:each="state : ${states}" th:value="${state}" th:text="${state.toString()} == 'ALL' ? 'Select a State to Display' : ${state}"></option>
-                </select>
-            </div>
-            <div class="dropdown btn-compactness">
-                <select id="compactness" class="btn btn-secondary dropdown-toggle select-css">
-                    <option th:each="compactness : ${compactness}" th:value="${compactness}" th:text="${compactness.toString()} == 'ALL' ? 'Compactness' : ${compactness}"></option>
-                </select>
-            </div>
 
             <div class="weightsblock">
                 <ul id="weights">
-                    <li th:each="weight : ${weights}">
-                        <label th:for="${weight}" class="ranges" th:text="${weight}"></label>
-                        <input class="custom-range" th:id="${weight}" th:name="${weight}" type="range">
+                    <li th:each="preference : ${preferences}" th:switch="${preference.toString()}">
+                        <div th:case="'STATE_NAME'" class="dropdown btn-states">>
+                            <select id="states" class="btn btn-secondary dropdown-toggle select-css">-->
+                                <option th:each="state : ${states}" th:value="${state}" th:text="${state.toString()} == 'ALL' ? 'Select a State to Display' : ${state}"></option>
+                            </select>
+                        </div>
+                        <div th:case="'COMMUNITY_OF_INTEREST'" class="dropdown btn-major">
+                            <select class="btn btn-secondary dropdown-toggle select-css">
+                                <option th:each="community : ${communities}" th:value="${community}" th:text="${community.toString()} == 'ALL' ? 'Select a Majority Minority' : ${community}"></option>
+                            </select>
+                        </div>
+                        <div th:case="'GRAPH_THEORETICAL_COMPACTNESS'" class="dropdown btn-compactness">
+                            <select id="compactness" class="btn btn-secondary dropdown-toggle select-css">
+                                <option th:each="c : ${compactness}" th:value="${c}" th:text="${c.toString()} == 'ALL' ? 'Compactness' : ${c}"></option>
+                            </select>
+                        </div>
+                        <div th:case="*">
+                            <label th:for="${preference}" class="ranges" th:text="${preference}"></label>
+                            <input class="custom-range" th:id="${preference}" th:name="${preference}" type="range">
+                        </div>
                     </li>
                 </ul>
             </div>
