@@ -20,7 +20,7 @@ public class Algorithm {
                 Integer.parseInt(preference.get(PreferenceType.NUM_DISTRICTS.toString())));
     }
 
-    public State graphPartician() {
+    public State graphPartisian() {
         clusterManager.run();
         state.setDistricts(clusterManager.toDistricts());
         return state;

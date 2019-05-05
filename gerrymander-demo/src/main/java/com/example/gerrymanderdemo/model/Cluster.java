@@ -81,7 +81,7 @@ public class Cluster implements Comparable{
     // add ClassDiagram
     private void passEdges(Cluster parentCluster){
         for (Edge e : edges) {
-            e.updateElment(this, parentCluster);
+            e.updateElement(this, parentCluster);
         }
         List<Edge> temp = edges;
         this.edges = null;

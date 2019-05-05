@@ -32,7 +32,7 @@ public class Pair<T> {
         return this.element1.equals(e) ? this.element2: this.element1;
     }
 
-    public boolean updateElment (T orgE, T newE) {
+    public boolean updateElement (T orgE, T newE) {
         boolean done = false;
         if (element1.equals(orgE)) {
             setElement1(newE);

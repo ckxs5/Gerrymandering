@@ -33,7 +33,10 @@ public class BatchManager {
     }
 
     public void runBatch(){
-
+        int times = Integer.parseInt(userPreference.get(PreferenceType.NUM_BATCH_RUN.toString()));
+        for (int i = 0; i < times; i++) {
+            runAlgorithm();
+        }
     }
 
     private void runAlgorithm() {
