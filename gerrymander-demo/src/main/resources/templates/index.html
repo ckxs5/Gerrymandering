@@ -67,7 +67,6 @@
                     <option th:each="compactness : ${compactness}" th:value="${compactness}" th:text="${compactness.toString()} == 'ALL' ? 'Compactness' : ${compactness}"></option>
                 </select>
             </div>
-
             <div class="weightsblock">
                 <ul id="weights">
                     <li th:each="weight : ${weights}">

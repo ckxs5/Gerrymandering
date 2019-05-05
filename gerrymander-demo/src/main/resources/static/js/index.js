@@ -145,6 +145,8 @@ $("document").ready(function () {
         return document.getElementById("majorMinor").value;
     });
 
+    $(th: id${weight})
+
     /**
      * @todo Generate Color based on measurements in future
      */
