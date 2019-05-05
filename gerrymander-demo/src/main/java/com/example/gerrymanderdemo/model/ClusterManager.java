@@ -12,6 +12,7 @@ public class ClusterManager {
     private int totalPopulation = 0;
 
     public ClusterManager(PrecinctService service, RaceType communityOfInterest, int targetNumCluster) {
+//    public ClusterManager(PrecinctService service, int targetNumCluster) {
         this.targetNumCluster = targetNumCluster;
         this.communityOfInterest = communityOfInterest;
         clusters = new ArrayList<>();
