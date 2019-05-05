@@ -27,11 +27,11 @@ public class Range<T extends Comparable<? super T>>{
     }
 
     public T getLowerBound() {
-        return v1.compareTo(v2) >= 0 ? v1 : v2;
+        return v1.compareTo(v2) < 0 ? v1 : v2;
     }
 
     public T getUpperBound() {
-        return v1.compareTo(v2) < 0 ? v1 : v2;
+        return v1.compareTo(v2) > 0 ? v1 : v2;
     }
 
     public boolean isIncluding(T x) {

@@ -7,6 +7,7 @@ import com.example.gerrymanderdemo.model.Data.Vote;
 import com.example.gerrymanderdemo.model.Enum.Party;
 import com.example.gerrymanderdemo.model.Enum.RaceType;
 import com.example.gerrymanderdemo.model.Enum.StateName;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -26,7 +27,8 @@ public class State {
     //TODO: See Whether if we need this?
     private int numMajMinDistricts;
     private StateName name;
-    private double districtPopulationVariant = 1.2;     //TODO: How to get it from properties file
+    @Value("${gerrymandering.range.variant}")
+    private double districtPopulationVariant;
 
     public State() {
     }
@@ -112,27 +114,11 @@ public class State {
         this.id = id;
     }
 
-    public double getDistrictPopulationVariant() {
-        return districtPopulationVariant;
-    }
-
-    public void setDistrictPopulationVariant(double districtPopulationVariant) {
-        this.districtPopulationVariant = districtPopulationVariant;
-    }
-
-    public String getDistrictsBoundary(){
-        // Todo
-        return null;
-    }
-
-    public String getDataAsJSON(){
-        // Todo
-        return null;
-    }
-
     public double getGerrymanderingScore(){
-        // Todo
-        return 0;
+        return 1.0 * Math.abs(this.data.getVoteData().getVote(Party.DEMOCRATIC)
+                - this.data.getVoteData().getVote(Party.REPUBLICAN))
+                / Math.max(this.data.getVoteData().getVote(Party.DEMOCRATIC),
+                this.data.getVoteData().getVote(Party.REPUBLICAN));
     }
 
 }

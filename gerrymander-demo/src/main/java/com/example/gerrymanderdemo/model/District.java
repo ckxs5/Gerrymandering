@@ -2,6 +2,7 @@ package com.example.gerrymanderdemo.model;
 
 import com.example.gerrymanderdemo.model.Data.Data;
 import com.example.gerrymanderdemo.model.Enum.Order;
+import com.example.gerrymanderdemo.model.Enum.Party;
 import com.example.gerrymanderdemo.model.Enum.RaceType;
 
 import javax.persistence.*;
@@ -119,5 +120,12 @@ public class District {
 
     public boolean isMajorityMinority(RaceType communityOfInterest, Range range){
         return range.isIncluding(this.getData().getDemographic().getPercentByRace(communityOfInterest));
+    }
+
+    public double getGerrymanderingScore(){
+        return 1.0 * Math.abs(this.data.getVoteData().getVote(Party.DEMOCRATIC)
+                - this.data.getVoteData().getVote(Party.REPUBLICAN))
+                / Math.max(this.data.getVoteData().getVote(Party.DEMOCRATIC),
+                this.data.getVoteData().getVote(Party.REPUBLICAN));
     }
 }
