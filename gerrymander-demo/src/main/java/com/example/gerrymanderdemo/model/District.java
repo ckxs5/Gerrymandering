@@ -118,16 +118,6 @@ public class District {
         }
     }
 
-    public String getDemoAsJSON(){
-        // Todo
-        return null;
-    }
-
-    public String getBoundary(){
-        // Todo
-        return null;
-    }
-
     public boolean isMajorityMinority(RaceType communityOfInterest, Range range){
         return range.isIncluding(this.getData().getDemographic().getPercentByRace(communityOfInterest));
     }
