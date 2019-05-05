@@ -3,10 +3,8 @@ package com.example.gerrymanderdemo.model;
 import com.example.gerrymanderdemo.model.Data.Data;
 import com.example.gerrymanderdemo.model.Enum.Order;
 import com.example.gerrymanderdemo.model.Enum.RaceType;
-import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,8 +18,6 @@ public class District {
     private Data data;
     @OneToMany
     private Set<Precinct> precincts;
-    private boolean isMajorityMinority;
-    private double tRatio;
 
     public District(){
     }
@@ -29,12 +25,8 @@ public class District {
     public District(District dist){
         this.id = dist.getId();
         this.data = new Data(dist.getData());
-        this.isMajorityMinority = dist.isMajorityMinority();
-        this.tRatio = dist.getTRatio();
         this.precincts = new HashSet<>();
-        for(Precinct c: dist.getPrecincts()){
-            this.precincts.add(new Precinct(c));
-        }
+        this.precincts.addAll(dist.getPrecincts());
     }
 
     public Data getData() {
@@ -61,47 +53,69 @@ public class District {
         this.id = id;
     }
 
-    public boolean isMajorityMinority() {
-        return isMajorityMinority;
+    public Set<Precinct> getNeighbors(){
+        Set<Precinct> neighbours = new HashSet<>();
+        for (Precinct p: precincts) {
+            neighbours.addAll(p.getNeighbors());
+        }
+        return neighbours;
     }
 
-    public void setMajorityMinority(boolean majorityMinority) {
-        isMajorityMinority = majorityMinority;
-    }
+    public Precinct findBestCandidate(RaceType type, Order order){
+        Precinct minCandidate = (Precinct) precincts.toArray()[0];
+        Precinct maxCandidate = (Precinct) precincts.toArray()[0];
 
-    public double getTRatio() {
-        return tRatio;
-    }
+        for (Precinct p : precincts) {
+            if (minCandidate.getData().getDemographic().getPercentByRace(type)
+                    > p.getData().getDemographic().getPercentByRace(type)) {
+                minCandidate = p;
+            }
+            if (maxCandidate.getData().getDemographic().getPercentByRace(type)
+                    < p.getData().getDemographic().getPercentByRace(type)) {
+                maxCandidate = p;
+            }
+        }
 
-    public void settRatio(double tRatio) {
-        this.tRatio = tRatio;
-    }
-
-    public void getNeighbors(){
-        // Todo
-    }
-
-    public void findBestCandidates(RaceType type, Order order){
-        // Todo
+        switch (order) {
+            case ASCENDING:
+                return minCandidate;
+            case DESCENDING:
+                return maxCandidate;
+            default:
+                return null;
+        }
     }
 
     public District testPrecinct(Precinct precinct){
-        // Todo
-        return null;
+        //TODO: This can only work when deep copy is implemented correctly
+        District result = new District(this);
+        result.addPrecinct(precinct);
+        return result;
     }
 
     public void addPrecinct(Precinct precinct){
-        // Todo
+        if (precincts.add(precinct)) {
+            this.data.add(precinct.getData());
+        }
     }
 
     public Precinct removePrecinct(Precinct precinct){
-        // Todo
+        if (precincts.remove(precinct)) {
+            this.data.remove(precinct.getData());
+            return precinct;
+        }
         return null;
     }
 
-    public int compareMinorityRatio(double tRatio){
-        // Todo
-        return 0;
+    public double compareMinorityRatio(RaceType communityOfInterest, Range<Double> tRatio){
+        double actual = this.getData().getDemographic().getPercentByRace(communityOfInterest);
+        if (tRatio.getUpperBound() < actual) {
+            return actual - tRatio.getUpperBound();
+        } else if (tRatio.getLowerBound() > actual) {
+            return tRatio.getLowerBound() - actual;
+        } else {
+            return 0;
+        }
     }
 
     public String getDemoAsJSON(){
@@ -114,8 +128,7 @@ public class District {
         return null;
     }
 
-    public double isMajorityMinorityDistrict(RaceType type, Range range){
-        // Todo
-        return 0;
+    public boolean isMajorityMinority(RaceType communityOfInterest, Range range){
+        return range.isIncluding(this.getData().getDemographic().getPercentByRace(communityOfInterest));
     }
 }

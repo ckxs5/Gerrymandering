@@ -71,6 +71,16 @@ public class Vote implements ResponseObject {
         }
     }
 
+    public Vote remove(Vote other){
+        for (Party p : Party.values()) {
+//            if(other.getVote(p) > votes[p.ordinal()]) {
+//                throw new IllegalArgumentException();
+//            }
+            votes[p.ordinal()] -= other.getVote(p);
+        }
+        return other;
+    }
+
     @Override
     public JSONObject toJSONObject() {
         JSONObject json = new JSONObject();

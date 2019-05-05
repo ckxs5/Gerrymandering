@@ -71,6 +71,13 @@ public class Data implements ResponseObject {
         this.boundary.add(other.getBoundary());
     }
 
+    public Data remove(Data other) {
+        this.voteData.remove(other.getVoteData());
+        this.demographic.remove(other.getDemographic());
+        this.boundary.remove(other.getBoundary());
+        return other;
+    }
+
     @Override
     public JSONObject toJSONObject() {
         try {
@@ -82,6 +89,5 @@ public class Data implements ResponseObject {
             System.out.println("Unexpected error occurs when converting Data into JSON object");
             return null;
         }
-
     }
 }

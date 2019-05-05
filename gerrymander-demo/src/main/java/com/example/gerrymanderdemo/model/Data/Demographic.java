@@ -64,6 +64,13 @@ public class Demographic implements ResponseObject {
         }
     }
 
+    public Demographic remove(Demographic other) {
+        for(RaceType r : RaceType.values()){
+            population[r.ordinal()] -= other.getPopulation(r);
+        }
+        return other;
+    }
+
     @Override
     public JSONObject toJSONObject() {
         JSONObject json = new JSONObject();

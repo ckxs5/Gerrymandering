@@ -39,7 +39,12 @@ public class Boundary implements ResponseObject {
 
     public void add(Boundary other) {
         //TODO: Implement graph
-        geoJSON += other;
+        geoJSON += other.getGeoJSON();
+    }
+
+    public Boundary remove(Boundary other) {
+        geoJSON = geoJSON.replace(other.getGeoJSON(), "");
+        return other;
     }
 
     @Override

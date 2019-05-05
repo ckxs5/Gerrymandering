@@ -14,7 +14,6 @@ public class AlgorithmController {
     @PostMapping(value = "/setweights", consumes = "application/json")
     @ResponseBody
     public String setWeights(@RequestBody HashMap<String, Number> weights) {
-        System.out.println("Hello Haofeng");
         System.out.println(weights);
         return null;
     }

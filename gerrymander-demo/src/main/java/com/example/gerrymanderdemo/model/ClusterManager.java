@@ -78,8 +78,7 @@ public class ClusterManager {
 
     private List<Cluster> filterClusters(){
         return clusters.stream()
-                .filter(cluster -> cluster.getData().getDemographic().getPopulation(RaceType.ALL)
-                        < totalPopulation / targetNumCluster)
+                .filter(cluster -> cluster.getData().getDemographic().getPopulation(RaceType.ALL) < totalPopulation / targetNumCluster)
                 .collect(Collectors.toList());
     }
 
