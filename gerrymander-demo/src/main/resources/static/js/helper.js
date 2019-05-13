@@ -1,4 +1,6 @@
 function postData(data, url, callback) {
+    console.log("Post Data");
+    console.log(data);
     $.ajax({
         type: "POST",
         url: url,

@@ -17,14 +17,10 @@ public class IndexController {
         System.out.println(session.getAttribute("user"));
         ModelAndView mav;
 
-        if(user == null) {
-            System.out.println("return login ");
-            mav = new ModelAndView("login");
-        }else if(user.getUserType().equals(UserType.ADMIN)){
+       if(user != null && user.getUserType().equals(UserType.ADMIN)){
             mav = new ModelAndView("admin");
-        }
-        else {
-            System.out.println("return index ");
+        } else {
+            System.out.println("return index2");
             mav = new ModelAndView("index");
             mav.addObject("compactness", Compactness.values());
             mav.addObject("preferences", PreferenceType.values());
