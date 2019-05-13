@@ -120,5 +120,8 @@ public class State {
                 / Math.max(this.data.getVoteData().getVote(Party.DEMOCRATIC),
                 this.data.getVoteData().getVote(Party.REPUBLICAN));
     }
-
+    //TODO: Change districts type to HashMap<districtId, district>
+    public District getDistrict(String s) {
+        return null;
+    }
 }
