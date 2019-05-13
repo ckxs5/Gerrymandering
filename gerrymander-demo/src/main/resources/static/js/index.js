@@ -149,6 +149,14 @@ $("document").ready(function () {
         $(".lightbox").stop().delay(500).fadeOut(500);
     });
 
+    $(".custom-range").on("change", function() {
+        console.log("slider bar");
+        console.log($(this).val());
+        console.log()
+        var val = $(this).val()
+        $(this).parent().children(':first-child').html().innerHTML = val;
+
+    });
 
 
     /**
@@ -156,6 +164,7 @@ $("document").ready(function () {
      * @todo Revise stateBounds.
      */
     $("#states").on("change", function() {
+        console.log($("#states").val());
         const state = $("#states").val();
         if (state === "ALL")
             mymap.fitBounds(maxBounds);
@@ -167,8 +176,9 @@ $("document").ready(function () {
         fitStateBounds(stateBounds[state]);
     });
 
-    $("#majorMinor").change(function(){
-        return document.getElementById("majorMinor").value;
+    $("#communities").on("change", function() {
+        console.log($("#communities").val());
+        return $("#communities").val();
     });
 
     // $(th: id${weight})
@@ -307,6 +317,7 @@ $("document").ready(function () {
     //
     // }
     // disables();
+
 });
 
 

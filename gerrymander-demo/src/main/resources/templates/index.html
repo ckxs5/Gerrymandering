@@ -69,22 +69,22 @@
                 <ul id="weights">
                     <li th:each="preference : ${preferences}" th:switch="${preference.toString()}">
                         <div th:case="'STATE_NAME'" class="dropdown btn-states">>
-                            <select id="states" class="btn btn-secondary dropdown-toggle select-css">-->
+                            <select id="states" class="btn-sm btn-secondary dropdown-toggle select-css">-->
                                 <option th:each="state : ${states}" th:value="${state}" th:text="${state.toString()} == 'ALL' ? 'Select a State to Display' : ${state}"></option>
                             </select>
                         </div>
                         <div th:case="'COMMUNITY_OF_INTEREST'" class="dropdown btn-major">
-                            <select class="btn btn-secondary dropdown-toggle select-css">
+                            <select id ="communities" class="btn-sm btn-secondary dropdown-toggle select-css">
                                 <option th:each="community : ${communities}" th:value="${community}" th:text="${community.toString()} == 'ALL' ? 'Select a Majority Minority' : ${community}"></option>
                             </select>
                         </div>
                         <div th:case="'GRAPH_THEORETICAL_COMPACTNESS'" class="dropdown btn-compactness">
-                            <select id="compactness" class="btn btn-secondary dropdown-toggle select-css">
+                            <select id="compactness" class="btn-sm btn-secondary dropdown-toggle select-css">
                                 <option th:each="c : ${compactness}" th:value="${c}" th:text="${c.toString()} == 'ALL' ? 'Compactness' : ${c}"></option>
                             </select>
                         </div>
                         <div th:case="*">
-                            <label th:for="${preference}" class="ranges" th:text="${preference}"></label>
+                            <label th:for="${preference}" class="ranges" th:text="${preference}"><span th:id="for${preference}"></span></label>
                             <input class="custom-range" th:id="${preference}" th:name="${preference}" type="range">
                         </div>
                     </li>
