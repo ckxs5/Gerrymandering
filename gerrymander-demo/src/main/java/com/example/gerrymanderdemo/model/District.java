@@ -128,4 +128,13 @@ public class District {
                 / Math.max(this.data.getVoteData().getVote(Party.DEMOCRATIC),
                 this.data.getVoteData().getVote(Party.REPUBLICAN));
     }
+
+    //TODO
+    public Set<Precinct> getBorderPrecincts() {
+        return null;
+    }
+    //TODO: we should change precincts type to a HashMap<precinctId, precinct>
+        public Precinct getPrecinct(String n) {
+        return null;
+    }
 }

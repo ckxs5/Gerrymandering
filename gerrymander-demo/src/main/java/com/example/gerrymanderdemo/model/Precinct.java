@@ -91,5 +91,10 @@ public class Precinct implements ResponseObject {
             return null;
         }
     }
+    //TODO
+    public Set<String> getNeighborIDs() {
+        return null;
+    }
+
 
 }
