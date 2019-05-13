@@ -84,6 +84,11 @@ body, html{
 }
 
 .lightbox {
+    background-image: url("../Images/bigoriole.png");
+    background-repeat: no-repeat;
+    background-size: 640px;
+    background-position-x: center;
+    background-position-y: inherit;
     position: absolute;
     top: 0;
     left: 0;
@@ -92,9 +97,10 @@ body, html{
     height: 100%;
     padding: 15% 35% 25% 35%;
     text-align: center;
-    background-color: #7d8ea0;
+    background-color: #232a30;
     text-align: center;
     text-shadow: #333 0 1px 0;
+    z-index: 1000;
 }
 
 .toolbar{
@@ -115,7 +121,7 @@ body, html{
     background-repeat: no-repeat;
     background-size: 640px;
     background-position-x: center;
-    background-position-y: 12px;
+    background-position-y: inherit;
     /*background-position: center ;*/
     padding-top: 140px;
 }
@@ -182,6 +188,9 @@ body, html{
     alignment: center;
     display: flex !important;
     margin-bottom: 10px;
+}
+.form-inline{
+    float: right;
 }
 .dropdown-menu{
     min-width: 20rem !important;

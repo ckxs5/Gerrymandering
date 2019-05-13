@@ -21,10 +21,10 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/login")
-    public String getlogin() {
-        return "login";
-    }
+//    @GetMapping("/login")
+//    public String getlogin() {
+//        return "login";
+//    }
 
 
     @PostMapping("/login")
@@ -32,6 +32,7 @@ public class UserController {
         System.out.printf("Get email: %s and pass: %s\n", user.getEmail(), user.getPassword());
         try {
             session.setAttribute("user", userService.find(user.getEmail(), user.getPassword()));
+            System.out.println("login successful");
             return new ResponseEntity<>((HttpStatus.OK));
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error Message");

@@ -125,6 +125,32 @@ $("document").ready(function () {
         postData(weights, "/setweights", printData);
     });
 
+    $("#sign-in").on("click", function () {
+        usernameAndPassword = {};
+        var count = 0;
+        $("#toHome input").each(function () {
+            console.log($(this).attr("name") + " : " + $(this).val());
+            usernameAndPassword[$(this).attr("name")] = $(this).val();
+        });
+        console.log(usernameAndPassword);
+        $.each(usernameAndPassword, function(key, value){
+            if(value !== "")
+                count += 1;
+        });
+        if (count == 2)
+            postForm(event, "#toHome", "/login", userlogin);
+
+    });
+
+    $("#signupbtn").on("click", function () {
+        $(".lightbox").delay(500).fadeIn(500);
+    });
+    $("#cancel-button").on("click", function () {
+        $(".lightbox").stop().delay(500).fadeOut(500);
+    });
+
+
+
     /**
      * @todo Revise the function.
      * @todo Revise stateBounds.
@@ -145,7 +171,7 @@ $("document").ready(function () {
         return document.getElementById("majorMinor").value;
     });
 
-    $(th: id${weight})
+    // $(th: id${weight})
 
     /**
      * @todo Generate Color based on measurements in future
