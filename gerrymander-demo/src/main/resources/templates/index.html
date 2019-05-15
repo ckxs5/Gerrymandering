@@ -84,7 +84,7 @@
                             </select>
                         </div>
                         <div th:case="*">
-                            <label th:for="${preference}" class="ranges" th:text="${preference}"><span th:id="for${preference}"></span></label>
+                            <label th:for="${preference}" class="ranges" th:text="${preference}"></label>
                             <input class="custom-range" th:id="${preference}" th:name="${preference}" type="range">
                         </div>
                     </li>
@@ -101,8 +101,8 @@
     <form class="form-signin" id="signup" method="post">
         <input type="email" name="email" class="form-control" placeholder="Email" required autofocus>
         <input type="password" name="password" class="form-control" placeholder="password" required>
-        <button class="btn btn-primary btn-lg" type="submit" id="signup-submit-button" onclick=postForm(event,"#signup","/signup",usersignup)>Sign up</button>
-        <button class="btn btn-primary btn-lg" type="button" id="cancel-button"> Cancel </button>
+        <button class="btn-lg btn-primary" type="submit" id="signup-submit-button" onclick=postForm(event,"#signup","/signup",usersignup)>Sign up</button>
+        <button class="btn-lg btn-primary" type="button" id="cancel-button"> Cancel </button>
     </form>
 </div>
 
