@@ -154,11 +154,13 @@ $("document").ready(function () {
     });
 
     $(".custom-range").on("change", function() {
-        console.log("slider bar");
         var weights = $(this).parent().children(':last-child').attr('id')+": "+$(this).val();
         $(this).parent().children(':first-child').text(weights);
     });
 
+    $("#btn-batch").on("change", function() {
+        if($(this).prop('checked'))
+    });
 
     /**
      * @todo Revise the function.

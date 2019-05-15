@@ -14,8 +14,6 @@ function postForm(event, formId, postUrl, callback) {
         form = $(formId);
     else
         form = $("form");
-    // console.log(form);
-    // console.log(objectizeFormArray(form.serializeArray()));
     event.preventDefault();
     postData(objectizeFormArray(form.serializeArray()), postUrl, callback);
 }
