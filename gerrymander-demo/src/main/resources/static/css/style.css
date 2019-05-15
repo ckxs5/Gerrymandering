@@ -203,6 +203,13 @@ body, html{
     margin-top: 5px;
 }
 
+.btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active,
+.show > .btn-secondary.dropdown-toggle {
+    color: #fff;
+    background-color: dodgerblue;
+    border-color: dodgerblue;
+}
+
 .custom-control-label, .ranges{
     color: ghostwhite;
 }
