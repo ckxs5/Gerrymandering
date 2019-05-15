@@ -10,9 +10,10 @@ import javax.persistence.*;
 public class Boundary implements ResponseObject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(length = 100)
-    String id;
-    String geoJSON;
+    private Long id;
+    @ElementCollection
+    @OrderColumn
+    private double[][] geoJSON;
 
     public Boundary() {
     }
@@ -21,29 +22,36 @@ public class Boundary implements ResponseObject {
         geoJSON = boundary.getGeoJSON();
     }
 
-    public Boundary(String geoJSON) {
+    public Boundary(double[][] geoJSON) {
         this.geoJSON = geoJSON;
     }
 
     public Boundary(Boundary b1, Boundary b2) {
-        geoJSON = b1.geoJSON + b2.geoJSON;
+        //TODO
     }
 
-    public String getGeoJSON() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public double[][] getGeoJSON() {
         return geoJSON;
     }
 
-    public void setGeoJSON(String geoJSON) {
+    public void setGeoJSON(double[][] geoJSON) {
         this.geoJSON = geoJSON;
     }
 
     public void add(Boundary other) {
-        //TODO: Implement graph
-        geoJSON += other.getGeoJSON();
+        //TODO
     }
 
     public Boundary remove(Boundary other) {
-        geoJSON = geoJSON.replace(other.getGeoJSON(), "");
+        //TODO
         return other;
     }
 
@@ -54,11 +62,11 @@ public class Boundary implements ResponseObject {
 
     @Override
     public JSONObject toJSONObject() {
-        try {
-            return new JSONObject(geoJSON);
-        }catch (JSONException ex) {
-            System.out.printf("Exception catched when returning a geoJson: %s \n", ex.getMessage());
+        //try {
             return null;
-        }
+//        }catch (JSONException ex) {
+//            System.out.printf("Exception catched when returning a geoJson: %s \n", ex.getMessage());
+//            return null;
+//        }
     }
 }
