@@ -17,8 +17,7 @@ import java.util.Collection;
 public class State {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(length = 100)
-    private String id;
+    private Long id;
     @OneToOne
     private Data data;
     @OneToMany
@@ -61,7 +60,7 @@ public class State {
     private void updateData(){
         data = new Data(new Vote(new int[Party.values().length]),
                 new Demographic(new int[RaceType.values().length]),
-                new Boundary(""));
+                new Boundary());
         for (District d : districts) {
             data.add(d.getData());
         }
@@ -106,11 +105,11 @@ public class State {
         this.name = name;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -121,7 +120,7 @@ public class State {
                 this.data.getVoteData().getVote(Party.REPUBLICAN));
     }
     //TODO: Change districts type to HashMap<districtId, district>
-    public District getDistrict(String s) {
+    public District getDistrict(Long s) {
         return null;
     }
 }

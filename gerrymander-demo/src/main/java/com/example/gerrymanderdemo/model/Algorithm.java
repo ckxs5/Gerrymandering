@@ -16,7 +16,7 @@ public class Algorithm {
     float tempObjectiveFunctionValue;
     private District currentDistrict = null;
     private HashMap<District, Double> currentScores;
-    private HashMap<String, String> redistrictingPlan;//TODO: Map key precinctId to its district's id
+    private HashMap<Long, Long> redistrictingPlan;//TODO: Map key precinctId to its district's id
 
 
     public Algorithm(Map<String, String> preference, State state, PrecinctService service) {
