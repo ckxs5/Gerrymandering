@@ -169,6 +169,9 @@ $("document").ready(function () {
     $("#batchform").on("submit", function(event) {
         event.preventDefault();
     })
+    $("#num-district").on("submit", function(event) {
+        event.preventDefault();
+    })
 
     /**
      * @todo Revise the function.

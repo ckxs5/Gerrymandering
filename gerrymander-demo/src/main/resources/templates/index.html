@@ -77,6 +77,11 @@
                                 <input type="number" class="form-control" th:id="${preference}" th:name="${preference}" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Number of Runs" autofocus min="1" max="10">
                             </form>
                         </div>
+                        <div th:case="NUM_DISTRICTS" class="input-group input-group-sm" id="num-district">
+                            <form id="districtform" class="input-group input-group-sm">
+                                <input type="number" class="form-control" th:id="${preference}" th:name="${preference}" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Number of District" autofocus min="1" max="100">
+                            </form>
+                        </div>
                         <div th:case="STATE_NAME" class="dropdown btn-states">
                             <select id="states" class="btn-sm btn-secondary dropdown-toggle select-css">
                                 <option th:each="state : ${states}" th:value="${state}" th:text="${state.toString()} == 'ALL' ? 'Select a State to Display' : ${state}"></option>
