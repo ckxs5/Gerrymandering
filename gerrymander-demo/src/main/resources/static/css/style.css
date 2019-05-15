@@ -199,7 +199,7 @@ body, html{
 
 .btn-major, .btn-states, .btn-compactness{
     display: grid !important;
-    margin-bottom: 5px;
+    /*margin-bottom: 5px;*/
     margin-top: 5px;
 }
 

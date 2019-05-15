@@ -139,7 +139,6 @@ $("document").ready(function () {
         });
         if (count == 2)
             postForm(event, "#toHome", "/login", userlogin);
-
     });
 
     $("#signupbtn").on("click", function () {
@@ -149,13 +148,15 @@ $("document").ready(function () {
         $(".lightbox").stop().delay(500).fadeOut(500);
     });
 
+    $(".ranges").each(function (){
+        var weights = $(this).parent().children(':first-child').text();
+        $(this).parent().children(':first-child').text(weights +": 50");
+    });
+
     $(".custom-range").on("change", function() {
         console.log("slider bar");
-        console.log($(this).val());
-        console.log()
-        var val = $(this).val()
-        $(this).parent().children(':first-child').html().innerHTML = val;
-
+        var weights = $(this).parent().children(':last-child').attr('id')+": "+$(this).val();
+        $(this).parent().children(':first-child').text(weights);
     });
 
 
