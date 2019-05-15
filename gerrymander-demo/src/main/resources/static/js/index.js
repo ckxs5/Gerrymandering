@@ -211,6 +211,7 @@ $("document").ready(function () {
     }
 
     function highlightFeature(e) {
+        console.log("highlight")
         var layer = e.target;
 
         layer.setStyle({
@@ -218,7 +219,6 @@ $("document").ready(function () {
             color: 'darkgrey',
             fillOpacity: 0.7
         });
-
         if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
             layer.bringToFront();
         }
@@ -238,7 +238,11 @@ $("document").ready(function () {
     }
 
     function highlightPrecinctFeature(e) {
+        console.log("highlightPrecinct");
+        console.log(e);
         highlightFeature(e);
+        var precinctId = e.target.feature["properties"]["PrecinctID"]
+        console.log(precinctId)
         loadPrecinctProperties(e.target);
 
         if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
@@ -247,12 +251,15 @@ $("document").ready(function () {
     }
 
     function loadPrecinctProperties(layer) {
-        getData("/precinct/270010010/data", loadPrecinctPropertiesHelper)
+        //var precinctId = layer.feature["properties"]["PrecinctID"]
+        //console.log(precinctId)
+        //var  url = "/precinct/"+precinctId+"/data"
+        //getData(url, loadPrecinctPropertiesHelper)
     }
 
     function loadPrecinctPropertiesHelper(loadedJson) {
         obj = loadedJson;
-        console.log(loadedJson);
+        //console.log(loadedJson);
         if (obj['data']) {
             if (obj['data']['votingData']) {
                 var democratic = obj['data']['votingData']['DEMOCRATIC'];
@@ -310,6 +317,9 @@ $("document").ready(function () {
             mouseout: resetPrecinctHighlight
         });
     }
+
+    function nothing(){}
+
 
     function onEachStateFeature(feature, layer) {
         layer.on({
