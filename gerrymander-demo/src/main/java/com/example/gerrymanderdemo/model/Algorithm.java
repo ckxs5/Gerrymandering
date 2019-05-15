@@ -4,10 +4,10 @@ import com.example.gerrymanderdemo.Service.PrecinctService;
 import com.example.gerrymanderdemo.model.Enum.PreferenceType;
 import com.example.gerrymanderdemo.model.Enum.RaceType;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
+import static com.example.gerrymanderdemo.model.Enum.Party.DEMOCRATIC;
+import static com.example.gerrymanderdemo.model.Enum.Party.REPUBLICAN;
 
 public class Algorithm {
     private Map<String, String> preference;
@@ -15,7 +15,7 @@ public class Algorithm {
     private ClusterManager clusterManager;
     float tempObjectiveFunctionValue;
     private District currentDistrict = null;
-    private HashMap<District, Double> currentScores;
+    private HashMap<District, Double> currentScores;//TODO: Map district to its score
     private HashMap<Long, Long> redistrictingPlan;//TODO: Map key precinctId to its district's id
 
 
@@ -133,11 +133,163 @@ public class Algorithm {
     //TODO:check contiguity for moving precinct p out of district d
     //returns true if contiguous
     private boolean checkContiguity(Precinct p, District d){
-        return true;
+//        Set<String> neighborIDs = p.getNeighborIDs();
+//        HashSet<Precinct> neededPrecincts = new HashSet<Precinct>();
+//        HashSet<Precinct> neighborToExplore = new HashSet<Precinct>();//potential sources of exploration
+//        HashSet<Precinct> exploreNeighbors = new HashSet<Precinct>();// neighbors already explored
+//        exploreNeighbors.add(p);// add the precinct being moved, to ensure it won't be used
+//        // if a neighbor is in the district that's losing a precinct, we need to make sure they're still contiguous
+//        for (String s : neighborIDs) {
+//            // if neighbor is in the district we're losing from
+//            if ((redistrictingPlan.get(s)).equals(d.getId())) {
+//                Precinct n = d.getPrecinct(s);
+//                neededPrecincts.add(n);
+//            }
+//        }
+//        // if there are no same - district neighbors for the node, returns false
+//        if(neededPrecincts.size() == 0){
+//            return false;
+//        }
+//        // add an arbitrary same - district neighbor to the sources of exploration
+//        neighborToExplore.add(neededPrecincts.iterator().next());
+//        // while we still need iDs and still have neighbors to explore
+//        while (neighborToExplore.size() != 0){
+//            // take an arbitrary precinct from the sources of exploration
+//            Precinct n = neighborToExplore.iterator().next();
+//            for (String s :n.getNeighborIDs()) {
+//                //we only care about neighbors in our district,d
+//                if (redistrictingPlan.get(s).equals(d.getId())) {
+//                    Precinct nn = d.getPrecinct(s);
+//                    // if we've hit one of our needed precincts, check it off
+//                    if (neededPrecincts.contains(nn)) {
+//                        neededPrecincts.remove(nn);
+//                        if (neededPrecincts.size() == 0){
+//                            return true;
+//                        }
+//                    }
+//                    // add any neighbors in same district to neighborsToExplore if not in exploredNeighbors
+//                    if (!exploreNeighbors.contains(nn)){
+//                        neighborToExplore.add(nn);
+//                    }
+//                }
+//            }
+//            // check this precinct off
+//            exploreNeighbors.add(n);
+//            neighborToExplore.remove(n);
+//        }
+//        return (neededPrecincts.size() == 0);
+        return false;
     }
     //TODO
     public double rateDistrict(District d) {
         return 0;
+    }
+
+    /*
+    Partisan fairness:
+    100% - underrepresented party's winning margin
+    OR
+    underrepresented party's losing margin
+    (we want our underrepresented party to either win by a little or lose by a lot - fewer wasted votes)
+*/
+    public double ratePartisanFairness(District d){
+        // temporary section
+        int totalVote = 0;
+        int totalREPvote = 0;
+        int totalDistricts = 0;
+        int totalREPDistricts = 0;
+        for (District sd: state.getDistricts()){
+            totalVote += sd.getData().getVoteData().getVote(REPUBLICAN);
+            totalVote += sd.getData().getVoteData().getVote(DEMOCRATIC);
+            totalREPvote += sd.getData().getVoteData().getVote(REPUBLICAN);
+            totalDistricts += 1;
+            if (sd.getData().getVoteData().getVote(REPUBLICAN)>sd.getData().getVoteData().getVote(DEMOCRATIC)){
+                totalREPDistricts += 1;
+            }
+        }
+        int idealDistrictChange = ((int)Math.round(totalDistricts *((1.0*totalREPvote)/totalVote))) - totalREPDistricts;
+        // end temporary section
+        if (idealDistrictChange == 0){
+            return 1.0;
+        }
+        int gv = d.getData().getVoteData().getVote(REPUBLICAN);
+        int dv = d.getData().getVoteData().getVote(DEMOCRATIC);
+        int tv = gv+dv;
+        int margin = gv-dv;
+        if(tv == 0){
+            return 1.0;
+        }
+        int win_v = Math.max(gv,dv);
+        int loss_v = Math.min(gv,dv);
+        int inefficient_V;
+        if(idealDistrictChange * margin > 0){
+            inefficient_V = win_v - loss_v;
+        }else{
+            inefficient_V = loss_v;
+        }
+        return 1.0 - ((inefficient_V * 1.0)/tv);
+    }
+
+    /*
+    wasted votes:
+    statewide: abs(winning party margin - losing party votes)
+*/
+    public double rateStatewideEfficiencyGap(District d) {
+        int iv_g = 0;
+        int iv_d = 0;
+        int tv = 0;
+        for (District sd : state.getDistricts()) {
+            int gv = sd.getData().getVoteData().getVote(REPUBLICAN);
+            int dv = sd.getData().getVoteData().getVote(DEMOCRATIC);
+            if (gv > dv) {
+                iv_d =+ dv;
+                iv_g += (gv + dv);
+            } else if (dv > gv ) {
+                iv_g += gv;
+                iv_d += (dv - gv);
+            }
+            tv += gv;
+            tv += dv;
+        }
+        return 1.0 - ((Math.abs(iv_g - iv_d) * 1.0) / tv);
+    }
+    /*
+        wasted votes:
+        abs(winning party margin - losing party votes)
+    */
+    public double rateEfficiencyGap(District d) {
+        int gv = d.getData().getVoteData().getVote(REPUBLICAN);
+        int dv = d.getData().getVoteData().getVote(DEMOCRATIC);
+        int tv = gv + dv;
+        if (tv == 0){
+            return 1.0;
+        }
+        int win_v = Math.max(gv, dv);
+        int loss_v = Math.min(gv, dv);
+        int inefficient_V = Math.abs(loss_v - (win_v - loss_v));
+        return 1.0 - ((inefficient_V * 1.0) / tv);
+    }
+    /*
+        COMPETITIVENESS:
+        1.0 - margin of victory
+    */
+    public double rateCOMPETITIVENESS(District d) {
+        int gv = d.getData().getVoteData().getVote(REPUBLICAN);
+        int dv = d.getData().getVoteData().getVote(DEMOCRATIC);
+        return 1.0 - (Math.abs(gv - dv) / (gv + dv));
+    }
+
+    public double rateGERRYMANDER_REPUBLICAN(District d) {
+        int gv = d.getData().getVoteData().getVote(REPUBLICAN);
+        int dv = d.getData().getVoteData().getVote(DEMOCRATIC);
+        int tv = gv + dv;
+        int margin = gv - dv;
+        if (tv == 0){
+            return 1.0;
+        }
+        int win_v = Math.max(gv, dv);
+        int loss_v = Math.min(gv, dv);
+        return 0;//TODO
     }
 
 }
