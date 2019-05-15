@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 
 public class SummaryObject implements ResponseObject {
-    private String stateId;
+    private Long stateId;
     private int[] seats = new int[Party.values().length];
     private double objFuncVal;
     private int numMajMinDistricts;

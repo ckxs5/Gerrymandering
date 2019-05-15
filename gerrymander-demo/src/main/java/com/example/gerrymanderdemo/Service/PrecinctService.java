@@ -6,6 +6,7 @@ import org.assertj.core.util.Lists;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PrecinctService {
@@ -22,5 +23,9 @@ public class PrecinctService {
 
     public List<Precinct> findAll() {
         return Lists.newArrayList(precinctRepository.findAll());
+    }
+
+    public Optional<Precinct> findById(Long id) {
+        return precinctRepository.findById(id);
     }
 }

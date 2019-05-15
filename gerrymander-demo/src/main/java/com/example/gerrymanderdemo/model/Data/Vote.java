@@ -12,11 +12,13 @@ import java.util.Arrays;
 public class Vote implements ResponseObject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(length = 100)
-    private String id;
+    private Long id;
+    @ElementCollection
+    @OrderColumn
     private int[] votes;
 
     public Vote() {
+        votes = new int[Party.values().length];
     }
 
     public Vote(Vote vote) {
@@ -37,6 +39,14 @@ public class Vote implements ResponseObject {
             throw new IndexOutOfBoundsException("Not enough elements in votes, at least " + Party.values().length);
         this.votes = votes;
 
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int[] getVotes() {

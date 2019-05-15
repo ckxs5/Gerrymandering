@@ -22,9 +22,9 @@ public class Move {
     }
 
     public String toString(){
-        String toID = to!=null?to.getId():"NULL";
-        String fromID = from!=null?from.getId():"NULL";
-        String precinctID = precinct!=null?precinct.getId():"NULL";
+        Long toID = to!=null?to.getId(): -1;
+        Long fromID = from!=null?from.getId():-1;
+        Long precinctID = precinct!=null?precinct.getId():-1;
         return "{"+"\"to\":\""+toID+"\",\"from\":\""+fromID+"\",\"precinct\":\""+precinctID+"\"}";
     }
 
