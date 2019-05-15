@@ -239,11 +239,12 @@ $("document").ready(function () {
     }
 
     function loadPrecinctProperties(layer) {
-        getData("/precinct/1/data", loadPrecinctPropertiesHelper)
+        getData("/precinct/270010010/data", loadPrecinctPropertiesHelper)
     }
 
     function loadPrecinctPropertiesHelper(loadedJson) {
         obj = loadedJson;
+        console.log(loadedJson);
         if (obj['data']) {
             if (obj['data']['votingData']) {
                 var democratic = obj['data']['votingData']['DEMOCRATIC'];
