@@ -95,7 +95,7 @@ $("document").ready(function () {
         return this._div;
     };
 
-    info.update = function (democratic, republican, otherParties, all, otherRaces, caucasian, asian, hispanic, african, native, name) {
+    info.update = function (democratic, republican, otherParties, all, otherRaces, caucasian, asian, hispanic, african, native, name,county) {
         this._div.innerHTML = '<h4>Precinct Information</h4>' + (all ?
             '<b>' + name + '</b><br>'
             + '<b>Demographics</b><br>'
@@ -109,6 +109,7 @@ $("document").ready(function () {
             + 'Democratic: ' + democratic + '<br>'
             + 'Republican: ' + republican + '<br>'
             + 'OtherParties: ' + otherParties + '<br>'
+            + 'County: ' + county + '<br>'
             + '<br><b>Population</b><br>'
             + all
             : 'No Precinct Selected');
@@ -228,7 +229,6 @@ $("document").ready(function () {
     }
     function dehighlightFeature(e){
         var layer = e.target;
-
         layer.setStyle({
             weight: 2,
             color: '#fff',
@@ -241,11 +241,7 @@ $("document").ready(function () {
     }
 
     function highlightPrecinctFeature(e) {
-        console.log("highlightPrecinct");
-        console.log(e);
         highlightFeature(e);
-        var precinctId = e.target.feature["properties"]["PrecinctID"]
-        console.log(precinctId)
         loadPrecinctProperties(e.target);
 
         if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
@@ -254,48 +250,59 @@ $("document").ready(function () {
     }
 
     function loadPrecinctProperties(layer) {
-        //var precinctId = layer.feature["properties"]["PrecinctID"]
-        //console.log(precinctId)
-        //var  url = "/precinct/"+precinctId+"/data"
-        //getData(url, loadPrecinctPropertiesHelper)
+        var precinctId = layer.feature["properties"]["PrecinctID"]
+        var  url = "/precinct/"+precinctId+"/data"
+        getData(url, loadPrecinctPropertiesHelper)
     }
 
     function loadPrecinctPropertiesHelper(loadedJson) {
         obj = loadedJson;
-        //console.log(loadedJson);
-        if (obj['data']) {
-            if (obj['data']['votingData']) {
-                var democratic = obj['data']['votingData']['DEMOCRATIC'];
-                var republican = obj['data']['votingData']['REPUBLICAN'];
-                var otherParties = obj['data']['votingData']['OTHERS']
-            } else {
-                var democratic = "N/A";
-                var republican = "N/A";
-                var others = "N/A"
-            }
-            if (obj['data']['demographic']) {
-                var all = obj['data']['demographic']['ALL'];
-                var otherRaces = obj['data']['demographic']['OTHERS'];
-                var caucasian = obj['data']['demographic']['CAUCASIAN'];
-                var asian = obj['data']['demographic']['ASIAN_PACIFIC_AMERICAN'];
-                //console.log('aaaa');
-                var hispanic = obj['data']['demographic']['HISPANIC_LATINO_AMERICAN'];
-                var african = obj['data']['demographic']['AFRICAN_AMERICAN'];
-                var native = obj['data']['demographic']['NATIVE_AMERICAN']
-            } else {
-                var all = "N/A";
-                var others = "N/A";
-                var caucasian = "N/A";
-                var asian = "N/A";
-                var hispanic = "N/A";
-                var african = "N/A";
-                var native = "N/A"
-            }
-        }
-        if (obj['name']) {
-            var name = obj['name']
-        }
-        info.update(democratic, republican, otherParties, all, otherRaces, caucasian, asian, hispanic, african, native, name);
+        // if (obj['data']) {
+        //     if (obj['data']['votingData']) {
+        //         var democratic = obj['data']['votingData']['DEMOCRATIC'];
+        //         var republican = obj['data']['votingData']['REPUBLICAN'];
+        //         var otherParties = obj['data']['votingData']['OTHERS']
+        //     } else {
+        //         var democratic = "N/A";
+        //         var republican = "N/A";
+        //         var others = "N/A"
+        //     }
+        //     if (obj['data']['demographic']) {
+        //         var all = obj['data']['demographic']['ALL'];
+        //         var otherRaces = obj['data']['demographic']['OTHERS'];
+        //         var caucasian = obj['data']['demographic']['CAUCASIAN'];
+        //         var asian = obj['data']['demographic']['ASIAN_PACIFIC_AMERICAN'];
+        //         //console.log('aaaa');
+        //         var hispanic = obj['data']['demographic']['HISPANIC_LATINO_AMERICAN'];
+        //         var african = obj['data']['demographic']['AFRICAN_AMERICAN'];
+        //         var native = obj['data']['demographic']['NATIVE_AMERICAN']
+        //     } else {
+        //         var all = "N/A";
+        //         var others = "N/A";
+        //         var caucasian = "N/A";
+        //         var asian = "N/A";
+        //         var hispanic = "N/A";
+        //         var african = "N/A";
+        //         var native = "N/A"
+        //     }
+        // }
+        // if (obj['name']) {
+        //     var name = obj['name']
+        // }
+        var democratic = obj['democratic'] ? obj['democratic'] : "N/A"
+        var republican = obj['republican'] ? obj['republican'] : "N/A"
+        var other_parties = obj['other_parties'] ? obj['other_parties'] : "N/A"
+        var all = obj['all'] ? obj['all'] : "N/A"
+        var caucasian = obj['caucasian'] ? obj['caucasian'] : "N/A"
+        var african_american = obj['african_american'] ? obj['african_american'] : "N/A"
+        var asian = obj['asian'] ? obj['asian'] : "N/A"
+        var native = obj['native'] ? obj['native'] : "N/A"
+        var hispanic = obj['hispanic'] ? obj['hispanic'] : "N/A"
+        var other_race = obj['other_race'] ? obj['other_race'] : "N/A"
+        var county = obj['county'] ? obj['county'] : "N/A"
+        var name = obj['name'] ? obj['name'] : "N/A"
+
+        info.update(democratic, republican, other_parties, all, other_race, caucasian, asian, hispanic, african_american, native, name,county);
     }
 
     function resetPrecinctHighlight(e) {
