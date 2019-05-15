@@ -159,8 +159,16 @@ $("document").ready(function () {
     });
 
     $("#btn-batch").on("change", function() {
-        if($(this).prop('checked'))
+        if($(this).prop('checked')){
+            $("#batch-runs").show();
+        }else{
+            $("#batch-runs").hide();
+        }
     });
+
+    $("#batchform").on("submit", function(event) {
+        event.preventDefault();
+    })
 
     /**
      * @todo Revise the function.
