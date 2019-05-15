@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
-import java.security.PublicKey;
 
 public class PrecinctDataSerializer extends StdSerializer<Precinct> {
 
@@ -16,7 +15,7 @@ public class PrecinctDataSerializer extends StdSerializer<Precinct> {
         this(null);
     }
 
-    public PrecinctDataSerializer(Class<Precinct> t) {
+    private PrecinctDataSerializer(Class<Precinct> t) {
         super(t);
     }
 
