@@ -139,7 +139,6 @@ $("document").ready(function () {
         });
         if (count == 2)
             postForm(event, "#toHome", "/login", userlogin);
-
     });
 
     $("#signupbtn").on("click", function () {
@@ -149,15 +148,27 @@ $("document").ready(function () {
         $(".lightbox").stop().delay(500).fadeOut(500);
     });
 
-    $(".custom-range").on("change", function() {
-        console.log("slider bar");
-        console.log($(this).val());
-        console.log()
-        var val = $(this).val()
-        $(this).parent().children(':first-child').html().innerHTML = val;
-
+    $(".ranges").each(function (){
+        var weights = $(this).parent().children(':first-child').text();
+        $(this).parent().children(':first-child').text(weights +": 50");
     });
 
+    $(".custom-range").on("change", function() {
+        var weights = $(this).parent().children(':last-child').attr('id')+": "+$(this).val();
+        $(this).parent().children(':first-child').text(weights);
+    });
+
+    $("#btn-batch").on("change", function() {
+        if($(this).prop('checked')){
+            $("#batch-runs").show();
+        }else{
+            $("#batch-runs").hide();
+        }
+    });
+
+    $("#batchform").on("submit", function(event) {
+        event.preventDefault();
+    })
 
     /**
      * @todo Revise the function.
@@ -236,11 +247,12 @@ $("document").ready(function () {
     }
 
     function loadPrecinctProperties(layer) {
-        getData("/precinct/1/data", loadPrecinctPropertiesHelper)
+        getData("/precinct/270010010/data", loadPrecinctPropertiesHelper)
     }
 
     function loadPrecinctPropertiesHelper(loadedJson) {
         obj = loadedJson;
+        console.log(loadedJson);
         if (obj['data']) {
             if (obj['data']['votingData']) {
                 var democratic = obj['data']['votingData']['DEMOCRATIC'];

@@ -199,8 +199,15 @@ body, html{
 
 .btn-major, .btn-states, .btn-compactness{
     display: grid !important;
-    margin-bottom: 5px;
+    /*margin-bottom: 5px;*/
     margin-top: 5px;
+}
+
+.btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active,
+.show > .btn-secondary.dropdown-toggle {
+    color: #fff;
+    background-color: dodgerblue;
+    border-color: dodgerblue;
 }
 
 .custom-control-label, .ranges{
