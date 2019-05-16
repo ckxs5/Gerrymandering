@@ -128,7 +128,7 @@ $("document").ready(function () {
             console.log($(this).attr("id") + " : " + $(this).val());
             weights[$(this).attr("id")] = $(this).val();
         });
-        postData(weights, "/setweights", printData);
+        postData(weights, "/graphpartition", printData);
     });
 
     $("#sign-in").on("click", function () {
