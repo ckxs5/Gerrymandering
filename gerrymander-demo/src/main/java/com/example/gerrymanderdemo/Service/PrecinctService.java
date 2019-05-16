@@ -25,7 +25,5 @@ public class PrecinctService {
         return Lists.newArrayList(precinctRepository.findAll());
     }
 
-    public Optional<Precinct> findById(Long id) {
-        return precinctRepository.findById(id);
-    }
+    public Optional<Precinct> findById(Long id) { return precinctRepository.findById(id); }
 }
