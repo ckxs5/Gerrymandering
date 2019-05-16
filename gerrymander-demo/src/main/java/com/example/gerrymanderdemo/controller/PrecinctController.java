@@ -28,7 +28,22 @@ public class PrecinctController {
     @GetMapping(value = "/precinct/{id}/data", produces = "application/json")
     public ResponseEntity<String> getPrecinctData(@PathVariable Long id) {
         System.out.printf("Request to get data for precinct : %d \n", id);
-        return getPrecinctEntity(id, new PrecinctDataSerializer());
+        Precinct precinct = PrecinctManager.getPrecincts(StateName.MINNESOTA).get(id);
+        if (precinct != null) {
+            ObjectMapper mapper = new ObjectMapper();
+            SimpleModule module = new SimpleModule();
+            module.addSerializer(Precinct.class, new PrecinctDataSerializer());
+            mapper.registerModule(module);
+            try {
+                return ResponseEntity.ok(mapper.writeValueAsString(precinct));
+            } catch (JsonProcessingException ex) {
+                ex.printStackTrace();
+                return ResponseEntity.status(400).body("error");
+            }
+        } else {
+            System.out.printf("Could not find entity with id %d \n", id);
+            return ResponseEntity.status(404).body("Could not find entity");
+        }
     }
 
 //    @GetMapping(value = "/precinct/{id}/boundaries", produces = "application/json")
@@ -48,24 +63,24 @@ public class PrecinctController {
 //    }
 
 
-    private ResponseEntity<String> getPrecinctEntity(Long id, StdSerializer<Precinct> serializer) {
-        Optional<Precinct> obj = precinctService.findById(id);
-        if (obj.isPresent()) {
-            Precinct precinct = obj.get();
-            System.out.printf("Found precinct:\n %s\n", precinct);
-            ObjectMapper mapper = new ObjectMapper();
-            SimpleModule module = new SimpleModule();
-            module.addSerializer(Precinct.class, serializer);
-            mapper.registerModule(module);
-            try {
-                return ResponseEntity.ok(mapper.writeValueAsString(precinct));
-            } catch (JsonProcessingException ex) {
-                ex.printStackTrace();
-                return ResponseEntity.status(400).body("error");
-            }
-        } else {
-            System.out.printf("Could not find entity with id %d \n", id);
-            return ResponseEntity.status(404).body("Could not find entity");
-        }
-    }
+//    private ResponseEntity<String> getPrecinctEntity(Long id, StdSerializer<Precinct> serializer) {
+//        Optional<Precinct> obj = precinctService.findById(id);
+//        if (obj.isPresent()) {
+//            Precinct precinct = obj.get();
+//            System.out.printf("Found precinct:\n %s\n", precinct);
+//            ObjectMapper mapper = new ObjectMapper();
+//            SimpleModule module = new SimpleModule();
+//            module.addSerializer(Precinct.class, serializer);
+//            mapper.registerModule(module);
+//            try {
+//                return ResponseEntity.ok(mapper.writeValueAsString(precinct));
+//            } catch (JsonProcessingException ex) {
+//                ex.printStackTrace();
+//                return ResponseEntity.status(400).body("error");
+//            }
+//        } else {
+//            System.out.printf("Could not find entity with id %d \n", id);
+//            return ResponseEntity.status(404).body("Could not find entity");
+//        }
+//    }
 }
