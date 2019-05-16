@@ -68,7 +68,7 @@ public class Cluster implements Comparable{
         try {
             return this.edges.get(0);
         } catch (IndexOutOfBoundsException ex) {
-            System.out.printf("There is not edge for cluster with children %d", this.getChildren().size());
+            System.out.printf("There is no edge for cluster with children %d\n", this.getChildren().size());
             return null;
         }
     }

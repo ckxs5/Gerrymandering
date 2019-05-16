@@ -133,6 +133,62 @@ public class Algorithm {
         return m;
     }
 
+    public Map<String, String> getPreference() {
+        return preference;
+    }
+
+    public void setPreference(Map<String, String> preference) {
+        this.preference = preference;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public ClusterManager getClusterManager() {
+        return clusterManager;
+    }
+
+    public void setClusterManager(ClusterManager clusterManager) {
+        this.clusterManager = clusterManager;
+    }
+
+    public float getTempObjectiveFunctionValue() {
+        return tempObjectiveFunctionValue;
+    }
+
+    public void setTempObjectiveFunctionValue(float tempObjectiveFunctionValue) {
+        this.tempObjectiveFunctionValue = tempObjectiveFunctionValue;
+    }
+
+    public District getCurrentDistrict() {
+        return currentDistrict;
+    }
+
+    public void setCurrentDistrict(District currentDistrict) {
+        this.currentDistrict = currentDistrict;
+    }
+
+    public HashMap<District, Double> getCurrentScores() {
+        return currentScores;
+    }
+
+    public void setCurrentScores(HashMap<District, Double> currentScores) {
+        this.currentScores = currentScores;
+    }
+
+    public HashMap<Long, Long> getRedistrictingPlan() {
+        return redistrictingPlan;
+    }
+
+    public void setRedistrictingPlan(HashMap<Long, Long> redistrictingPlan) {
+        this.redistrictingPlan = redistrictingPlan;
+    }
+
     //TODO:check contiguity for moving precinct p out of district d
     //returns true if contiguous
     private boolean checkContiguity(Precinct p, District d){
