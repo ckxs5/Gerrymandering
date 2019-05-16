@@ -1,6 +1,6 @@
-const districtZoomLevel = 6;
+const districtZoomLevel = 5;
 const defaultZoomLevel = 4;
-const precinctZoomLevel = 8;
+const precinctZoomLevel = 6;
 const MAXZOOM = 18;
 const MINZOOM = 4;
 const USCENTER = [39.8283, -100.5795];
