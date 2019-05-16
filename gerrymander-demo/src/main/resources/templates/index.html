@@ -51,6 +51,7 @@
 <div class="container-fluid">
     <script type="text/javascript" th:src="@{/geoJson/us-states.js}"></script>
     <script type="text/javascript" th:src="@{/geoJson/FL_Dist.js}"></script>
+    <script type="text/javascript" th:src="@{/geoJson/FL_Precincts.js}"></script>
     <script type="text/javascript" th:src="@{/geoJson/MD_CongressionalDistrict.js}"></script>
     <script type="text/javascript" th:src="@{/geoJson/MD_Precincts.js}"></script>
     <script type="text/javascript" th:src="@{/geoJson/MN_CongressionalDistrict.js}"></script>
@@ -63,28 +64,42 @@
                 <button class="btn btn-secondary aaa" type="button" id="play-btn">Play</button>
                 <button class="btn btn-secondary" type="button">Stop</button>
                 <button class="btn btn-secondary" type="button">Pause</button>
-                <button class="btn btn-secondary" type="button">Update</button>
+                <div class="btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-secondary">
+                    <input id="btn-batch" type="checkbox" autocomplete="off"> Batch
+                </label>
+                </div>
             </div>
             <div class="weightsblock">
                 <ul id="weights">
                     <li th:each="preference : ${preferences}" th:switch="${preference.toString()}">
-                        <div th:case="'STATE_NAME'" class="dropdown btn-states">>
-                            <select id="states" class="btn-sm btn-secondary dropdown-toggle select-css">-->
+                        <div th:case="NUM_BATCH_RUN" class="input-group input-group-sm" id="batch-runs" style="display: none">
+                            <form id="batchform" class="input-group input-group-sm">
+                                <input type="number" class="form-control" th:id="${preference}" th:name="${preference}" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Number of Runs" autofocus min="1" max="10">
+                            </form>
+                        </div>
+                        <div th:case="NUM_DISTRICTS" class="input-group input-group-sm" id="num-district">
+                            <form id="districtform" class="input-group input-group-sm">
+                                <input type="number" class="form-control" th:id="${preference}" th:name="${preference}" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Number of District" autofocus min="1" max="100">
+                            </form>
+                        </div>
+                        <div th:case="STATE_NAME" class="dropdown btn-states">
+                            <select id="states" class="btn-sm btn-secondary dropdown-toggle select-css">
                                 <option th:each="state : ${states}" th:value="${state}" th:text="${state.toString()} == 'ALL' ? 'Select a State to Display' : ${state}"></option>
                             </select>
                         </div>
-                        <div th:case="'COMMUNITY_OF_INTEREST'" class="dropdown btn-major">
+                        <div th:case="COMMUNITY_OF_INTEREST" class="dropdown btn-major">
                             <select id ="communities" class="btn-sm btn-secondary dropdown-toggle select-css">
                                 <option th:each="community : ${communities}" th:value="${community}" th:text="${community.toString()} == 'ALL' ? 'Select a Majority Minority' : ${community}"></option>
                             </select>
                         </div>
-                        <div th:case="'GRAPH_THEORETICAL_COMPACTNESS'" class="dropdown btn-compactness">
+                        <div th:case="GRAPH_THEORETICAL_COMPACTNESS" class="dropdown btn-compactness">
                             <select id="compactness" class="btn-sm btn-secondary dropdown-toggle select-css">
                                 <option th:each="c : ${compactness}" th:value="${c}" th:text="${c.toString()} == 'ALL' ? 'Compactness' : ${c}"></option>
                             </select>
                         </div>
                         <div th:case="*">
-                            <label th:for="${preference}" class="ranges" th:text="${preference}"><span th:id="for${preference}"></span></label>
+                            <label th:for="${preference}" class="ranges" th:text="${preference}"></label>
                             <input class="custom-range" th:id="${preference}" th:name="${preference}" type="range">
                         </div>
                     </li>
@@ -101,8 +116,8 @@
     <form class="form-signin" id="signup" method="post">
         <input type="email" name="email" class="form-control" placeholder="Email" required autofocus>
         <input type="password" name="password" class="form-control" placeholder="password" required>
-        <button class="btn btn-primary btn-lg" type="submit" id="signup-submit-button" onclick=postForm(event,"#signup","/signup",usersignup)>Sign up</button>
-        <button class="btn btn-primary btn-lg" type="button" id="cancel-button"> Cancel </button>
+        <button class="btn-lg btn-primary" type="submit" id="signup-submit-button" onclick=postForm(event,"#signup","/signup",usersignup)>Sign up</button>
+        <button class="btn-lg btn-primary" type="button" id="cancel-button"> Cancel </button>
     </form>
 </div>
 

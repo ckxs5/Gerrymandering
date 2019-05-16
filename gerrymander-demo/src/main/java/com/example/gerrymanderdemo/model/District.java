@@ -13,8 +13,7 @@ import java.util.Set;
 public class District {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(length = 100)
-    private String id;
+    private Long id;
     @OneToOne
     private Data data;
     @OneToMany
@@ -45,11 +44,11 @@ public class District {
         this.precincts = precincts;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

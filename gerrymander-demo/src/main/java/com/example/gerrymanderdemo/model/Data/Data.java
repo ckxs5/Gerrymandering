@@ -10,14 +10,13 @@ import javax.persistence.*;
 public class Data implements ResponseObject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(length = 100)
-    String id;
+    private Long id;
     @OneToOne
-    Vote voteData;
+    private Vote voteData;
     @OneToOne
-    Demographic demographic;
+    private Demographic demographic;
     @OneToOne
-    Boundary boundary;
+    private Boundary boundary;
 
     public Data() {
     }
@@ -40,6 +39,13 @@ public class Data implements ResponseObject {
         this.boundary = boundary;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Vote getVoteData() {
         return voteData;

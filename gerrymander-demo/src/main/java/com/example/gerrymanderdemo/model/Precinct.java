@@ -1,22 +1,21 @@
 package com.example.gerrymanderdemo.model;
 
 import com.example.gerrymanderdemo.model.Data.Data;
+import com.example.gerrymanderdemo.model.Enum.StateName;
 import com.example.gerrymanderdemo.model.Response.ResponseObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 
 @Entity
 public class Precinct implements ResponseObject {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(length = 100)
-    private String id;
+    private Long id;
     private String name;
+    private StateName state;
     //TODO: extract the county this precinct belongs to,  will be used for countyJoinability in Edge
     private String county;
     @OneToOne
@@ -31,7 +30,7 @@ public class Precinct implements ResponseObject {
     public Precinct() {
     }
     
-    public Precinct(String id, String name, Data data, Set<Precinct> neighbors) {
+    public Precinct(Long id, String name, Data data, Set<Precinct> neighbors) {
         this.id = id;
         this.name = name;
         this.data = data;
@@ -42,12 +41,20 @@ public class Precinct implements ResponseObject {
 
     public void setCounty(String county){ this.county = county; }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public StateName getState() {
+        return state;
+    }
+
+    public void setState(StateName state) {
+        this.state = state;
     }
 
     public Data getData() {
@@ -66,8 +73,8 @@ public class Precinct implements ResponseObject {
         this.neighbors = neighbors;
     }
 
-    public String getBoundary() {
-        return data.getBoundary().toJSONObject().toString();
+    public double[][] getBoundary() {
+        return data.getBoundary().getGeoJSON();
     }
 
     public String getName() {

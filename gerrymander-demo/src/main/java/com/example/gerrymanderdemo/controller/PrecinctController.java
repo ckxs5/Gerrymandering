@@ -1,39 +1,54 @@
 package com.example.gerrymanderdemo.controller;
 
-import com.example.gerrymanderdemo.model.Data.Data;
-import com.example.gerrymanderdemo.model.Data.Demographic;
-import com.example.gerrymanderdemo.model.Data.Vote;
-import com.example.gerrymanderdemo.model.Enum.Party;
-import com.example.gerrymanderdemo.model.Enum.RaceType;
+import com.example.gerrymanderdemo.JacksonSerializer.PrecinctBoundarySerializer;
+import com.example.gerrymanderdemo.JacksonSerializer.PrecinctDataSerializer;
+import com.example.gerrymanderdemo.Service.PrecinctService;
 import com.example.gerrymanderdemo.model.Precinct;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import java.util.Optional;
+
+import java.util.List;
 
 @Controller
 public class PrecinctController {
-    public PrecinctController() {
+    @Autowired
+    private PrecinctService precinctService;
+
+    @GetMapping(value = "/precinct/{id}/data", produces = "application/json")
+    public ResponseEntity<String> getPrecinctData(@PathVariable Long id) {
+        return getPrecinctEntity(id, new PrecinctDataSerializer());
     }
 
-    @RequestMapping(value = "/precinct/{name}/data", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    //TODO Subjected to change for production
-    public String getPrecinct(@PathVariable String name) {
-        Precinct precinct = new Precinct();
-        Data data = new Data();
-        int[] demo = new int[RaceType.values().length];
-        int[] vote = new int [Party.values().length];
-        for (int i = 0; i < demo.length; i++)
-            demo[i] = (int)(Math.random() * 1000000 + 1000000);
-        for (int i = 0; i < vote.length; i++)
-            vote[i] = (int)(Math.random() * 1000000 + 1000000);
-        data.setVoteData(new Vote(vote));
-        data.setDemographic(new Demographic(demo));
-        precinct.setData(data);
-        precinct.setName("Test Precinct 1");
-        System.out.println(precinct.toJSONObject().toString());
-        return precinct.toJSONObject().toString();
+    @GetMapping(value = "/precinct/{id}/boundary", produces = "application/json")
+    public ResponseEntity<String> getPrecinctBoundary(@PathVariable Long id) {
+        return getPrecinctEntity(id , new PrecinctBoundarySerializer());
+    }
+
+    private ResponseEntity<String> getPrecinctEntity(Long id, StdSerializer<Precinct> serializer) {
+        Optional<Precinct> obj = precinctService.findById(id);
+        if (obj.isPresent()) {
+            Precinct precinct = obj.get();
+            System.out.printf("Found precinct:\n %s\n", precinct);
+            ObjectMapper mapper = new ObjectMapper();
+            SimpleModule module = new SimpleModule();
+            module.addSerializer(Precinct.class, serializer);
+            mapper.registerModule(module);
+            try {
+                return ResponseEntity.ok(mapper.writeValueAsString(precinct));
+            } catch (JsonProcessingException ex) {
+                ex.printStackTrace();
+                return ResponseEntity.status(400).body("error");
+            }
+        } else {
+            System.out.printf("Could not find entity with id %d \n", id);
+            return ResponseEntity.status(404).body("Could not find entity");
+        }
     }
 }

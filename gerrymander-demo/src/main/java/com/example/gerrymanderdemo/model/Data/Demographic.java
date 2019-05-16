@@ -11,8 +11,9 @@ import javax.persistence.*;
 public class Demographic implements ResponseObject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(length = 100)
-    String id;
+    private Long id;
+    @ElementCollection
+    @OrderColumn
     private int[] population = new int[RaceType.values().length];
 
     public Demographic() {
@@ -34,6 +35,14 @@ public class Demographic implements ResponseObject {
         }
         System.arraycopy(population, 0, this.population, 0, population.length);
 
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int[] getPopulation() {
