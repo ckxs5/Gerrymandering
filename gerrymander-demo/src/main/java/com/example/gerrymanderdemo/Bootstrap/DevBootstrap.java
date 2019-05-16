@@ -13,6 +13,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Component
@@ -36,9 +37,9 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         // DO NOT UNCOMMENT THIS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //        PrecinctPreprocesor preprocesor = new PrecinctPreprocesor(precinctService, demographicService, voteService, boundaryService, dataService, "C:\\Users\\jimmy\\OneDrive\\Desktop\\Spring Programming\\CSE308\\gerrymander-demo\\datafiles\\MN\\precinct_data.json");
         PrecinctManager.setInstance(precinctService);
-        List<Precinct> precincts = PrecinctManager.getPrecincts(StateName.MINNESOTA);
+        HashMap<Long, Precinct> precincts = PrecinctManager.getPrecincts(StateName.MINNESOTA);
         System.out.printf("Precinct %d loaded\n", precincts.size());
-        System.out.println(precincts.get(0).toString());
+        System.out.println(precincts.values().toArray()[0].toString());
     }
 
 //    private void initData(){
