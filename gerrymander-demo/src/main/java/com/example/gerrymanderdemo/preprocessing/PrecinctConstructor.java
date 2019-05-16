@@ -5,6 +5,7 @@ import com.example.gerrymanderdemo.model.Data.Demographic;
 import com.example.gerrymanderdemo.model.Data.Vote;
 import com.example.gerrymanderdemo.model.Enum.Party;
 import com.example.gerrymanderdemo.model.Enum.RaceType;
+import com.example.gerrymanderdemo.model.Enum.StateName;
 import com.example.gerrymanderdemo.model.Precinct;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -17,6 +18,8 @@ public class PrecinctConstructor {
     private String name;
     @JsonProperty("country")
     private String county;
+    @JsonProperty("state")
+    private StateName state;
     @JsonProperty("Democratic-Farmer-Labor")
     private int democratic;
     @JsonProperty("american delta")
@@ -220,6 +223,7 @@ public class PrecinctConstructor {
         precinct.setId(id);
         precinct.setCounty(county);
         precinct.setName(name);
+        precinct.setState(state);
         return precinct;
     }
 

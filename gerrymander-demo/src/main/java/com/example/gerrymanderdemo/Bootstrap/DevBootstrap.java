@@ -15,11 +15,11 @@ import java.util.List;
 
 @Component
 public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> {
-    PrecinctService precinctService;
-    DemographicService demographicService;
-    VoteService voteService;
-    BoundaryService boundaryService;
-    DataService dataService;
+    private PrecinctService precinctService;
+    private DemographicService demographicService;
+    private VoteService voteService;
+    private BoundaryService boundaryService;
+    private DataService dataService;
 
     public DevBootstrap(PrecinctService precinctService, DemographicService demographicService, VoteService voteService, BoundaryService boundaryService, DataService dataService) {
         this.precinctService = precinctService;
@@ -31,7 +31,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-//        PrecinctPreprocesor preprocesor = new PrecinctPreprocesor(precinctService, demographicService, voteService, boundaryService, dataService, "C:\\Users\\jimmy\\OneDrive\\Desktop\\CSE308\\gerrymander-demo\\datafiles\\MN\\precinct_data.json");
+        PrecinctPreprocesor preprocesor = new PrecinctPreprocesor(precinctService, demographicService, voteService, boundaryService, dataService, "C:\\Users\\jimmy\\OneDrive\\Desktop\\Spring Programming\\CSE308\\gerrymander-demo\\datafiles\\MN\\precinct_data.json");
 //        List<Precinct> precincts = precinctService.findAll();
 //        System.out.println(precincts.size());
     }

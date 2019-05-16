@@ -1,6 +1,7 @@
 package com.example.gerrymanderdemo.Service;
 
 import com.example.gerrymanderdemo.Repository.PrecinctRepository;
+import com.example.gerrymanderdemo.model.Enum.StateName;
 import com.example.gerrymanderdemo.model.Precinct;
 import org.assertj.core.util.Lists;
 import org.springframework.stereotype.Service;
@@ -28,4 +29,6 @@ public class PrecinctService {
     public Optional<Precinct> findById(Long id) {
         return precinctRepository.findById(id);
     }
+
+    public List<Precinct> findAllByState(StateName state) { return precinctRepository.findAllByState(state); }
 }

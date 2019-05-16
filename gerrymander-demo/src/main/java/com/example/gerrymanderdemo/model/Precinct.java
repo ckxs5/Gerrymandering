@@ -1,6 +1,7 @@
 package com.example.gerrymanderdemo.model;
 
 import com.example.gerrymanderdemo.model.Data.Data;
+import com.example.gerrymanderdemo.model.Enum.StateName;
 import com.example.gerrymanderdemo.model.Response.ResponseObject;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,6 +15,7 @@ public class Precinct implements ResponseObject {
     @Id
     private Long id;
     private String name;
+    private StateName state;
     //TODO: extract the county this precinct belongs to,  will be used for countyJoinability in Edge
     private String county;
     @OneToOne
@@ -45,6 +47,14 @@ public class Precinct implements ResponseObject {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public StateName getState() {
+        return state;
+    }
+
+    public void setState(StateName state) {
+        this.state = state;
     }
 
     public Data getData() {
