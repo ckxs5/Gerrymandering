@@ -22,25 +22,25 @@ $("document").ready(function () {
     mymap.setMaxBounds(maxBounds);
     mymap.fitBounds(maxBounds);
 
-    stateLayer = L.geoJson(statesData, {
-        style:style,
-        onEachFeature: onEachStateFeature
-    }).addTo(states);
+    // stateLayer = L.geoJson(statesData, {
+    //     style:style,
+    //     onEachFeature: onEachStateFeature
+    // }).addTo(states);
 
-    districtLayer = L.geoJson(FL_Dist, {
-        style: style,
-        onEachFeature: onEachDistrictFeature
-    }).addTo(districts);
+    // districtLayer = L.geoJson(FL_Dist, {
+    //     style: style,
+    //     onEachFeature: onEachDistrictFeature
+    // }).addTo(districts);
 
     // precinctLayer = L.geoJson(FL_P, {
     //     style: style,
     //     onEachFeature: onEachPrecinctFeature
     // }).addTo(precincts);
 
-    districtLayer = L.geoJson(MD_Dist, {
-        style: style,
-        onEachFeature: onEachDistrictFeature
-    }).addTo(districts);
+    // districtLayer = L.geoJson(MD_Dist, {
+    //     style: style,
+    //     onEachFeature: onEachDistrictFeature
+    // }).addTo(districts);
 
     // precinctLayer = L.geoJson(MD_P, {
     //     style: style,
@@ -63,7 +63,7 @@ $("document").ready(function () {
             mymap.removeLayer(states);
             mymap.addLayer(districts);
         }
-        if (mymap.getZoom() > precinctZoomLevel && mymap.hasLayer(districtLayer)){
+        if (mymap.getZoom() > precinctZoomLevel || mymap.hasLayer(districtLayer)){
             mymap.removeLayer(districts);
             mymap.addLayer(precincts);
         }
@@ -190,8 +190,8 @@ $("document").ready(function () {
         if (state === "ALL")
             mymap.fitBounds(maxBounds);
         let stateBounds = {
-            "FLORIDA" : FL_Dist,
-            "MARYLAND" : MD_Dist,
+            // "FLORIDA" : FL_Dist,
+            // "MARYLAND" : MD_Dist,
             "MINNESOTA" : MN_Dist,
         };
         fitStateBounds(stateBounds[state]);
@@ -207,13 +207,76 @@ $("document").ready(function () {
     /**
      * @todo Generate Color based on measurements in future
      */
-    function style() {
-        return {
-            fillColor: getColor(),
-            weight: 1,
-            color: 'white',
-            fillOpacity: 0.7,
-        };
+    function style(features) {
+        // console.log(features);
+        console.log(features.properties.CongDist);
+        if(features.properties.CongDist) {
+            switch (features.properties.CongDist) {
+                case '1':
+                    return {
+                        fillColor: '#a0f1b6',
+                        weight: 1,
+                        color: 'white',
+                        fillOpacity: 0.7,
+                    };
+                case '2':
+                    return {
+                        fillColor: '#c55d82',
+                        weight: 1,
+                        color: 'white',
+                        fillOpacity: 0.7,
+                    };
+                case '3':
+                    return {
+                        fillColor:'#f6e9d2',
+                        weight: 1,
+                        color: 'white',
+                        fillOpacity: 0.7,
+                    };
+                case '4':
+                    return {
+                        fillColor: '#8e79bb',
+                        weight: 1,
+                        color: 'white',
+                        fillOpacity: 0.7,
+                    };
+                case '5':
+                    return {
+                        fillColor: '#74e1e3',
+                        weight: 1,
+                        color: 'white',
+                        fillOpacity: 0.7,
+                    };
+                case '6':
+                    return {
+                        fillColor: '#5e5cd2',
+                        weight: 1,
+                        color: 'white',
+                        fillOpacity: 0.7,
+                    };
+                case '7':
+                    return {
+                        fillColor: '#d05b62',
+                        weight: 1,
+                        color: 'white',
+                        fillOpacity: 0.7,
+                    };
+                case '8':
+                    return {
+                        fillColor: '#aed05b',
+                        weight: 1,
+                        color: 'white',
+                        fillOpacity: 0.7,
+                    };
+            }
+        }else {
+            return {
+                fillColor: getColor(),
+                weight: 1,
+                color: 'white',
+                fillOpacity: 0.7,
+            };
+        }
     }
 
     function getColor() {
