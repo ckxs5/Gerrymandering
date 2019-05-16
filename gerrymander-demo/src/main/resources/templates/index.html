@@ -51,6 +51,7 @@
 <div class="container-fluid">
     <script type="text/javascript" th:src="@{/geoJson/us-states.js}"></script>
     <script type="text/javascript" th:src="@{/geoJson/FL_Dist.js}"></script>
+    <script type="text/javascript" th:src="@{/geoJson/FL_Precincts.js}"></script>
     <script type="text/javascript" th:src="@{/geoJson/MD_CongressionalDistrict.js}"></script>
     <script type="text/javascript" th:src="@{/geoJson/MD_Precincts.js}"></script>
     <script type="text/javascript" th:src="@{/geoJson/MN_CongressionalDistrict.js}"></script>
@@ -75,6 +76,11 @@
                         <div th:case="NUM_BATCH_RUN" class="input-group input-group-sm" id="batch-runs" style="display: none">
                             <form id="batchform" class="input-group input-group-sm">
                                 <input type="number" class="form-control" th:id="${preference}" th:name="${preference}" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Number of Runs" autofocus min="1" max="10">
+                            </form>
+                        </div>
+                        <div th:case="NUM_DISTRICTS" class="input-group input-group-sm" id="num-district">
+                            <form id="districtform" class="input-group input-group-sm">
+                                <input type="number" class="form-control" th:id="${preference}" th:name="${preference}" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Number of District" autofocus min="1" max="100">
                             </form>
                         </div>
                         <div th:case="STATE_NAME" class="dropdown btn-states">

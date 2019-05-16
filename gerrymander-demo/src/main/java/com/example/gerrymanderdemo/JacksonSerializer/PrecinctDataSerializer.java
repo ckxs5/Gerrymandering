@@ -24,7 +24,7 @@ public class PrecinctDataSerializer extends StdSerializer<Precinct> {
         jsonGenerator.writeStartObject();
         jsonGenerator.writeNumberField("id", precinct.getId());
         jsonGenerator.writeStringField("name", precinct.getName());
-        jsonGenerator.writeStringField("country", precinct.getCounty());
+        jsonGenerator.writeStringField("county", precinct.getCounty());
         jsonGenerator.writeNumberField("republican", precinct.getData().getVoteData().getVote(Party.REPUBLICAN));
         jsonGenerator.writeNumberField("democratic", precinct.getData().getVoteData().getVote(Party.DEMOCRATIC));
         jsonGenerator.writeNumberField("other_parties", precinct.getData().getVoteData().getVote(Party.OTHERS));

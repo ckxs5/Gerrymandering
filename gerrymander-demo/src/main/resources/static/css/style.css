@@ -199,7 +199,6 @@ body, html{
 
 .btn-major, .btn-states, .btn-compactness{
     display: grid !important;
-    /*margin-bottom: 5px;*/
     margin-top: 5px;
 }
 
@@ -208,6 +207,12 @@ body, html{
     color: #fff;
     background-color: dodgerblue;
     border-color: dodgerblue;
+}
+.input-group>.form-control{
+    position: relative;
+    flex: 1 1 auto;
+    width: 1%;
+    margin-top: 5px;
 }
 
 .custom-control-label, .ranges{
@@ -246,7 +251,7 @@ body, html{
 #weights{
     list-style: none;
     padding-inline-start: 0;
-    font-size: 10px;
+    /*font-size: 10px;*/
 }
 li{
     display: block;
