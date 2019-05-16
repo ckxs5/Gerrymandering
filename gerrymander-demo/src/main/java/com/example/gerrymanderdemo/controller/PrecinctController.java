@@ -27,24 +27,25 @@ public class PrecinctController {
 
     @GetMapping(value = "/precinct/{id}/data", produces = "application/json")
     public ResponseEntity<String> getPrecinctData(@PathVariable Long id) {
+        System.out.printf("Request to get data for precinct : %d \n", id);
         return getPrecinctEntity(id, new PrecinctDataSerializer());
     }
 
-    @GetMapping(value = "/precinct/{id}/boundaries", produces = "application/json")
-    public ResponseEntity<String> getPrecinctBoundary(@PathVariable Long id) {
-        System.out.println(id);
-        ArrayList<Precinct> precincts = new ArrayList<>(PrecinctManager.getPrecincts(StateName.MINNESOTA));
-        ObjectMapper mapper = new ObjectMapper();
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(new PrecinctBoundarySerializer());
-        mapper.registerModule(module);
-        try {
-            return ResponseEntity.ok(mapper.writeValueAsString(precincts));
-        } catch (JsonProcessingException ex) {
-            ex.printStackTrace();
-            return ResponseEntity.status(400).body("error");
-        }
-    }
+//    @GetMapping(value = "/precinct/{id}/boundaries", produces = "application/json")
+//    public ResponseEntity<String> getPrecinctBoundary(@PathVariable Long id) {
+//        System.out.println(id);
+//        ArrayList<Precinct> precincts = new ArrayList<>(PrecinctManager.getPrecincts(StateName.MINNESOTA));
+//        ObjectMapper mapper = new ObjectMapper();
+//        SimpleModule module = new SimpleModule();
+//        module.addSerializer(new PrecinctBoundarySerializer());
+//        mapper.registerModule(module);
+//        try {
+//            return ResponseEntity.ok(mapper.writeValueAsString(precincts));
+//        } catch (JsonProcessingException ex) {
+//            ex.printStackTrace();
+//            return ResponseEntity.status(400).body("error");
+//        }
+//    }
 
 
     private ResponseEntity<String> getPrecinctEntity(Long id, StdSerializer<Precinct> serializer) {
