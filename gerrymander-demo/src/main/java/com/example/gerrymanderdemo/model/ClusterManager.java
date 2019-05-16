@@ -1,5 +1,4 @@
 package com.example.gerrymanderdemo.model;
-import com.example.gerrymanderdemo.Service.PrecinctService;
 import com.example.gerrymanderdemo.model.Enum.RaceType;
 
 import java.util.*;
@@ -11,15 +10,15 @@ public class ClusterManager {
     private RaceType communityOfInterest;
     private int totalPopulation = 0;
 
-    public ClusterManager(PrecinctService service, RaceType communityOfInterest, int targetNumCluster) {
-//    public ClusterManager(PrecinctService service, int targetNumCluster) {
+    public ClusterManager(RaceType communityOfInterest, int targetNumCluster, List<Precinct> precincts) {
         this.targetNumCluster = targetNumCluster;
         this.communityOfInterest = communityOfInterest;
         clusters = new ArrayList<>();
-        for (Precinct p : service.findAll()) {
+        for (Precinct p : precincts) {
             clusters.add(new Cluster(p));
             totalPopulation += p.getData().getDemographic().getPopulation(RaceType.ALL);
         }
+        System.out.printf("Construct %d clusters at the beginning\n", clusters.size());
         constructEdges();
     }
 
@@ -69,6 +68,9 @@ public class ClusterManager {
         Collections.sort(candidates);
         for (int i = 0; i < candidates.size(); i++) {
             Edge edge = candidates.get(i).getBestEdge();
+            System.out.printf("Edge is %s \n", edge);
+            System.out.printf("candidate is %s \n", candidates.get(i));
+            System.out.printf("The other is %s \n", edge.getTheOther(candidates.get(i)));
             if (candidates.contains(edge.getTheOther(candidates.get(i)))) {
                 merge(edge);
                 return true;

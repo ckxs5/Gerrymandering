@@ -64,7 +64,11 @@ public class Demographic implements ResponseObject {
     }
 
     public double getPercentByRace(RaceType race) {
-        return (double)(population[race.ordinal()] / population[RaceType.ALL.ordinal()]);
+        try{
+            return (double)(population[race.ordinal()] / population[RaceType.ALL.ordinal()]);
+        } catch (ArithmeticException ex) {
+            return 0;
+        }
     }
 
     public void add(Demographic other) {

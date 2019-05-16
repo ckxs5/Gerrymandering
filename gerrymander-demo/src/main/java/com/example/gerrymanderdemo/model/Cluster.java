@@ -20,9 +20,11 @@ public class Cluster implements Comparable{
 
     public Cluster(Cluster c1, Cluster c2){
         this.data = new Data(c1.getData(),c2.getData());
-        this.constructEdges(c1,c2);
+        this.edges = new ArrayList<>();
+        this.children = new ArrayList<>();
         this.addChildren(c1);
         this.addChildren(c2);
+        this.constructEdges(c1,c2);
     }
 
     public Data getData() {
@@ -63,7 +65,12 @@ public class Cluster implements Comparable{
 
     public Edge getBestEdge(){
         sortEdgesByJoinability();
-        return this.edges.get(0);
+        try {
+            return this.edges.get(0);
+        } catch (IndexOutOfBoundsException ex) {
+            System.out.printf("There is not edge for cluster with children %d", this.getChildren().size());
+            return null;
+        }
     }
 
     // Class Diagram:
@@ -82,10 +89,9 @@ public class Cluster implements Comparable{
     private void passEdges(Cluster parentCluster){
         for (Edge e : edges) {
             e.updateElement(this, parentCluster);
+            parentCluster.addEdge(e);
         }
-        List<Edge> temp = edges;
         this.edges = null;
-        parentCluster.setEdges(temp);
     }
 
     public void addChildren(Cluster c){

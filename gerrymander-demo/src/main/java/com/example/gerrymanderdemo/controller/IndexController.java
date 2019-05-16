@@ -10,8 +10,7 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class IndexController {
-
-    @GetMapping(value = {"/", "/index"})
+    @GetMapping(value = {"/", "/index", "/homepage"})
     public ModelAndView index(HttpSession session){
         User user = (User) session.getAttribute("user");
         System.out.println(session.getAttribute("user"));
@@ -28,11 +27,6 @@ public class IndexController {
             mav.addObject("communities", RaceType.values());
         }
         return mav;
-    }
-
-    @GetMapping("/homepage")
-    public String homepage(){
-        return "index";
     }
 
 }
