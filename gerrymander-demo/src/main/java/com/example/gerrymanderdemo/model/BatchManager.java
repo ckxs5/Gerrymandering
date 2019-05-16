@@ -41,7 +41,7 @@ public class BatchManager {
 
     private void runAlgorithm() {
         State s = new State(orgState);
-        Algorithm algorithm = new Algorithm(userPreference, s, precinctService);
+        Algorithm algorithm = new Algorithm(userPreference, s);
         State intermediateState = algorithm.runAlgorithm();
         State stateWithId = stateService.saveState(intermediateState);
         int numMM = intermediateState.getNumMajMinDistricts(

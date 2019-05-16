@@ -18,9 +18,9 @@ public class Precinct implements ResponseObject {
     private StateName state;
     //TODO: extract the county this precinct belongs to,  will be used for countyJoinability in Edge
     private String county;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Data data;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "precinct_precinct",
             joinColumns = @JoinColumn(name = "precinct1_id"),
@@ -103,5 +103,15 @@ public class Precinct implements ResponseObject {
         return null;
     }
 
-
+    @Override
+    public String toString() {
+        return "Precinct{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", state=" + state +
+                ", county='" + county + '\'' +
+                ", data=" + data +
+                ", neighbors=" + neighbors.size() +
+                '}';
+    }
 }

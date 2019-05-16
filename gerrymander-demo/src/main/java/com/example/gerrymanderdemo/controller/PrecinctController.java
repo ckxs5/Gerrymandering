@@ -5,6 +5,7 @@ import com.example.gerrymanderdemo.JacksonSerializer.PrecinctDataSerializer;
 import com.example.gerrymanderdemo.Service.PrecinctService;
 import com.example.gerrymanderdemo.model.Enum.StateName;
 import com.example.gerrymanderdemo.model.Precinct;
+import com.example.gerrymanderdemo.model.PrecinctManager;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,10 +30,10 @@ public class PrecinctController {
         return getPrecinctEntity(id, new PrecinctDataSerializer());
     }
 
-    @GetMapping(value = "/precinct/{statename}/boundaries", produces = "application/json")
-    public ResponseEntity<String> getPrecinctBoundary(@PathVariable StateName stateName) {
-        System.out.println(stateName);
-        ArrayList<Precinct> precincts = new ArrayList<>(precinctService.findAllByState(stateName));
+    @GetMapping(value = "/precinct/{id}/boundaries", produces = "application/json")
+    public ResponseEntity<String> getPrecinctBoundary(@PathVariable Long id) {
+        System.out.println(id);
+        ArrayList<Precinct> precincts = new ArrayList<>(PrecinctManager.getPrecincts(StateName.MINNESOTA));
         ObjectMapper mapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
         module.addSerializer(new PrecinctBoundarySerializer());

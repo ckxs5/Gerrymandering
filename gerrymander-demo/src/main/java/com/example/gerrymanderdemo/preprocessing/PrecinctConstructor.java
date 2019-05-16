@@ -53,7 +53,7 @@ public class PrecinctConstructor {
     @JsonProperty("boundary")
     private double[][] boundary;
     @JsonProperty("neighbors")
-    private String[] neighbors;
+    private Long[] neighbors;
 
     public PrecinctConstructor() {
     }
@@ -202,11 +202,11 @@ public class PrecinctConstructor {
         this.boundary = boundary;
     }
 
-    public String[] getNeighbors() {
+    public Long[] getNeighbors() {
         return neighbors;
     }
 
-    public void setNeighbors(String[] neighbors) {
+    public void setNeighbors(Long[] neighbors) {
         this.neighbors = neighbors;
     }
 

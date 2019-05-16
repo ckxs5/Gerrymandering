@@ -12,7 +12,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 public class PrecinctPreprocesor {
     private List<PrecinctConstructor> precinctsData;
@@ -33,6 +35,7 @@ public class PrecinctPreprocesor {
         prepareData(filename);
         checkData();
         precincts = getIdPrecincts();
+//        precincts = constructNeighbours();
     }
 
     private void prepareData(String filename) {
@@ -48,9 +51,15 @@ public class PrecinctPreprocesor {
     }
 
     private List<Precinct> getIdPrecincts(){
+        System.out.println("Start Constructing Precincts");
         List<Precinct> precincts = new ArrayList<>();
         precinctsData.forEach(x -> {
             Precinct precinct = x.toIdPrecinct();
+//            Optional<Precinct> found = precinctService.findById(precinct.getId());
+//            if (found.isPresent()){
+//                precincts.add(precinct);
+//                return;
+//            }
             Demographic demographic = x.toDemographic();
             demographic = demographicService.save(demographic);
             Vote vote = x.toVote();
@@ -62,13 +71,44 @@ public class PrecinctPreprocesor {
             data.setBoundary(boundary);
             data.setDemographic(demographic);
             data = dataService.save(data);
-            precincts.add(precinct);
             precinct.setData(data);
-            precinctService.save(precinct);
+            precinct = precinctService.save(precinct);
+            precincts.add(precinct);
+
         });
+        System.out.println("End Constructing Precincts");
         return precincts;
     }
 
+//    private List<Precinct> constructNeighbours() {
+//        System.out.println("Start Construct Neighbours");
+//        int count = 0;
+//        for (PrecinctConstructor pc : precinctsData) {
+//            System.out.printf("%d / %d\n", precinctsData.size(), ++count);
+//            Precinct target = getSavedPrecinctById(pc.getId());
+//            if (target == null) {
+//                System.out.printf("Error happen when constructing precinct: %s !!!!!!\n", pc.getId());
+//                break;
+//            }
+//            HashSet<Precinct> ns = new HashSet<>();
+//            for (Long neighbourId : pc.getNeighbors()) {
+//                ns.add(getSavedPrecinctById(neighbourId));
+//            }
+//            target.setNeighbors(ns);
+//            target = precinctService.save(target);
+//        }
+//        System.out.println("End Construct Neighbours");
+//        return precincts;
+//    }
+
+    private Precinct getSavedPrecinctById(Long id) {
+        for (Precinct p: precincts) {
+            if (p.getId().equals(id)) {
+                return p;
+            }
+        }
+        return null;
+    }
 
     private void checkData() {
         System.out.println(precinctsData.get(0));

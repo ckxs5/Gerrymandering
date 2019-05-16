@@ -3,6 +3,7 @@ package com.example.gerrymanderdemo.model;
 import com.example.gerrymanderdemo.Service.PrecinctService;
 import com.example.gerrymanderdemo.model.Enum.PreferenceType;
 import com.example.gerrymanderdemo.model.Enum.RaceType;
+import com.example.gerrymanderdemo.model.Enum.StateName;
 
 import java.util.*;
 
@@ -19,12 +20,14 @@ public class Algorithm {
     private HashMap<Long, Long> redistrictingPlan;//TODO: Map key precinctId to its district's id
 
 
-    public Algorithm(Map<String, String> preference, State state, PrecinctService service) {
+    public Algorithm(Map<String, String> preference, State state) {
         this.preference = preference;
         this.state = state;
-        this.clusterManager = new ClusterManager(service,
-                RaceType.valueOf(preference.get(preference.get(PreferenceType.NUM_DISTRICTS.toString()))),
-                Integer.parseInt(preference.get(PreferenceType.NUM_DISTRICTS.toString())));
+        this.clusterManager = new ClusterManager(
+                RaceType.valueOf(preference.get(PreferenceType.COMMUNITY_OF_INTEREST.toString())),
+                Integer.parseInt(preference.get(PreferenceType.NUM_DISTRICTS.toString())),
+                PrecinctManager.getPrecincts(StateName.MINNESOTA)
+                );
     }
 
     public State graphPartisian() {

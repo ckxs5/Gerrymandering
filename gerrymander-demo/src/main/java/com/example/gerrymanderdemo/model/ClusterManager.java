@@ -18,6 +18,7 @@ public class ClusterManager {
             clusters.add(new Cluster(p));
             totalPopulation += p.getData().getDemographic().getPopulation(RaceType.ALL);
         }
+        System.out.printf("Construct %d clusters at the beginning\n", clusters.size());
         constructEdges();
     }
 
@@ -67,6 +68,9 @@ public class ClusterManager {
         Collections.sort(candidates);
         for (int i = 0; i < candidates.size(); i++) {
             Edge edge = candidates.get(i).getBestEdge();
+            System.out.printf("Edge is %s \n", edge);
+            System.out.printf("candidate is %s \n", candidates.get(i));
+            System.out.printf("The other is %s \n", edge.getTheOther(candidates.get(i)));
             if (candidates.contains(edge.getTheOther(candidates.get(i)))) {
                 merge(edge);
                 return true;

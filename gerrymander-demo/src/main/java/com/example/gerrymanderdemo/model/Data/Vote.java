@@ -22,13 +22,14 @@ public class Vote implements ResponseObject {
     }
 
     public Vote(Vote vote) {
-        votes = new int[Party.values().length];
+        this();
         for(Party p : Party.values()){
             votes[p.ordinal()] = vote.getVote(p);
         }
     }
 
     public Vote(Vote v1, Vote v2){
+        this();
         for (Party party: Party.values()) {
             setVote(party, v1.getVote(party) + v2.getVote(party));
         }
