@@ -5,6 +5,7 @@ import com.example.gerrymanderdemo.model.ClusterManager;
 import com.example.gerrymanderdemo.model.Data.Boundary;
 import com.example.gerrymanderdemo.model.Data.Vote;
 import com.example.gerrymanderdemo.model.Precinct;
+import com.example.gerrymanderdemo.model.PrecinctManager;
 import com.example.gerrymanderdemo.preprocessing.PrecinctConstructor;
 import com.example.gerrymanderdemo.preprocessing.PrecinctPreprocesor;
 import org.springframework.context.ApplicationListener;
@@ -31,9 +32,9 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        PrecinctPreprocesor preprocesor = new PrecinctPreprocesor(precinctService, demographicService, voteService, boundaryService, dataService, "C:\\Users\\jimmy\\OneDrive\\Desktop\\Spring Programming\\CSE308\\gerrymander-demo\\datafiles\\MN\\precinct_data.json");
-//        List<Precinct> precincts = precinctService.findAll();
-//        System.out.println(precincts.size());
+//        PrecinctPreprocesor preprocesor = new PrecinctPreprocesor(precinctService, demographicService, voteService, boundaryService, dataService, "C:\\Users\\jimmy\\OneDrive\\Desktop\\Spring Programming\\CSE308\\gerrymander-demo\\datafiles\\MN\\precinct_data.json");
+        PrecinctManager.setInstance(precinctService);
+        System.out.println("Precinct loaded");
     }
 
 //    private void initData(){

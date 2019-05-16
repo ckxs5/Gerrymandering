@@ -1,5 +1,4 @@
 package com.example.gerrymanderdemo.model;
-import com.example.gerrymanderdemo.Service.PrecinctService;
 import com.example.gerrymanderdemo.model.Enum.RaceType;
 
 import java.util.*;
@@ -11,12 +10,11 @@ public class ClusterManager {
     private RaceType communityOfInterest;
     private int totalPopulation = 0;
 
-    public ClusterManager(PrecinctService service, RaceType communityOfInterest, int targetNumCluster) {
-//    public ClusterManager(PrecinctService service, int targetNumCluster) {
+    public ClusterManager(RaceType communityOfInterest, int targetNumCluster, List<Precinct> precincts) {
         this.targetNumCluster = targetNumCluster;
         this.communityOfInterest = communityOfInterest;
         clusters = new ArrayList<>();
-        for (Precinct p : service.findAll()) {
+        for (Precinct p : precincts) {
             clusters.add(new Cluster(p));
             totalPopulation += p.getData().getDemographic().getPopulation(RaceType.ALL);
         }
