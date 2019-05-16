@@ -1,11 +1,11 @@
 $("document").ready(function () {
-    var states = L.layerGroup();
-    var districts = L.layerGroup();
-    var precincts = L.layerGroup();
-    var stateLayer, districtLayer, precinctLayer;
-    var mymap;
-    var info;
-    var maxBounds;
+    let states = L.layerGroup();
+    let districts = L.layerGroup();
+    let precincts = L.layerGroup();
+    let stateLayer, districtLayer, precinctLayer;
+    let mymap;
+    let info;
+    let maxBounds;
 
     mymap = L.map('map', {layers: states}).setView(USCENTER, defaultZoomLevel);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -221,7 +221,6 @@ $("document").ready(function () {
     }
 
     function highlightFeature(e) {
-        console.log("highlight");
         let layer = e.target;
 
         layer.setStyle({
