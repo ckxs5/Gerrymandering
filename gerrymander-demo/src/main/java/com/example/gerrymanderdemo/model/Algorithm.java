@@ -30,7 +30,7 @@ public class Algorithm {
                 );
     }
 
-    public State graphPartisian() {
+    public State graphPartition() {
         clusterManager.run();
         state.setDistricts(clusterManager.toDistricts());
         return state;

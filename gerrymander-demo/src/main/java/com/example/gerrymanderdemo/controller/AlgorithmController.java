@@ -27,7 +27,7 @@ public class AlgorithmController {
     public ResponseEntity<String> run(@RequestBody HashMap<String, String> preferences) {
         System.out.println(preferences);
         algorithm = new Algorithm(preferences, new State());
-        State state = algorithm.graphPartisian();
+        State state = algorithm.graphPartition();
         Collection<District> districts = state.getDistricts();
         JSONArray obj = new JSONArray();
         for (District district : districts) {

@@ -35,10 +35,10 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         // DO NOT UNCOMMENT THIS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //        PrecinctPreprocesor preprocesor = new PrecinctPreprocesor(precinctService, demographicService, voteService, boundaryService, dataService, "C:\\Users\\jimmy\\OneDrive\\Desktop\\Spring Programming\\CSE308\\gerrymander-demo\\datafiles\\MN\\precinct_data.json");
-//        PrecinctManager.setInstance(precinctService);
-//        List<Precinct> precincts = PrecinctManager.getPrecincts(StateName.MINNESOTA);
-//        System.out.printf("Precinct %d loaded\n", precincts.size());
-//        System.out.println(precincts.get(0).toString());
+        PrecinctManager.setInstance(precinctService);
+        List<Precinct> precincts = PrecinctManager.getPrecincts(StateName.MINNESOTA);
+        System.out.printf("Precinct %d loaded\n", precincts.size());
+        System.out.println(precincts.get(0).toString());
     }
 
 //    private void initData(){
