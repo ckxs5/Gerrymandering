@@ -26,20 +26,26 @@ public class Algorithm {
         this.clusterManager = new ClusterManager(
                 RaceType.valueOf(preference.get(PreferenceType.COMMUNITY_OF_INTEREST.toString())),
                 Integer.parseInt(preference.get(PreferenceType.NUM_DISTRICTS.toString())),
-                PrecinctManager.getPrecincts(StateName.MINNESOTA)
+                new ArrayList<>(PrecinctManager.getPrecincts(StateName.MINNESOTA).values())
                 );
     }
 
-    public State graphPartisian() {
+    public State graphPartition() {
         clusterManager.run();
         state.setDistricts(clusterManager.toDistricts());
         return state;
     }
+
+    public State graphPartitionOnce() {
+        clusterManager.runOnce();
+        state.setDistricts(clusterManager.toDistricts());
+        return state;
+    }
+
     //TODO
     public State runAlgorithm(){return null;}
     //TODO
     public float getOF(){return tempObjectiveFunctionValue;}
-
 
 
     public Move makeMove(){

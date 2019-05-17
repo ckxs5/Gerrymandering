@@ -4,19 +4,23 @@ import com.example.gerrymanderdemo.Service.PrecinctService;
 import com.example.gerrymanderdemo.model.Enum.StateName;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class PrecinctManager {
     // static variable single_instance of type Singleton
     private static PrecinctManager single_instance = null;
-
     // variable of type String
-    private static List<Precinct>[] precinctLists = new List[StateName.values().length];
+    private static List<HashMap<Long, Precinct>> precinctLists = new ArrayList<>();
 
     // private constructor restricted to this class itself
     private PrecinctManager(PrecinctService precinctService){
         for(StateName state : StateName.values()) {
-            precinctLists[state.ordinal()] = precinctService.findAllByState(state);
+            HashMap<Long, Precinct> ps = new HashMap<>();
+            for (Precinct p : precinctService.findAllByState(state)) {
+                ps.put(p.getId(), p);
+            }
+            precinctLists.add(ps);
         }
     }
 
@@ -33,7 +37,7 @@ public class PrecinctManager {
         return single_instance;
     }
 
-    public static List<Precinct> getPrecincts(StateName state) {
-        return precinctLists[state.ordinal()];
+    public static HashMap<Long, Precinct> getPrecincts(StateName state) {
+        return precinctLists.get(state.ordinal());
     }
 }

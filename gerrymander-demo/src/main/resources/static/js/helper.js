@@ -38,6 +38,4 @@ function getData(url, callback){
     });
 }
 
-function printData(data) {
-    console.log(data);
-}
+

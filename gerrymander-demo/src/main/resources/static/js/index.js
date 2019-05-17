@@ -76,6 +76,12 @@ $("document").ready(function () {
             mymap.addLayer(states);
         }
     });
+    let precinctHashmap = {};
+
+    precinctLayer.eachLayer(function(layer){
+        precinctHashmap[layer.feature["properties"]["PrecinctID"]] = layer;
+    });
+    console.log(precinctHashmap);
 
     mymap.on("click", function(e){
         if(L.geoJson(MN_Dist).getBounds().contains(e.latlng)){
@@ -124,12 +130,20 @@ $("document").ready(function () {
     $("#play-btn").on("click", function () {
         console.log("play button");
         let weights = {};
-        $("#weights input").each(function () {
+        $("#weights input, select").each(function () {
             console.log($(this).attr("id") + " : " + $(this).val());
             weights[$(this).attr("id")] = $(this).val();
         });
-        postData(weights, "/graphpartition", printData);
+        postData(weights, "/graphpartition", colorModifying);
     });
+
+    function colorModifying(data) {
+        // console.log("data size: " + data[0]);
+        $.each(data , function (index, value){
+            console.log(index + ':::::' + value);
+            
+        });
+    }
 
     $("#sign-in").on("click", function () {
         let usernameAndPassword = {};
@@ -197,10 +211,10 @@ $("document").ready(function () {
         fitStateBounds(stateBounds[state]);
     });
 
-    $("#communities").on("change", function() {
-        console.log($("#communities").val());
-        return $("#communities").val();
-    });
+    // $("#communities").on("change", function() {
+    //     console.log($("#communities").val());
+    //     return $("#communities").val();
+    // });
 
     // $(th: id${weight})
 

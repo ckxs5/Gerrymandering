@@ -61,12 +61,23 @@
     <div class="card border-dark mb-1" id="controllpane" style="max-width: 25rem;">
         <div class="card-body text-dark">
             <div aria-label="First group" class="btn-group" role="group">
-                <button class="btn btn-secondary" type="button" id="play-btn" data-toggle="modal" data-target=".bd-example-modal-sm">Play</button>
-                <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-sm">
+                <button class="btn btn-secondary" data-target="#exampleModal" data-toggle="modal" id="play-btn" type="button">Play</button>
+                <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="exampleModal" role="dialog" tabindex="-1">
+                    <div class="modal-dialog" role="document">
                         <div class="modal-content">
-                            <h5>Popover in a modal</h5>
-                            
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Running Preference</h5>
+                                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Would you like to skip the GUI update?
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-dismiss="modal" type="button">Yes</button>
+                                <button class="btn btn-primary" data-dismiss="modal" type="button">No</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -78,7 +89,7 @@
                 </label>
                 </div>
             </div>
-            <div class="weightsblock">
+            <div class="weightsBlock">
                 <ul id="weights">
                     <li th:each="preference : ${preferences}" th:switch="${preference.toString()}">
                         <div th:case="NUM_BATCH_RUN" class="input-group input-group-sm" id="batch-runs" style="display: none">
@@ -92,17 +103,18 @@
                             </form>
                         </div>
                         <div th:case="STATE_NAME" class="dropdown btn-states">
-                            <select id="states" class="btn-sm btn-secondary dropdown-toggle select-css">
+                            <select class="btn-sm btn-secondary dropdown-toggle select-css" id="STATE_NAME">
                                 <option th:each="state : ${states}" th:value="${state}" th:text="${state.toString()} == 'ALL' ? 'Select a State to Display' : ${state}"></option>
                             </select>
                         </div>
                         <div th:case="COMMUNITY_OF_INTEREST" class="dropdown btn-major">
-                            <select id ="communities" class="btn-sm btn-secondary dropdown-toggle select-css">
+                            <select class="btn-sm btn-secondary dropdown-toggle select-css" id="COMMUNITY_OF_INTEREST">
                                 <option th:each="community : ${communities}" th:value="${community}" th:text="${community.toString()} == 'ALL' ? 'Select a Majority Minority' : ${community}"></option>
                             </select>
                         </div>
                         <div th:case="GRAPH_THEORETICAL_COMPACTNESS" class="dropdown btn-compactness">
-                            <select id="compactness" class="btn-sm btn-secondary dropdown-toggle select-css">
+                            <select class="btn-sm btn-secondary dropdown-toggle select-css"
+                                    id="GRAPH_THEORETICAL_COMPACTNESS">
                                 <option th:each="c : ${compactness}" th:value="${c}" th:text="${c.toString()} == 'ALL' ? 'Compactness' : ${c}"></option>
                             </select>
                         </div>
