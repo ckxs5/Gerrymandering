@@ -28,6 +28,19 @@ public class AlgorithmController {
         System.out.println(preferences);
         algorithm = new Algorithm(preferences, new State());
         State state = algorithm.graphPartition();
+        return getDistrictPrecincts(state);
+    }
+
+    @PostMapping(value = "/graphpartition/once", consumes = "application/json")
+    public ResponseEntity<String> runonce(@RequestBody HashMap<String, String> preferences) {
+        if (algorithm == null) {
+            algorithm = new Algorithm(preferences, new State());
+        }
+        State state = algorithm.graphPartitionOnce();
+        return getDistrictPrecincts(state);
+    }
+
+    private ResponseEntity<String> getDistrictPrecincts(State state) {
         Collection<District> districts = state.getDistricts();
         JSONArray obj = new JSONArray();
         for (District district : districts) {

@@ -35,11 +35,17 @@ public class Algorithm {
         state.setDistricts(clusterManager.toDistricts());
         return state;
     }
+
+    public State graphPartitionOnce() {
+        clusterManager.runOnce();
+        state.setDistricts(clusterManager.toDistricts());
+        return state;
+    }
+
     //TODO
     public State runAlgorithm(){return null;}
     //TODO
     public float getOF(){return tempObjectiveFunctionValue;}
-
 
 
     public Move makeMove(){

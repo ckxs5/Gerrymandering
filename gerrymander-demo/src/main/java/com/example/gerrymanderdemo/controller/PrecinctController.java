@@ -1,12 +1,10 @@
 package com.example.gerrymanderdemo.controller;
 
-import com.example.gerrymanderdemo.JacksonSerializer.PrecinctBoundarySerializer;
 import com.example.gerrymanderdemo.JacksonSerializer.PrecinctDataSerializer;
 import com.example.gerrymanderdemo.Service.PrecinctService;
 import com.example.gerrymanderdemo.model.Enum.StateName;
 import com.example.gerrymanderdemo.model.Precinct;
 import com.example.gerrymanderdemo.model.PrecinctManager;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,11 +12,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.Optional;
-
-import java.util.List;
 
 @Controller
 public class PrecinctController {

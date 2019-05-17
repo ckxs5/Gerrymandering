@@ -69,11 +69,11 @@ public class ClusterManager {
         Collections.sort(candidates);
         for (int i = 0; i < candidates.size(); i++) {
             Edge edge = candidates.get(i).getBestEdge();
-            //TODO: Delete after test, remove precincts that with no edges
-            if (edge == null) {
-                clusters.remove(candidates.get(i));
-                return true;
-            }
+//            //TODO: Delete after test, remove precincts that with no edges
+//            if (edge == null) {
+//                clusters.remove(candidates.get(i));
+//                return true;
+//            }
             System.out.printf("Edge is %s \n", edge);
             System.out.printf("candidate is %s \n", candidates.get(i));
             System.out.printf("The other is %s \n", edge.getTheOther(candidates.get(i)));
