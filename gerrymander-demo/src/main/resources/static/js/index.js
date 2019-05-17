@@ -63,7 +63,7 @@ $("document").ready(function () {
             mymap.removeLayer(states);
             mymap.addLayer(districts);
         }
-        if (mymap.getZoom() > precinctZoomLevel && mymap.hasLayer(districtLayer)){
+        if (mymap.getZoom() > precinctZoomLevel || mymap.hasLayer(districtLayer)){
             mymap.removeLayer(districts);
             mymap.addLayer(precincts);
         }
@@ -134,8 +134,16 @@ $("document").ready(function () {
             console.log($(this).attr("id") + " : " + $(this).val());
             weights[$(this).attr("id")] = $(this).val();
         });
-        postData(weights, "/graphpartition", printData);
+        postData(weights, "/graphpartition", colorModifying);
     });
+
+    function colorModifying(data) {
+        // console.log("data size: " + data[0]);
+        $.each(data , function (index, value){
+            console.log(index + ':::::' + value);
+            
+        });
+    }
 
     $("#sign-in").on("click", function () {
         let usernameAndPassword = {};

@@ -26,7 +26,7 @@ public class Algorithm {
         this.clusterManager = new ClusterManager(
                 RaceType.valueOf(preference.get(PreferenceType.COMMUNITY_OF_INTEREST.toString())),
                 Integer.parseInt(preference.get(PreferenceType.NUM_DISTRICTS.toString())),
-                (List)PrecinctManager.getPrecincts(StateName.MINNESOTA).values()
+                new ArrayList<>(PrecinctManager.getPrecincts(StateName.MINNESOTA).values())
                 );
     }
 
