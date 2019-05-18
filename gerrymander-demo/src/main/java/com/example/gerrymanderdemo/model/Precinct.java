@@ -27,6 +27,8 @@ public class Precinct implements ResponseObject {
             inverseJoinColumns = @JoinColumn(name = "precinct2_id"))
     private Set<Precinct> neighbors;
 
+    private long districtId;
+
     public Precinct() {
     }
     
@@ -36,6 +38,12 @@ public class Precinct implements ResponseObject {
         this.data = data;
         this.neighbors = neighbors;
     }
+
+    public void setDistrictId(long districtId){
+        this.districtId = districtId;
+    }
+
+    public Long getDistrictId(){ return districtId; }
 
     public String getCounty(){ return county; }
 

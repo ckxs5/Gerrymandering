@@ -20,7 +20,7 @@ public class District {
     @OneToMany
     private Set<Precinct> precincts;
 
-    private Set<Precinct> Borderprecincts;
+    private Set<Precinct> borderPrecincts;
 
 
     public District(){
@@ -132,10 +132,7 @@ public class District {
                 this.data.getVoteData().getVote(Party.REPUBLICAN));
     }
 
-    //TODO
-    public Set<Precinct> getBorderPrecincts() {
-        return null;
-    }
+
     //TODO: we should change precincts type to a HashMap<precinctId, precinct>
         public Precinct getPrecinct(String n) {
         return null;
@@ -176,9 +173,12 @@ public class District {
     public Set<Precinct> getBorderPrecincts(){
         for(Precinct p: precincts){
             for(Precinct np: p.getNeighbors()){
-
+                if(np.getDistrictId()!=id){
+                    borderPrecincts.add(p);
+                }
             }
         }
+        return borderPrecincts;
     }
 
 

@@ -30,6 +30,14 @@ public class Algorithm {
                 );
     }
 
+    public void setRedistrictingPlan(){
+        for (District d: state.getDistricts()){
+            for (Precinct p: d.getPrecincts()){
+                redistrictingPlan.put(p.getId(), d.getId());
+            }
+        }
+    }
+
     public State graphPartition() {
         clusterManager.run();
         state.setDistricts(clusterManager.toDistricts());
@@ -388,6 +396,12 @@ public class Algorithm {
         double length = d.getLength();
         double width = d.getWidth();
         return length/width;
+    }
+
+    public double rateCompactnessBorder(District d){
+        double borderCount = d.getBorderPrecincts().size();
+        double total = d.getPrecincts().size();
+        return 1-(borderCount/total);
     }
 
 
