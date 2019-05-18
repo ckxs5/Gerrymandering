@@ -16,7 +16,7 @@
     <!-- <a class="text-white navbar-brand toggle-btn" onclick="toggleNav()">&#9776;</a> -->
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="nav-item nav-link text-light" href="http://localhost:8080/login">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link text-light" href="http://localhost:8080">Home <span class="sr-only">(current)</span></a>
         </div>
     </div>
 </nav>
@@ -46,13 +46,11 @@
                 </thead>
 
                 <tbody>
-                <tr th:each="user">
+                <tr th:each="user : ${listOfUsers}" >
                     <td name="emailRow" th:text="${user.getEmail()}"></td>
                     <td name="passwordRow" th:text="${user.getPassword()}"></td>
                     <td>
-                        <button class="btn btn-outline-primary btn-sm mb-2" data-target="#editModal" data-toggle="modal"
-                                onclick="sendCurrentEmail(this);" type="button">Edit
-                        </button>
+                        <button class="btn btn-outline-primary btn-sm mb-2" data-target="#editModal" data-toggle="modal" onclick="sendCurrentEmail(this);" type="button">Edit</button>
                     </td>
                 </tr>
                 </tbody>

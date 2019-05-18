@@ -121,13 +121,6 @@ $("document").ready(function () {
     };
     info.addTo(mymap);
 
-    let precinctHashmap = {};
-
-    precinctLayer.eachLayer(function(layer){
-        precinctHashmap[layer.feature["properties"]["PrecinctID"]] = layer;
-    });
-    console.log(precinctHashmap);
-
     $("#play-btn").on("click", function () {
         console.log("play skip button");
         let weights = {};
