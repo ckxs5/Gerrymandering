@@ -11,14 +11,14 @@ import java.util.Objects;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
     private Long id;
 
-    @Column(updatable = false, nullable = false)
+    @Column(nullable = false)
     private UserType userType;
 
-    @Column(updatable = false, nullable = false)
+    @Column(nullable = false)
     private String email;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -65,7 +65,7 @@ public class User {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return getEmail().equals(((User) o).email);
+        return getEmail().equals(((User) o).email) && getId().equals(((User) o).getId());
     }
 
     @Override

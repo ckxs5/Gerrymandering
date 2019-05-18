@@ -52,4 +52,13 @@ public class UserService {
     public void deleteById(Long id) {
         userRepository.deleteById(id);
     }
+
+    public User update(User user) throws UserNotFoundException {
+        Optional<User> data = userRepository.findById(user.getId());
+        if (data.isPresent()) {
+            return userRepository.save(user);
+        } else {
+            throw new UserNotFoundException();
+        }
+    }
 }
