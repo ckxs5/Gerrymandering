@@ -6,6 +6,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Cluster implements Comparable{
+
+
     private Data data;
     private List<Edge> edges;
     private Precinct precinct;
