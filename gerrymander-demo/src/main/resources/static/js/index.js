@@ -138,6 +138,7 @@ $("document").ready(function () {
             console.log($(this).attr("id") + " : " + $(this).val());
             weights[$(this).attr("id")] = $(this).val();
         });
+        // while()
         postData(weights, "/graphpartition/once", colorModifying);
     })
 

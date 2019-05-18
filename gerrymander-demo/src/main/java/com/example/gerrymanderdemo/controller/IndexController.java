@@ -21,6 +21,7 @@ public class IndexController {
         } else {
             System.out.println("return index2");
             mav = new ModelAndView("index");
+            mav.addObject("listOfUsers", user);
             mav.addObject("compactness", Compactness.values());
             mav.addObject("preferences", PreferenceType.values());
             mav.addObject("states", StateName.values());

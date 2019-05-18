@@ -56,4 +56,10 @@ public class UserController {
         return ResponseEntity.ok(new OKResponse());
     }
 
+//    @RequestMapping(value = "listOfUsers", method = RequestMethod.GET)
+//    public String messages(Model model) {
+//        model.addAttribute("messages", messageRepository.findAll());
+//        return "message/list";
+//    }
+
 }
