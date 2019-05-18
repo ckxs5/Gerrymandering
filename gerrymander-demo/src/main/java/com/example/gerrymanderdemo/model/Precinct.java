@@ -26,8 +26,8 @@ public class Precinct implements ResponseObject {
             joinColumns = @JoinColumn(name = "precinct1_id"),
             inverseJoinColumns = @JoinColumn(name = "precinct2_id"))
     private Set<Precinct> neighbors;
-
-    private long districtId;
+    @Transient
+    private Long districtId;
 
     public Precinct() {
     }
