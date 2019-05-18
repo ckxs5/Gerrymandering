@@ -76,12 +76,6 @@ $("document").ready(function () {
             mymap.addLayer(states);
         }
     });
-    let precinctHashmap = {};
-
-    precinctLayer.eachLayer(function(layer){
-        precinctHashmap[layer.feature["properties"]["PrecinctID"]] = layer;
-    });
-    console.log(precinctHashmap);
 
     mymap.on("click", function(e){
         if(L.geoJson(MN_Dist).getBounds().contains(e.latlng)){
@@ -128,7 +122,7 @@ $("document").ready(function () {
     info.addTo(mymap);
 
     $("#play-btn").on("click", function () {
-        console.log("play button");
+        console.log("play skip button");
         let weights = {};
         $("#weights input, select").each(function () {
             console.log($(this).attr("id") + " : " + $(this).val());
@@ -137,12 +131,38 @@ $("document").ready(function () {
         postData(weights, "/graphpartition", colorModifying);
     });
 
-    function colorModifying(data) {
-        // console.log("data size: " + data[0]);
-        $.each(data , function (index, value){
-            console.log(index + ':::::' + value);
-            
+    $("#play-btn-not").on("click", function() {
+        console.log("play not skip button");
+        let weights = {};
+        $("#weights input, select").each(function () {
+            console.log($(this).attr("id") + " : " + $(this).val());
+            weights[$(this).attr("id")] = $(this).val();
         });
+        postData(weights, "/graphpartition/once", colorModifying);
+    })
+
+    let precinctHashmap = {};
+
+    precinctLayer.eachLayer(function(layer){
+        precinctHashmap[layer.feature["properties"]["PrecinctID"]] = layer;
+    });
+    console.log(precinctHashmap);
+
+    function colorModifying(data) {
+        for (let i = 0; i < data.length; i++){
+            let color = getColor();
+            // console.log(color);
+            for(let j = 0; j < data[i].length; j++){
+                // console.log(precinctHashmap[data[i][j]].feature);
+                precinctHashmap[data[i][j]].setStyle({
+                    fillColor: color,
+                    weight: 1,
+                    color: 'white',
+                    fillOpacity: 0.7
+                });
+                onEachPrecinctFeature(precinctHashmap[data[i][j]].feature, precinctHashmap[data[i][j]]);
+            }
+        }
     }
 
     $("#sign-in").on("click", function () {
@@ -222,75 +242,12 @@ $("document").ready(function () {
      * @todo Generate Color based on measurements in future
      */
     function style(features) {
-        // console.log(features);
-        console.log(features.properties.CongDist);
-        if(features.properties.CongDist) {
-            switch (features.properties.CongDist) {
-                case '1':
-                    return {
-                        fillColor: '#a0f1b6',
-                        weight: 1,
-                        color: 'white',
-                        fillOpacity: 0.7,
-                    };
-                case '2':
-                    return {
-                        fillColor: '#c55d82',
-                        weight: 1,
-                        color: 'white',
-                        fillOpacity: 0.7,
-                    };
-                case '3':
-                    return {
-                        fillColor:'#f6e9d2',
-                        weight: 1,
-                        color: 'white',
-                        fillOpacity: 0.7,
-                    };
-                case '4':
-                    return {
-                        fillColor: '#8e79bb',
-                        weight: 1,
-                        color: 'white',
-                        fillOpacity: 0.7,
-                    };
-                case '5':
-                    return {
-                        fillColor: '#74e1e3',
-                        weight: 1,
-                        color: 'white',
-                        fillOpacity: 0.7,
-                    };
-                case '6':
-                    return {
-                        fillColor: '#5e5cd2',
-                        weight: 1,
-                        color: 'white',
-                        fillOpacity: 0.7,
-                    };
-                case '7':
-                    return {
-                        fillColor: '#d05b62',
-                        weight: 1,
-                        color: 'white',
-                        fillOpacity: 0.7,
-                    };
-                case '8':
-                    return {
-                        fillColor: '#aed05b',
-                        weight: 1,
-                        color: 'white',
-                        fillOpacity: 0.7,
-                    };
-            }
-        }else {
-            return {
-                fillColor: getColor(),
-                weight: 1,
-                color: 'white',
-                fillOpacity: 0.7,
-            };
-        }
+        return {
+            fillColor: getColor(),
+            weight: 1,
+            color: 'white',
+            fillOpacity: 0.7,
+        };
     }
 
     function getColor() {
@@ -301,8 +258,8 @@ $("document").ready(function () {
         let layer = e.target;
 
         layer.setStyle({
-            weight: 4,
-            color: 'darkgrey',
+            weight: 2,
+            color: 'black',
             fillOpacity: 0.7
         });
         if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
@@ -398,9 +355,3 @@ $("document").ready(function () {
     // disables();
 
 });
-
-
-
-
-
-
