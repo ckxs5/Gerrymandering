@@ -121,7 +121,6 @@ $("document").ready(function () {
     };
     info.addTo(mymap);
 
-
     $("#play-btn").on("click", function () {
         console.log("play skip button");
         let weights = {};
