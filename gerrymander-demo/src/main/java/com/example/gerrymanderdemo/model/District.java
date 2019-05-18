@@ -19,7 +19,7 @@ public class District {
     private Data data;
     @OneToMany
     private Set<Precinct> precincts;
-
+    @Transient
     private Set<Precinct> borderPrecincts;
 
 
