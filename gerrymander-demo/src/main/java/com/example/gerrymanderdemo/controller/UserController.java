@@ -2,6 +2,7 @@ package com.example.gerrymanderdemo.controller;
 
 import com.example.gerrymanderdemo.Service.UserService;
 import com.example.gerrymanderdemo.model.Exception.UserExistException;
+import com.example.gerrymanderdemo.model.Exception.UserNotFoundException;
 import com.example.gerrymanderdemo.model.Response.OKResponse;
 import com.example.gerrymanderdemo.model.Response.Response;
 import com.example.gerrymanderdemo.model.User.User;
@@ -55,5 +56,30 @@ public class UserController {
         session.removeAttribute("user");
         return ResponseEntity.ok(new OKResponse());
     }
+
+    @GetMapping("/user/{id}/delete")
+    public void delete(@PathVariable Long id) {
+        userService.deleteById(id);
+    }
+
+
+    @PostMapping("/user/update")
+    public ResponseEntity<String> update(@RequestBody User user) {
+        try {
+            userService.update(user);
+            return ResponseEntity.ok("Success");
+        } catch (UserNotFoundException ex) {
+            ex.printStackTrace();
+            return ResponseEntity.status(404).body("User not found!");
+        }
+    }
+
+
+
+//    @RequestMapping(value = "listOfUsers", method = RequestMethod.GET)
+//    public String messages(Model model) {
+//        model.addAttribute("messages", messageRepository.findAll());
+//        return "message/list";
+//    }
 
 }

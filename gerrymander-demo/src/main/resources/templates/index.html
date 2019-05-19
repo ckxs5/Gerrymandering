@@ -61,28 +61,28 @@
     <div class="card border-dark mb-1" id="controllpane" style="max-width: 25rem;">
         <div class="card-body text-dark">
             <div aria-label="First group" class="btn-group" role="group">
-                <button class="btn btn-secondary" data-target="#exampleModal" data-toggle="modal" id="play-btn" type="button">Play</button>
+                <button class="btn btn-secondary" data-target="#exampleModal" data-toggle="modal" type="button">Play</button>
                 <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="exampleModal" role="dialog" tabindex="-1">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">Running Preference</h5>
                                 <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                                    <span aria-hidden="true">&times;</span>
+                                    <span aria-hidden="true">&times</span>
                                 </button>
                             </div>
                             <div class="modal-body">
                                 Would you like to skip the GUI update?
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-secondary" data-dismiss="modal" type="button">Yes</button>
-                                <button class="btn btn-primary" data-dismiss="modal" type="button">No</button>
+                                <button id="play-btn" class="btn btn-secondary" data-dismiss="modal" type="button">Yes</button>
+                                <button id="play-btn-not" class="btn btn-primary" data-dismiss="modal" type="button">No</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-secondary" type="button">Stop</button>
-                <button class="btn btn-secondary" type="button">Pause</button>
+<!--                <button class="btn btn-secondary" type="button">Stop</button>-->
+<!--                <button class="btn btn-secondary" type="button">Pause</button>-->
                 <div class="btn-group-toggle" data-toggle="buttons">
                 <label class="btn btn-secondary">
                     <input id="btn-batch" type="checkbox" autocomplete="off"> Batch

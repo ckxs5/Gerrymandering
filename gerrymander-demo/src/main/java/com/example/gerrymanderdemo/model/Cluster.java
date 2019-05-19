@@ -6,6 +6,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Cluster implements Comparable{
+
+
     private Data data;
     private List<Edge> edges;
     private Precinct precinct;
@@ -123,6 +125,9 @@ public class Cluster implements Comparable{
         District d = new District();
         d.setData(this.data);
         d.setPrecincts(this.getPrecincts());
+        for (Precinct p: d.getPrecincts()){
+            p.setDistrictId(d.getId());
+        }
         return d;
     }
 

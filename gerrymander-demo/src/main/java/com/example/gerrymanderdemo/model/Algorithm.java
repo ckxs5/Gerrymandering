@@ -14,7 +14,7 @@ public class Algorithm {
     private Map<String, String> preference;
     private State state;
     private ClusterManager clusterManager;
-    float tempObjectiveFunctionValue;
+    private float tempObjectiveFunctionValue;
     private District currentDistrict = null;
     private HashMap<District, Double> currentScores;//TODO: Map district to its score
     private HashMap<Long, Long> redistrictingPlan;//TODO: Map key precinctId to its district's id
@@ -28,6 +28,14 @@ public class Algorithm {
                 Integer.parseInt(preference.get(PreferenceType.NUM_DISTRICTS.toString())),
                 new ArrayList<>(PrecinctManager.getPrecincts(StateName.MINNESOTA).values())
                 );
+    }
+
+    public void setRedistrictingPlan(){
+        for (District d: state.getDistricts()){
+            for (Precinct p: d.getPrecincts()){
+                redistrictingPlan.put(p.getId(), d.getId());
+            }
+        }
     }
 
     public State graphPartition() {
@@ -198,52 +206,52 @@ public class Algorithm {
     //TODO:check contiguity for moving precinct p out of district d
     //returns true if contiguous
     private boolean checkContiguity(Precinct p, District d){
-//        Set<String> neighborIDs = p.getNeighborIDs();
-//        HashSet<Precinct> neededPrecincts = new HashSet<Precinct>();
-//        HashSet<Precinct> neighborToExplore = new HashSet<Precinct>();//potential sources of exploration
-//        HashSet<Precinct> exploreNeighbors = new HashSet<Precinct>();// neighbors already explored
-//        exploreNeighbors.add(p);// add the precinct being moved, to ensure it won't be used
-//        // if a neighbor is in the district that's losing a precinct, we need to make sure they're still contiguous
-//        for (String s : neighborIDs) {
-//            // if neighbor is in the district we're losing from
-//            if ((redistrictingPlan.get(s)).equals(d.getId())) {
-//                Precinct n = d.getPrecinct(s);
-//                neededPrecincts.add(n);
-//            }
-//        }
-//        // if there are no same - district neighbors for the node, returns false
-//        if(neededPrecincts.size() == 0){
-//            return false;
-//        }
-//        // add an arbitrary same - district neighbor to the sources of exploration
-//        neighborToExplore.add(neededPrecincts.iterator().next());
-//        // while we still need iDs and still have neighbors to explore
-//        while (neighborToExplore.size() != 0){
-//            // take an arbitrary precinct from the sources of exploration
-//            Precinct n = neighborToExplore.iterator().next();
-//            for (String s :n.getNeighborIDs()) {
-//                //we only care about neighbors in our district,d
-//                if (redistrictingPlan.get(s).equals(d.getId())) {
-//                    Precinct nn = d.getPrecinct(s);
-//                    // if we've hit one of our needed precincts, check it off
-//                    if (neededPrecincts.contains(nn)) {
-//                        neededPrecincts.remove(nn);
-//                        if (neededPrecincts.size() == 0){
-//                            return true;
-//                        }
-//                    }
-//                    // add any neighbors in same district to neighborsToExplore if not in exploredNeighbors
-//                    if (!exploreNeighbors.contains(nn)){
-//                        neighborToExplore.add(nn);
-//                    }
-//                }
-//            }
-//            // check this precinct off
-//            exploreNeighbors.add(n);
-//            neighborToExplore.remove(n);
-//        }
-//        return (neededPrecincts.size() == 0);
-        return false;
+        Set<String> neighborIDs = p.getNeighborIDs();
+        HashSet<Precinct> neededPrecincts = new HashSet<Precinct>();
+        HashSet<Precinct> neighborToExplore = new HashSet<Precinct>();//potential sources of exploration
+        HashSet<Precinct> exploreNeighbors = new HashSet<Precinct>();// neighbors already explored
+        exploreNeighbors.add(p);// add the precinct being moved, to ensure it won't be used
+        // if a neighbor is in the district that's losing a precinct, we need to make sure they're still contiguous
+        for (String s : neighborIDs) {
+            // if neighbor is in the district we're losing from
+            if ((redistrictingPlan.get(s)).equals(d.getId())) {
+                Precinct n = d.getPrecinct(s);
+                neededPrecincts.add(n);
+            }
+        }
+        // if there are no same - district neighbors for the node, returns false
+        if(neededPrecincts.size() == 0){
+            return false;
+        }
+        // add an arbitrary same - district neighbor to the sources of exploration
+        neighborToExplore.add(neededPrecincts.iterator().next());
+        // while we still need iDs and still have neighbors to explore
+        while (neighborToExplore.size() != 0){
+            // take an arbitrary precinct from the sources of exploration
+            Precinct n = neighborToExplore.iterator().next();
+            for (String s :n.getNeighborIDs()) {
+                //we only care about neighbors in our district,d
+                if (redistrictingPlan.get(s).equals(d.getId())) {
+                    Precinct nn = d.getPrecinct(s);
+                    // if we've hit one of our needed precincts, check it off
+                    if (neededPrecincts.contains(nn)) {
+                        neededPrecincts.remove(nn);
+                        if (neededPrecincts.size() == 0){
+                            return true;
+                        }
+                    }
+                    // add any neighbors in same district to neighborsToExplore if not in exploredNeighbors
+                    if (!exploreNeighbors.contains(nn)){
+                        neighborToExplore.add(nn);
+                    }
+                }
+            }
+            // check this precinct off
+            exploreNeighbors.add(n);
+            neighborToExplore.remove(n);
+        }
+        return (neededPrecincts.size() == 0);
+        //return false;
     }
     //TODO
     public double rateDistrict(District d) {
@@ -349,12 +357,52 @@ public class Algorithm {
         int dv = d.getData().getVoteData().getVote(DEMOCRATIC);
         int tv = gv + dv;
         int margin = gv - dv;
-        if (tv == 0){
+        if (tv == 0) {
             return 1.0;
         }
         int win_v = Math.max(gv, dv);
         int loss_v = Math.min(gv, dv);
-        return 0;//TODO
+        int inefficient_V;
+        if (margin > 0) {
+            inefficient_V = win_v - loss_v;
+        }
+        else {
+            inefficient_V = loss_v;
+        }
+        return 1.0 - ((inefficient_V * 1.0) / tv);
+        }
+
+    public double rateGERRYMANDER_DEMOCRATIC(District d) {
+        int gv = d.getData().getVoteData().getVote(REPUBLICAN);
+        int dv = d.getData().getVoteData().getVote(DEMOCRATIC);
+        int tv = gv + dv;
+        int margin = dv - gv;
+        if (tv == 0) {
+            return 1.0;
+        }
+        int win_v = Math.max(gv, dv);
+        int loss_v = Math.min(gv, dv);
+        int inefficient_V;
+        if (margin > 0) {
+            inefficient_V = win_v - loss_v;
+        }
+        else {
+            inefficient_V = loss_v;
+        }
+        return 1.0 - ((inefficient_V * 1.0) / tv);
     }
+
+    public double rateCompactnessLenWid(District d){
+        double length = d.getLength();
+        double width = d.getWidth();
+        return length/width;
+    }
+
+    public double rateCompactnessBorder(District d){
+        double borderCount = d.getBorderPrecincts().size();
+        double total = d.getPrecincts().size();
+        return 1-(borderCount/total);
+    }
+
 
 }

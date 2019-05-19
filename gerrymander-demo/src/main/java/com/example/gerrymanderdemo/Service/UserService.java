@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,6 +42,23 @@ public class UserService {
             throw new UserExistException();
         } else {
             return userRepository.save(user);
+        }
+    }
+
+    public List<User> findAll() {
+        return (List) userRepository.findAll();
+    }
+
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    public User update(User user) throws UserNotFoundException {
+        Optional<User> data = userRepository.findById(user.getId());
+        if (data.isPresent()) {
+            return userRepository.save(user);
+        } else {
+            throw new UserNotFoundException();
         }
     }
 }

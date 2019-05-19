@@ -7,6 +7,7 @@ import com.example.gerrymanderdemo.model.Enum.RaceType;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 @Entity
@@ -18,6 +19,9 @@ public class District {
     private Data data;
     @OneToMany
     private Set<Precinct> precincts;
+    @Transient
+    private Set<Precinct> borderPrecincts;
+
 
     public District(){
     }
@@ -128,12 +132,57 @@ public class District {
                 this.data.getVoteData().getVote(Party.REPUBLICAN));
     }
 
-    //TODO
-    public Set<Precinct> getBorderPrecincts() {
-        return null;
-    }
+
     //TODO: we should change precincts type to a HashMap<precinctId, precinct>
         public Precinct getPrecinct(String n) {
         return null;
     }
+
+    public double getLength(){
+        double[][] geoJson= data.getBoundary().getGeoJSON();
+        double min_lon = geoJson[0][0];
+        double max_lon = geoJson[0][0];
+        for (int i = 0; i < geoJson.length; i++) {
+            if(geoJson[i][0] < min_lon){
+                min_lon = geoJson[i][0];
+            }else{
+                if(geoJson[i][0] > max_lon){
+                    max_lon = geoJson[i][0];
+                }
+            }
+        }
+        return Math.abs(max_lon - min_lon);
+    }
+
+    public double getWidth(){
+        double[][] geoJson= data.getBoundary().getGeoJSON();
+        double min_lat = geoJson[0][1];
+        double max_lat = geoJson[0][1];
+        for (int i = 0; i < geoJson.length; i++) {
+            if(geoJson[i][1] < min_lat){
+                min_lat = geoJson[i][1];
+            }else{
+                if(geoJson[i][1] > max_lat){
+                    max_lat = geoJson[i][1];
+                }
+            }
+        }
+        return Math.abs(max_lat - min_lat );
+    }
+
+    public Set<Precinct> getBorderPrecincts(){
+        for(Precinct p: precincts){
+            for(Precinct np: p.getNeighbors()){
+                if(np.getDistrictId()!=id){
+                    borderPrecincts.add(p);
+                }
+            }
+        }
+        return borderPrecincts;
+    }
+
+
+
+
+
 }
