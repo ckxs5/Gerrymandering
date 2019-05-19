@@ -59,9 +59,16 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}/delete")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<String> delete(@PathVariable Long id) {
         userService.deleteById(id);
+        return ResponseEntity.ok("Ok");
     }
+
+//    @GetMapping("/user/{email}/delete")
+//    public ResponseEntity<String> delete(@PathVariable String email) {
+//        userService.deleteByEmail(email);
+//        return ResponseEntity.ok("Ok");
+//    }
 
 
     @PostMapping("/user/update")
