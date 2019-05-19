@@ -78,6 +78,7 @@ public class AlgorithmController {
             }
             obj.put(ps);
         }
+        System.out.printf("Return %d of Districts with its precinctIds. \n", obj.length());
         return ResponseEntity.ok(obj.toString());
     }
 
