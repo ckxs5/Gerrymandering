@@ -55,13 +55,13 @@ function getDeleteId(){
 // }
 
 function getIdandType(id){
-    // var id = $("#userId").children(':first-child').text();
     const type_id = "#userType" + id;
     let usertype = $(type_id).val();
     console.log("ID: " + id);
     console.log("TYPE:" + usertype);
     let url =  "/user/" + id + "/" + usertype;
     getData(url, null);
-    window.location.href = '/';
-
+    window.setTimeout(function(){
+        window.location.href = "/";
+    }, 500);
 }

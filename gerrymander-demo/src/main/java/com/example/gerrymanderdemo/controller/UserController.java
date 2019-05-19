@@ -71,11 +71,11 @@ public class UserController {
 //    }
 
 
-    @PostMapping("/user/update")
-    public ResponseEntity<String> update(@RequestBody User user) {
-        userService.update(user);
-        return ResponseEntity.ok("Success");
-    }
+//    @PostMapping("/user/update")
+//    public ResponseEntity<String> update(@RequestBody User user) {
+//        userService.update(user);
+//        return ResponseEntity.ok("Success");
+//    }
 
     @GetMapping("/user/{id}/{usertype}")
     public ResponseEntity<String> updateUserType(@PathVariable Long id, @PathVariable UserType usertype) {
