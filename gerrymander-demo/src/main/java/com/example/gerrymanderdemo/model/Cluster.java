@@ -125,7 +125,8 @@ public class Cluster implements Comparable{
         District d = new District();
         d.setData(this.data);
         d.setPrecincts(this.getPrecincts());
-        DistrictManager.getInstance().save(d);
+        d = DistrictManager.getInstance().save(d);
+        System.out.printf("District Id : %d", d.getId());
         for (Precinct p: d.getPrecincts()){
             p.setDistrictId(d.getId());
         }

@@ -1,14 +1,19 @@
 package com.example.gerrymanderdemo.controller;
 
-import com.example.gerrymanderdemo.model.Algorithm;
-import com.example.gerrymanderdemo.model.District;
-import com.example.gerrymanderdemo.model.Precinct;
-import com.example.gerrymanderdemo.model.State;
+import com.example.gerrymanderdemo.JacksonSerializer.DistrictDataSerializer;
+import com.example.gerrymanderdemo.JacksonSerializer.PrecinctDataSerializer;
+import com.example.gerrymanderdemo.model.*;
+import com.example.gerrymanderdemo.model.Enum.StateName;
+import com.example.gerrymanderdemo.model.Exception.NotAnotherMoveException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.mysql.cj.xdevapi.JsonArray;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,8 +41,33 @@ public class AlgorithmController {
         if (algorithm == null) {
             algorithm = new Algorithm(preferences, new State());
         }
-        State state = algorithm.graphPartitionOnce();
-        return getDistrictPrecincts(state);
+        try {
+            State state = algorithm.graphPartitionOnce();
+            return getDistrictPrecincts(state);
+        } catch (NotAnotherMoveException ex) {
+            return ResponseEntity.status(400).body("Unable to have another move");
+        }
+    }
+
+    @GetMapping(value = "/district/{id}")
+    public ResponseEntity<String> getDistrictById(@RequestBody Long id) {
+        System.out.printf("Request to get data for precinct : %d \n", id);
+        District district = algorithm.getState().getDistrictById(id);
+        if (district != null) {
+            ObjectMapper mapper = new ObjectMapper();
+            SimpleModule module = new SimpleModule();
+            module.addSerializer(District.class, new DistrictDataSerializer());
+            mapper.registerModule(module);
+            try {
+                return ResponseEntity.ok(mapper.writeValueAsString(district));
+            } catch (JsonProcessingException ex) {
+                ex.printStackTrace();
+                return ResponseEntity.status(400).body("error");
+            }
+        } else {
+            System.out.printf("Could not find entity with id %d \n", id);
+            return ResponseEntity.status(404).body("Could not find entity");
+        }
     }
 
     private ResponseEntity<String> getDistrictPrecincts(State state) {
@@ -53,6 +83,7 @@ public class AlgorithmController {
         }
         return ResponseEntity.ok(obj.toString());
     }
+
 
 //    @PostMapping(value = "/district-precincts", consumes = "application/json")
 //    public ResponseEntity<String> getDistrictPrecincts() {

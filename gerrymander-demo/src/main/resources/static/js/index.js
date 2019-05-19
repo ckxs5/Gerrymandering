@@ -22,10 +22,10 @@ $("document").ready(function () {
     mymap.setMaxBounds(maxBounds);
     mymap.fitBounds(maxBounds);
 
-    // stateLayer = L.geoJson(statesData, {
-    //     style:style,
-    //     onEachFeature: onEachStateFeature
-    // }).addTo(states);
+    stateLayer = L.geoJson(statesData, {
+        style:style,
+        onEachFeature: onEachStateFeature
+    }).addTo(states);
 
     // districtLayer = L.geoJson(FL_Dist, {
     //     style: style,
@@ -41,8 +41,8 @@ $("document").ready(function () {
     //     style: style,
     //     onEachFeature: onEachDistrictFeature
     // }).addTo(districts);
-
-    // precinctLayer = L.geoJson(MD_P, {
+    //
+    // precinctLayer = L.geoJson(MD_O, {
     //     style: style,
     //     onEachFeature: onEachPrecinctFeature
     // }).addTo(precincts);
@@ -207,10 +207,11 @@ $("document").ready(function () {
 
     $("#batchform").on("submit", function(event) {
         event.preventDefault();
-    })
+    });
+
     $("#num-district").on("submit", function(event) {
         event.preventDefault();
-    })
+    });
 
     /**
      * @todo Revise the function.
@@ -287,25 +288,25 @@ $("document").ready(function () {
     }
 
     function loadPrecinctProperties(layer) {
-        let precinctId = layer.feature["properties"]["PrecinctID"]
-        let  url = "/precinct/"+precinctId+"/data"
-        getData(url, loadPrecinctPropertiesHelper)
+        // let precinctId = layer.feature["properties"]["PrecinctID"];
+        // let  url = "/precinct/"+precinctId+"/data";
+        // getData(url, loadPrecinctPropertiesHelper);
     }
 
     function loadPrecinctPropertiesHelper(loadedJson) {
         let obj = loadedJson;
-        let democratic = obj['democratic'] ? obj['democratic'] : "N/A"
-        let republican = obj['republican'] ? obj['republican'] : "N/A"
-        let other_parties = obj['other_parties'] ? obj['other_parties'] : "N/A"
+        let democratic = obj['democratic'] ? obj['democratic'] : "N/A";
+        let republican = obj['republican'] ? obj['republican'] : "N/A";
+        let other_parties = obj['other_parties'] ? obj['other_parties'] : "N/A";
         let all = obj['all'] ? obj['all'] : "N/A";
-        let caucasian = obj['caucasian'] ? obj['caucasian'] : "N/A"
-        let african_american = obj['african_american'] ? obj['african_american'] : "N/A"
-        let asian = obj['asian'] ? obj['asian'] : "N/A"
-        let native = obj['native'] ? obj['native'] : "N/A"
-        let hispanic = obj['hispanic'] ? obj['hispanic'] : "N/A"
-        let other_race = obj['other_race'] ? obj['other_race'] : "N/A"
-        let county = obj['county'] ? obj['county'] : "N/A"
-        let name = obj['name'] ? obj['name'] : "N/A"
+        let caucasian = obj['caucasian'] ? obj['caucasian'] : "N/A";
+        let african_american = obj['african_american'] ? obj['african_american'] : "N/A";
+        let asian = obj['asian'] ? obj['asian'] : "N/A";
+        let native = obj['native'] ? obj['native'] : "N/A";
+        let hispanic = obj['hispanic'] ? obj['hispanic'] : "N/A";
+        let other_race = obj['other_race'] ? obj['other_race'] : "N/A";
+        let county = obj['county'] ? obj['county'] : "N/A";
+        let name = obj['name'] ? obj['name'] : "N/A";
 
         info.update(democratic, republican, other_parties, all, other_race, caucasian, asian, hispanic, african_american, native, name,county);
     }

@@ -53,12 +53,12 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public User update(User user) throws UserNotFoundException {
-        Optional<User> data = userRepository.findById(user.getId());
-        if (data.isPresent()) {
-            return userRepository.save(user);
-        } else {
-            throw new UserNotFoundException();
-        }
+    public User update(User user) {
+        return userRepository.save(user);
+    }
+
+    public User findById(Long id) throws UserNotFoundException {
+        Optional<User> user = userRepository.findById(id);
+        return user.orElseThrow(UserNotFoundException::new);
     }
 }

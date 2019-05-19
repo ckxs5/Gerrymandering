@@ -1,9 +1,9 @@
 package com.example.gerrymanderdemo.model;
 
-import com.example.gerrymanderdemo.Service.PrecinctService;
 import com.example.gerrymanderdemo.model.Enum.PreferenceType;
 import com.example.gerrymanderdemo.model.Enum.RaceType;
 import com.example.gerrymanderdemo.model.Enum.StateName;
+import com.example.gerrymanderdemo.model.Exception.NotAnotherMoveException;
 
 import java.util.*;
 
@@ -30,24 +30,26 @@ public class Algorithm {
                 );
     }
 
-    public void setRedistrictingPlan(){
-        for (District d: state.getDistricts()){
-            for (Precinct p: d.getPrecincts()){
-                redistrictingPlan.put(p.getId(), d.getId());
-            }
-        }
-    }
-
     public State graphPartition() {
         clusterManager.run();
         state.setDistricts(clusterManager.toDistricts());
         return state;
     }
 
-    public State graphPartitionOnce() {
-        clusterManager.runOnce();
+    public State graphPartitionOnce() throws NotAnotherMoveException{
+        if (!clusterManager.runOnce()) {
+            throw new NotAnotherMoveException();
+        }
         state.setDistricts(clusterManager.toDistricts());
         return state;
+    }
+
+    public void setRedistrictingPlan(){
+        for (District d: state.getDistricts()){
+            for (Precinct p: d.getPrecincts()){
+                redistrictingPlan.put(p.getId(), d.getId());
+            }
+        }
     }
 
     //TODO
@@ -107,7 +109,7 @@ public class Algorithm {
             Set<String> neighborIDs = p.getNeighborIDs();
             for (String n: neighborIDs){
                 if(startDistrict.getPrecinct(n) == null){//take the precinct that is not in startDistrict
-                    District neighborDistrict = state.getDistrict(redistrictingPlan.get(n));//TODO: getDistrict()
+                    District neighborDistrict = state.getDistrictById(redistrictingPlan.get(n));//TODO: getDistrict()
                     Move move = testMove(neighborDistrict,startDistrict,p);
                     if (move != null){
                         System.out.println("Moving p to neighborDistrict(neighborID = "+n+")");

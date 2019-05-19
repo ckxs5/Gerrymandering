@@ -14,4 +14,8 @@ public class DistrictService {
         System.out.println(district.getId());
         return districtRepository.save(district);
     }
+
+    public District findById(Long id) {
+        return districtRepository.findById(id).orElse(null);
+    }
 }

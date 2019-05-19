@@ -1,6 +1,7 @@
 package com.example.gerrymanderdemo.controller;
 
 import com.example.gerrymanderdemo.Service.UserService;
+import com.example.gerrymanderdemo.model.Enum.UserType;
 import com.example.gerrymanderdemo.model.Exception.UserExistException;
 import com.example.gerrymanderdemo.model.Exception.UserNotFoundException;
 import com.example.gerrymanderdemo.model.Response.OKResponse;
@@ -58,19 +59,34 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}/delete")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<String> delete(@PathVariable Long id) {
         userService.deleteById(id);
+        return ResponseEntity.ok("Ok");
     }
 
+//    @GetMapping("/user/{email}/delete")
+//    public ResponseEntity<String> delete(@PathVariable String email) {
+//        userService.deleteByEmail(email);
+//        return ResponseEntity.ok("Ok");
+//    }
 
-    @PostMapping("/user/update")
-    public ResponseEntity<String> update(@RequestBody User user) {
+
+//    @PostMapping("/user/update")
+//    public ResponseEntity<String> update(@RequestBody User user) {
+//        userService.update(user);
+//        return ResponseEntity.ok("Success");
+//    }
+
+    @GetMapping("/user/{id}/{usertype}")
+    public ResponseEntity<String> updateUserType(@PathVariable Long id, @PathVariable UserType usertype) {
         try {
-            userService.update(user);
-            return ResponseEntity.ok("Success");
+            User user= userService.findById(id);
+            user.setUserType(usertype);
+            user = userService.update(user);
+            System.out.println(user);
+            return ResponseEntity.ok("OK");
         } catch (UserNotFoundException ex) {
-            ex.printStackTrace();
-            return ResponseEntity.status(404).body("User not found!");
+            return ResponseEntity.status(404).body("User not found");
         }
     }
 
