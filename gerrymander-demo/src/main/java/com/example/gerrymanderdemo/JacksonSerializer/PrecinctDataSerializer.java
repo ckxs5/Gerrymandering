@@ -35,6 +35,7 @@ public class PrecinctDataSerializer extends StdSerializer<Precinct> {
         jsonGenerator.writeNumberField("native", precinct.getData().getDemographic().getPopulation(RaceType.NATIVE_AMERICAN));
         jsonGenerator.writeNumberField("hispanic", precinct.getData().getDemographic().getPopulation(RaceType.HISPANIC_LATINO_AMERICAN));
         jsonGenerator.writeNumberField("other_race", precinct.getData().getDemographic().getPopulation(RaceType.OTHERS));
+        jsonGenerator.writeNumberField("district_id", precinct.getDistrictId());
         jsonGenerator.writeEndObject();
     }
 }

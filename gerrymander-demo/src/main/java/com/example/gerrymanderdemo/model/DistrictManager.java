@@ -1,7 +1,6 @@
 package com.example.gerrymanderdemo.model;
 
 import com.example.gerrymanderdemo.Service.*;
-import com.example.gerrymanderdemo.model.Data.Boundary;
 
 public class DistrictManager {
     private static DistrictManager single_instance;
@@ -35,5 +34,9 @@ public class DistrictManager {
         district.getData().setDemographic(demographicService.save(district.getData().getDemographic()));
         district.setData(dataService.save(district.getData()));
         return districtService.save(district);
+    }
+
+    public District findById(Long id) {
+        return districtService.findById(id);
     }
 }
