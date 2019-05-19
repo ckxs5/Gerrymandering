@@ -12,6 +12,7 @@ public class Move {
     }
 
     public void execute(){
+        precinct.setDistrictId(to.getId());
         from.removePrecinct(precinct);
         to.addPrecinct(precinct);
     }

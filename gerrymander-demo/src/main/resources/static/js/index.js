@@ -6,6 +6,7 @@ $("document").ready(function () {
     let mymap;
     let info;
     let maxBounds;
+    let done = false;
 
     mymap = L.map('map', {layers: states}).setView(USCENTER, defaultZoomLevel);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -27,21 +28,21 @@ $("document").ready(function () {
         onEachFeature: onEachStateFeature
     }).addTo(states);
 
-    // districtLayer = L.geoJson(FL_Dist, {
-    //     style: style,
-    //     onEachFeature: onEachDistrictFeature
-    // }).addTo(districts);
+    districtLayer = L.geoJson(FL_Dist, {
+        style: style,
+        onEachFeature: onEachDistrictFeature
+    }).addTo(districts);
 
     // precinctLayer = L.geoJson(FL_P, {
     //     style: style,
     //     onEachFeature: onEachPrecinctFeature
     // }).addTo(precincts);
 
-    // districtLayer = L.geoJson(MD_Dist, {
-    //     style: style,
-    //     onEachFeature: onEachDistrictFeature
-    // }).addTo(districts);
-    //
+    districtLayer = L.geoJson(MD_Dist, {
+        style: style,
+        onEachFeature: onEachDistrictFeature
+    }).addTo(districts);
+
     // precinctLayer = L.geoJson(MD_O, {
     //     style: style,
     //     onEachFeature: onEachPrecinctFeature
@@ -138,9 +139,13 @@ $("document").ready(function () {
             console.log($(this).attr("id") + " : " + $(this).val());
             weights[$(this).attr("id")] = $(this).val();
         });
-        // while()
-        postData(weights, "/graphpartition/once", colorModifying);
-    })
+
+        while(!done){
+            done = true;
+            console.log("Before Post: " + done);
+            postData(weights, "/graphpartition/once", colorModifying);
+        }
+    });
 
     let precinctHashmap = {};
 
@@ -150,6 +155,7 @@ $("document").ready(function () {
     console.log(precinctHashmap);
 
     function colorModifying(data) {
+        done = false;
         for (let i = 0; i < data.length; i++){
             let color = getColor();
             // console.log(color);
@@ -213,29 +219,19 @@ $("document").ready(function () {
         event.preventDefault();
     });
 
-    /**
-     * @todo Revise the function.
-     * @todo Revise stateBounds.
-     */
-    $("#states").on("change", function() {
-        console.log($("#states").val());
-        let state = $("#states").val();
+    $("#STATE_NAME").on("change", function() {
+        console.log("State name: " + $("#STATE_NAME").val());
+        let state = $("#STATE_NAME").val();
+
         if (state === "ALL")
             mymap.fitBounds(maxBounds);
         let stateBounds = {
-            // "FLORIDA" : FL_Dist,
-            // "MARYLAND" : MD_Dist,
+            "FLORIDA" : FL_Dist,
+            "MARYLAND" : MD_Dist,
             "MINNESOTA" : MN_Dist,
         };
         fitStateBounds(stateBounds[state]);
     });
-
-    // $("#communities").on("change", function() {
-    //     console.log($("#communities").val());
-    //     return $("#communities").val();
-    // });
-
-    // $(th: id${weight})
 
     /**
      * @todo Generate Color based on measurements in future
