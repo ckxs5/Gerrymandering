@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -106,9 +107,13 @@ public class Precinct implements ResponseObject {
             return null;
         }
     }
-    //TODO
-    public Set<String> getNeighborIDs() {
-        return null;
+
+    public Set<Long> getNeighborIDs() {
+        Set<Long> ids = new HashSet<>();
+        for (Precinct p: neighbors) {
+            ids.add(p.getId());
+        }
+        return ids;
     }
 
     @Override

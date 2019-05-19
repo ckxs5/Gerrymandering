@@ -4,11 +4,13 @@ import com.example.gerrymanderdemo.model.Enum.PreferenceType;
 import com.example.gerrymanderdemo.model.Enum.RaceType;
 import com.example.gerrymanderdemo.model.Enum.StateName;
 import com.example.gerrymanderdemo.model.Exception.NotAnotherMoveException;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.*;
 
 import static com.example.gerrymanderdemo.model.Enum.Party.DEMOCRATIC;
 import static com.example.gerrymanderdemo.model.Enum.Party.REPUBLICAN;
+import static com.example.gerrymanderdemo.model.Enum.PreferenceType.EFFICIENCY_GAP;
 
 public class Algorithm {
     private Map<String, String> preference;
@@ -18,6 +20,8 @@ public class Algorithm {
     private District currentDistrict = null;
     private HashMap<District, Double> currentScores;//TODO: Map district to its score
     private HashMap<Long, Long> redistrictingPlan;//TODO: Map key precinctId to its district's id
+    @Value("${population.range.variant}")
+    private double populationVariant;
 
 
     public Algorithm(Map<String, String> preference, State state) {
@@ -62,8 +66,7 @@ public class Algorithm {
         if (currentDistrict == null){
             currentDistrict = getWorstDistrict();
         }
-        District startDistrict = currentDistrict;
-        Move m = getMoveFromDistrict(startDistrict);
+        Move m = getMoveFromDistrict(currentDistrict);
         if (m == null){
             return makeMove_secondary();
         }
@@ -104,21 +107,21 @@ public class Algorithm {
     }
 
     public Move getMoveFromDistrict(District startDistrict){
-        Set<Precinct> precincts = startDistrict.getBorderPrecincts();//TODO: getBorderPrecincts
-        for (Precinct p:precincts){
-            Set<String> neighborIDs = p.getNeighborIDs();
-            for (String n: neighborIDs){
-                if(startDistrict.getPrecinct(n) == null){//take the precinct that is not in startDistrict
-                    District neighborDistrict = state.getDistrictById(redistrictingPlan.get(n));//TODO: getDistrict()
+        Set<Precinct> precincts = startDistrict.getBorderPrecincts();
+        for (Precinct p : precincts){
+            Set<Long> neighborIDs = p.getNeighborIDs();
+            for (Long id: neighborIDs){
+                if(startDistrict.getPrecinct(id) == null){//take the precinct that is not in startDistrict
+                    District neighborDistrict = state.getDistrictById(redistrictingPlan.get(id));//TODO: getDistrict()
                     Move move = testMove(neighborDistrict,startDistrict,p);
                     if (move != null){
-                        System.out.println("Moving p to neighborDistrict(neighborID = "+n+")");
+                        System.out.println("Moving p to neighborDistrict(neighborID = "+id+")");
                         currentDistrict = startDistrict;
                         return move;
                     }
-                    move = testMove(startDistrict,neighborDistrict,neighborDistrict.getPrecinct(n));
+                    move = testMove(startDistrict,neighborDistrict,neighborDistrict.getPrecinct(id));
                     if (move != null){
-                        System.out.println("Move n to Start district: "+startDistrict.getId());
+                        System.out.println("Move n to Start district: " + startDistrict.getId());
                         currentDistrict = startDistrict;
                         return move;
                     }
@@ -129,7 +132,7 @@ public class Algorithm {
     }
 
     private Move testMove(District to, District from, Precinct p) {
-        if (!checkContiguity(p,from)) {//TODO:checkContiguity()
+        if (!checkContiguity(p,from)) {
             return null;
         }
         Move m = new Move(to, from, p);
@@ -208,16 +211,16 @@ public class Algorithm {
     //TODO:check contiguity for moving precinct p out of district d
     //returns true if contiguous
     private boolean checkContiguity(Precinct p, District d){
-        Set<String> neighborIDs = p.getNeighborIDs();
+        Set<Long> neighborIDs = p.getNeighborIDs();
         HashSet<Precinct> neededPrecincts = new HashSet<Precinct>();
         HashSet<Precinct> neighborToExplore = new HashSet<Precinct>();//potential sources of exploration
         HashSet<Precinct> exploreNeighbors = new HashSet<Precinct>();// neighbors already explored
         exploreNeighbors.add(p);// add the precinct being moved, to ensure it won't be used
         // if a neighbor is in the district that's losing a precinct, we need to make sure they're still contiguous
-        for (String s : neighborIDs) {
+        for (Long id : neighborIDs) {
             // if neighbor is in the district we're losing from
-            if ((redistrictingPlan.get(s)).equals(d.getId())) {
-                Precinct n = d.getPrecinct(s);
+            if ((redistrictingPlan.get(id)).equals(d.getId())) {
+                Precinct n = d.getPrecinct(id);
                 neededPrecincts.add(n);
             }
         }
@@ -231,10 +234,10 @@ public class Algorithm {
         while (neighborToExplore.size() != 0){
             // take an arbitrary precinct from the sources of exploration
             Precinct n = neighborToExplore.iterator().next();
-            for (String s :n.getNeighborIDs()) {
+            for (Long id :n.getNeighborIDs()) {
                 //we only care about neighbors in our district,d
-                if (redistrictingPlan.get(s).equals(d.getId())) {
-                    Precinct nn = d.getPrecinct(s);
+                if (redistrictingPlan.get(id).equals(d.getId())) {
+                    Precinct nn = d.getPrecinct(id);
                     // if we've hit one of our needed precincts, check it off
                     if (neededPrecincts.contains(nn)) {
                         neededPrecincts.remove(nn);
@@ -257,7 +260,9 @@ public class Algorithm {
     }
     //TODO
     public double rateDistrict(District d) {
-        return 0;
+        double objectiveFunctionValue = 0;
+        objectiveFunctionValue += Double.parseDouble(preference.get(EFFICIENCY_GAP)) * rateEfficiencyGap(d);
+        return objectiveFunctionValue;
     }
 
     /*
@@ -318,13 +323,12 @@ public class Algorithm {
             int dv = sd.getData().getVoteData().getVote(DEMOCRATIC);
             if (gv > dv) {
                 iv_d =+ dv;
-                iv_g += (gv + dv);
-            } else if (dv > gv ) {
+                iv_g += (gv - dv);
+            } else if (dv > gv) {
                 iv_g += gv;
                 iv_d += (dv - gv);
             }
-            tv += gv;
-            tv += dv;
+            tv += gv + dv;
         }
         return 1.0 - ((Math.abs(iv_g - iv_d) * 1.0) / tv);
     }
@@ -351,7 +355,7 @@ public class Algorithm {
     public double rateCOMPETITIVENESS(District d) {
         int gv = d.getData().getVoteData().getVote(REPUBLICAN);
         int dv = d.getData().getVoteData().getVote(DEMOCRATIC);
-        return 1.0 - (Math.abs(gv - dv) / (gv + dv));
+        return 1.0 - 1.0 *(Math.abs(gv - dv)) / (gv + dv);
     }
 
     public double rateGERRYMANDER_REPUBLICAN(District d) {
@@ -397,13 +401,26 @@ public class Algorithm {
     public double rateCompactnessLenWid(District d){
         double length = d.getLength();
         double width = d.getWidth();
-        return length/width;
+        return length / width;
     }
 
     public double rateCompactnessBorder(District d){
         double borderCount = d.getBorderPrecincts().size();
         double total = d.getPrecincts().size();
-        return 1-(borderCount/total);
+        return 1 - (1.0 * borderCount / total);
+    }
+
+    public double ratePopulationEquality(District d) {
+        int dp = d.getData().getDemographic().getPopulation(RaceType.ALL);
+        int tp = state.getData().getDemographic().getPopulation(RaceType.ALL) / state.getNumDistricts();
+        double rate = 1.0 * Math.abs(dp - tp) / tp;
+        if (rate < 0.5) {
+            return 1;
+        } else if (rate > populationVariant) {
+            return 0;
+        } else {
+            return (rate - 0.5) / (populationVariant - 0.5);
+        }
     }
 
 

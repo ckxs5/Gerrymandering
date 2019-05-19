@@ -4,6 +4,7 @@ import com.example.gerrymanderdemo.model.Data.Data;
 import com.example.gerrymanderdemo.model.Enum.Order;
 import com.example.gerrymanderdemo.model.Enum.Party;
 import com.example.gerrymanderdemo.model.Enum.RaceType;
+import org.assertj.core.util.Sets;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -97,6 +98,7 @@ public class District {
 
     public void addPrecinct(Precinct precinct){
         if (precincts.add(precinct)) {
+            precinct.setDistrictId(this.id);
             this.data.add(precinct.getData());
         }
     }
@@ -133,7 +135,12 @@ public class District {
 
 
     //TODO: we should change precincts type to a HashMap<precinctId, precinct>
-        public Precinct getPrecinct(String n) {
+    public Precinct getPrecinct(Long id) {
+        for (Precinct p : precincts) {
+            if(p.getId().equals(id)) {
+                return p;
+            }
+        }
         return null;
     }
 
@@ -172,7 +179,7 @@ public class District {
     public Set<Precinct> getBorderPrecincts(){
         for(Precinct p: precincts){
             for(Precinct np: p.getNeighbors()){
-                if(np.getDistrictId()!=id){
+                if(!np.getDistrictId().equals(id)){
                     borderPrecincts.add(p);
                 }
             }

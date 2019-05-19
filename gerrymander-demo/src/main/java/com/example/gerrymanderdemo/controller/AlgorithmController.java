@@ -13,10 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -49,8 +46,8 @@ public class AlgorithmController {
         }
     }
 
-    @GetMapping(value = "/district/{id}")
-    public ResponseEntity<String> getDistrictById(@RequestBody Long id) {
+    @GetMapping(value = "/district/{id}/data")
+    public ResponseEntity<String> getDistrictById(@PathVariable Long id) {
         System.out.printf("Request to get data for precinct : %d \n", id);
         District district = algorithm.getState().getDistrictById(id);
         if (district != null) {
