@@ -17,11 +17,10 @@ public class District {
     private Long id;
     @OneToOne
     private Data data;
-    @OneToMany
+    @Transient
     private Set<Precinct> precincts;
     @Transient
     private Set<Precinct> borderPrecincts;
-
 
     public District(){
     }

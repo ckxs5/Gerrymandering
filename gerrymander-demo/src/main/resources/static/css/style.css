@@ -201,6 +201,9 @@ body, html{
     display: grid !important;
     margin-top: 5px;
 }
+.btn-userType{
+    width:100%;
+}
 
 .btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active,
 .show > .btn-secondary.dropdown-toggle {

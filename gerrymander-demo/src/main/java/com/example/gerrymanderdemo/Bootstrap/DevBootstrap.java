@@ -4,6 +4,7 @@ import com.example.gerrymanderdemo.Service.*;
 import com.example.gerrymanderdemo.model.ClusterManager;
 import com.example.gerrymanderdemo.model.Data.Boundary;
 import com.example.gerrymanderdemo.model.Data.Vote;
+import com.example.gerrymanderdemo.model.DistrictManager;
 import com.example.gerrymanderdemo.model.Enum.StateName;
 import com.example.gerrymanderdemo.model.Precinct;
 import com.example.gerrymanderdemo.model.PrecinctManager;
@@ -23,13 +24,15 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
     private VoteService voteService;
     private BoundaryService boundaryService;
     private DataService dataService;
+    private DistrictService districtService;
 
-    public DevBootstrap(PrecinctService precinctService, DemographicService demographicService, VoteService voteService, BoundaryService boundaryService, DataService dataService) {
+    public DevBootstrap(PrecinctService precinctService, DemographicService demographicService, VoteService voteService, BoundaryService boundaryService, DataService dataService, DistrictService districtService) {
         this.precinctService = precinctService;
         this.demographicService = demographicService;
         this.voteService = voteService;
         this.boundaryService = boundaryService;
         this.dataService = dataService;
+        this.districtService = districtService;
     }
 
     @Override
@@ -41,6 +44,9 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         HashMap<Long, Precinct> precincts = PrecinctManager.getPrecincts(StateName.MINNESOTA);
         System.out.printf("Precinct %d loaded\n", precincts.size());
         System.out.println(precincts.values().toArray()[0].toString());
+
+        //Construct District Manager
+        DistrictManager.setInstance(districtService, dataService, demographicService, voteService, boundaryService);
     }
 
 //    private void initData(){

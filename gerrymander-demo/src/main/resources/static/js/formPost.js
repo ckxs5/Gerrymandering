@@ -25,6 +25,7 @@ function userlogin(logindata) {
     document.getElementById('signInForm').innerHTML = document.getElementById('logOutButton').innerHTML;
     document.getElementById('signInForm').style.display="initial";
     document.getElementById('logOutButton').remove();
+    window.location.href = '/';
 }
 
 function userlogout(logoutdata) {

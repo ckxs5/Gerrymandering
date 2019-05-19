@@ -170,17 +170,14 @@ $("document").ready(function () {
         let usernameAndPassword = {};
         let count = 0;
         $("#toHome input").each(function () {
-            console.log($(this).attr("name") + " : " + $(this).val());
             usernameAndPassword[$(this).attr("name")] = $(this).val();
         });
-        console.log(usernameAndPassword);
-        $.each(usernameAndPassword, function(key, value){
+        $.each(usernameAndPassword, function(value){
             if(value !== "")
                 count += 1;
         });
-        if (count === 2) {
+        if (count === 2)
             postForm(event, "#toHome", "/login", userlogin);
-        }
     });
 
     $("#signupbtn").on("click", function () {
