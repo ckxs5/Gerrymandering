@@ -38,7 +38,7 @@ public class UserService {
         String hashedPassword = BCrypt.hashpw(orginPassword, BCrypt.gensalt());
         user.setUserType(UserType.USER);
         user.setPassword(hashedPassword);
-        if (userRepository.findByEmail(user.getEmail()).isPresent() || orginPassword == "") {
+        if (userRepository.findByEmail(user.getEmail()).isPresent() || orginPassword.equals("")) {
             throw new UserExistException();
         } else {
             return userRepository.save(user);

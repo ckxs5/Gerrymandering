@@ -9,9 +9,8 @@ function postData(data, url, callback) {
         dataType: "json",
         statusCode:{
             200: function (response) {
-                if (callback != null) {
+                if (callback != null)
                     callback(response);
-                }
             },
             400: function (response) {
                 alert("BAD REQUEST");

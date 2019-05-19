@@ -74,8 +74,6 @@ public class UserController {
         }
     }
 
-
-
 //    @RequestMapping(value = "listOfUsers", method = RequestMethod.GET)
 //    public String messages(Model model) {
 //        model.addAttribute("messages", messageRepository.findAll());
