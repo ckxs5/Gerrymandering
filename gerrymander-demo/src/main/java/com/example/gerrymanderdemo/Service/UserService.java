@@ -53,6 +53,10 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+//    public void deleteByEmail(String email) {
+//        userRepository.deleteByEmail(email);
+//    }
+
     public User update(User user) throws UserNotFoundException {
         Optional<User> data = userRepository.findById(user.getId());
         if (data.isPresent()) {

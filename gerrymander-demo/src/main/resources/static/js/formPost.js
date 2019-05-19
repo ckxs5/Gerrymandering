@@ -36,3 +36,32 @@ function usersignup(signupdata) {
     console.log("sign up data");
     window.location.href = '/';
 }
+
+function getDeleteId(){
+    // alert($("#inputGroupSelect").val());
+    let id = $("#inputGroupSelect").val();
+    let url = "/user/" + id + "/delete";
+    getData(url, null);
+    window.location.href = '/';
+
+}
+
+// function getDeleteEmail(){
+//     alert($("#inputGroupSelect").val());
+//     var email = $("#inputGroupSelect").val();
+//     var url = "/user/" + email + "/delete";
+//     getData(url, null);
+//
+// }
+
+function getIdandType(id){
+    // var id = $("#userId").children(':first-child').text();
+    const type_id = "#userType" + id;
+    let usertype = $(type_id).val();
+    console.log("ID: " + id);
+    console.log("TYPE:" + usertype);
+    let url =  "/user/" + id + "/" + usertype;
+    getData(url, null);
+    window.location.href = '/';
+
+}
