@@ -77,10 +77,7 @@ public class ClusterManager {
             System.out.printf("Edge is %s \n", edge);
             System.out.printf("candidate is %s \n", candidates.get(i));
             System.out.printf("The other is %s \n", edge.getTheOther(candidates.get(i)));
-            if (candidates.contains(edge.getTheOther(candidates.get(i)))
-                    && edge.getElement1().getData().getDemographic().getPopulation(RaceType.ALL)
-                    + edge.getElement2().getData().getDemographic().getPopulation(RaceType.ALL)
-                    < (totalPopulation / targetNumCluster)) {
+            if (candidates.contains(edge.getTheOther(candidates.get(i)))) {
                 merge(edge);
                 return true;
             }
@@ -90,7 +87,7 @@ public class ClusterManager {
 
     private List<Cluster> filterClusters(){
         return clusters.stream()
-                .filter(cluster -> cluster.getData().getDemographic().getPopulation(RaceType.ALL) <= totalPopulation / targetNumCluster)
+                .filter(cluster -> cluster.getData().getDemographic().getPopulation(RaceType.ALL) < totalPopulation / targetNumCluster)
                 .collect(Collectors.toList());
     }
 
@@ -105,7 +102,6 @@ public class ClusterManager {
         for (Cluster c : clusters) {
             districts.add(c.toDistrict());
         }
-        System.out.println(districts.size());
         return districts;
     }
 
