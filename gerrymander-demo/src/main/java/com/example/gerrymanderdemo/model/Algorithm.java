@@ -53,7 +53,12 @@ public class Algorithm {
     }
 
     //TODO
-    public State runAlgorithm(){return null;}
+    public State runAlgorithm(){
+        for(District d: state.getDistricts()){
+            getMoveFromDistrict(d);
+        }
+        return state;
+    }
     //TODO
     public float getOF(){return tempObjectiveFunctionValue;}
 
@@ -257,7 +262,27 @@ public class Algorithm {
     }
     //TODO
     public double rateDistrict(District d) {
-        return 0;
+         double eg = rateEfficiencyGap(d);
+         double seg = rateStatewideEfficiencyGap(d);
+         double compet = rateCOMPETITIVENESS(d);
+         double rep = rateGERRYMANDER_REPUBLICAN(d);
+         double dem = rateGERRYMANDER_DEMOCRATIC(d);
+         double compactLW = rateCompactnessLenWid(d);
+         double compactB = rateCompactnessBorder(d);
+
+         int pf_weight = Integer.parseInt(preference.get(PreferenceType.POLITICAL_FAIRNESS.toString()));
+         double pf = ratePartisanFairness(d)*pf_weight;
+
+    }
+
+    public double ratePopEquality(District d){
+        int idealPopulation = state.getData().getDemographic().totalPopulation() / state.getDistricts().size();
+        int truePopulation = d.getData().getDemographic().totalPopulation();
+        double suboptimality;
+        if (idealPopulation >= truePopulation){
+            return ((double)truePopulation) / idealPopulation;
+        }
+        return ((double)idealPopulation) / truePopulation;
     }
 
     /*
@@ -398,6 +423,12 @@ public class Algorithm {
         double length = d.getLength();
         double width = d.getWidth();
         return length/width;
+    }
+
+    public double ratePolsbyPopper(District d){
+        double AD = d.getData().getBoundary().getArea();
+        double PD = d.getPerimeter();
+        return AD*(4*Math.pow(Math.PI,3)/Math.pow(PD,4));
     }
 
     public double rateCompactnessBorder(District d){
