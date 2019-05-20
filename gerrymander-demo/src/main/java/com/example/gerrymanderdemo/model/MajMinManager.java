@@ -33,10 +33,12 @@ public class MajMinManager {
 
 
     private void setBestCandidateDistrict(){
-        if(addOrRemove == true){//we want add a mmDistrict
+        System.out.println("setBestCandidateDistrict");
+        if(addOrRemove){//we want add a mmDistrict
             double bestPercent = 0;
             for(District d: candidateDistricts) {
                 double dPercent = d.getData().getDemographic().getPercentByRace(minorityRace);
+                System.out.printf("candidate: %s, %f \n", d.getId(), dPercent);
                 if(dPercent > bestPercent){
                     bestPercent = dPercent;
                     bestCandidate = d;
@@ -46,16 +48,18 @@ public class MajMinManager {
             double bestPercent = 1;
             for(District d: mmDistricts) {
                 double dPercent = d.getData().getDemographic().getPercentByRace(minorityRace);
+                System.out.printf("mmDistrict: %s, %f \n", d.getId(), dPercent);
                 if(dPercent < bestPercent){
                     bestPercent = dPercent;
                     bestCandidate = d;
                 }
             }
         }
+        System.out.println(bestCandidate);
     }
 
     //add mmDistrict-true, remove mmDistrict-false
-    public Move getMoveFromDistrict(){
+    public Move moveFromDistrict(){
         Long districtId = bestCandidate.getId();
         Set<Precinct> borderPrecincts = bestCandidate.getBorderPrecincts();//TODO: getBorderPrecincts
         for (Precinct p:borderPrecincts){
@@ -115,4 +119,59 @@ public class MajMinManager {
         return m;
     }
 
+    public Collection<District> getDistricts() {
+        return districts;
+    }
+
+    public void setDistricts(Collection<District> districts) {
+        this.districts = districts;
+    }
+
+    public RaceType getMinorityRace() {
+        return minorityRace;
+    }
+
+    public void setMinorityRace(RaceType minorityRace) {
+        this.minorityRace = minorityRace;
+    }
+
+    public Range<Double> getRange() {
+        return range;
+    }
+
+    public void setRange(Range<Double> range) {
+        this.range = range;
+    }
+
+    public List<District> getMmDistricts() {
+        return mmDistricts;
+    }
+
+    public void setMmDistricts(List<District> mmDistricts) {
+        this.mmDistricts = mmDistricts;
+    }
+
+    public List<District> getCandidateDistricts() {
+        return candidateDistricts;
+    }
+
+    public void setCandidateDistricts(List<District> candidateDistricts) {
+        this.candidateDistricts = candidateDistricts;
+    }
+
+    public District getBestCandidate() {
+        return bestCandidate;
+    }
+
+    public void setBestCandidate(District bestCandidate) {
+        this.bestCandidate = bestCandidate;
+    }
+
+    public boolean isAddOrRemove() {
+        return addOrRemove;
+    }
+
+    public void setAddOrRemove(boolean addOrRemove) {
+        this.addOrRemove = addOrRemove;
+    }
 }

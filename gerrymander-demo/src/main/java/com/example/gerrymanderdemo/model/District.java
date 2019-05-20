@@ -10,6 +10,7 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -51,7 +52,6 @@ public class District {
 
     public void setPrecincts(Set<Precinct> precincts) {
         this.precincts = precincts;
-        setBorderPrecincts();
     }
 
     public Long getId() {
@@ -103,9 +103,10 @@ public class District {
     }
 
     public void setBorderPrecincts() {
+        this.borderPrecincts = new HashSet<>();
         for(Precinct p: precincts){
             for(Precinct np: p.getNeighbors()){
-                if(np.getDistrictId()!=id){
+                if(np.getDistrictId().equals(id)){
                     borderPrecincts.add(p);
                 }
             }
