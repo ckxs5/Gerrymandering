@@ -18,8 +18,8 @@ public class MajMinManager {
     private District bestCandidate;
     private boolean addOrRemove;
 
-    public MajMinManager(Collection<District> districts,RaceType minorityRace, double downRatio, double upRatio, boolean addOrRemove){
-        this.districts = districts;
+    public MajMinManager(State state,RaceType minorityRace, double downRatio, double upRatio, boolean addOrRemove){
+        this.districts = state.getDistricts();
         this.minorityRace = minorityRace;
         range = new Range<>(downRatio, upRatio);
         this.mmDistricts = districts.stream().filter(district ->
