@@ -2,19 +2,12 @@ package com.example.gerrymanderdemo.Bootstrap;
 
 import com.example.gerrymanderdemo.Service.*;
 import com.example.gerrymanderdemo.model.*;
-import com.example.gerrymanderdemo.model.Data.Boundary;
-import com.example.gerrymanderdemo.model.Data.Vote;
-import com.example.gerrymanderdemo.model.Enum.RaceType;
 import com.example.gerrymanderdemo.model.Enum.StateName;
-import com.example.gerrymanderdemo.preprocessing.PrecinctConstructor;
-import com.example.gerrymanderdemo.preprocessing.PrecinctPreprocesor;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
-import java.util.List;
 
 @Component
 public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> {
@@ -42,7 +35,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         PrecinctManager.setInstance(precinctService);
         HashMap<Long, Precinct> precincts = PrecinctManager.getPrecincts(StateName.MINNESOTA);
         System.out.printf("Precinct %d loaded\n", precincts.size());
-        System.out.println(precincts.values().toArray()[0].toString());
+        System.out.println("precincts values"+precincts.values().toArray()[0].toString());
 
         //Construct District Manager
         DistrictManager.setInstance(districtService, dataService, demographicService, voteService, boundaryService);
@@ -55,6 +48,12 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         preferences.put("NUM_DISTRICTS", "8");
         preferences.put("MAJMIN_UP", "50");
         preferences.put("MAJMIN_LOW", "5");
+        preferences.put("POPULATION_EQUALITY", "50");
+        preferences.put("COMPETITIVENESS", "50");
+        preferences.put("EFFICIENCY_GAP", "50");
+        preferences.put("COMPACTNESS", "50");
+        preferences.put("LENGTH_WIDTH", "50");
+
 
         return preferences;
     }
@@ -64,6 +63,9 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         Algorithm algorithm = new Algorithm(preferences, new State());
         algorithm.graphPartition();
 //        algorithm.runTest();
+        System.out.println("===================Starting make move===================");
+        algorithm.setRedistrictingPlan();
+        algorithm.makeMove();
     }
 
 //    private void initData(){

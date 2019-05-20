@@ -10,7 +10,7 @@ import java.util.*;
 
 import static com.example.gerrymanderdemo.model.Enum.Party.DEMOCRATIC;
 import static com.example.gerrymanderdemo.model.Enum.Party.REPUBLICAN;
-import static com.example.gerrymanderdemo.model.Enum.PreferenceType.EFFICIENCY_GAP;
+import static com.example.gerrymanderdemo.model.Enum.PreferenceType.*;
 
 public class Algorithm {
     private Map<String, String> preference;
@@ -49,11 +49,13 @@ public class Algorithm {
     }
 
     public void setRedistrictingPlan(){
+        redistrictingPlan = new HashMap<>();
         for (District d: state.getDistricts()){
             for (Precinct p: d.getPrecincts()){
                 redistrictingPlan.put(p.getId(), d.getId());
             }
         }
+        currentScores = new HashMap<>();
     }
 
     //TODO
@@ -80,6 +82,7 @@ public class Algorithm {
 
 
     public Move makeMove(){
+        System.out.println("currentDistrict: " + currentDistrict);
         if (currentDistrict == null){
             currentDistrict = getWorstDistrict();
         }
@@ -113,13 +116,18 @@ public class Algorithm {
     public District getWorstDistrict() {
         District worstDistrict = null;
         double minScore = Double.POSITIVE_INFINITY;
+        System.out.println("minScore: " + minScore);
+        System.out.println("Get Districts: " + state.getDistricts());
         for (District d : state.getDistricts()) {//TODO: getDistricts()
-            double score = currentScores.get(d);
+            double score = rateDistrict(d);
+            currentScores.put(d, score);
+            System.out.println("Score: " + score);
             if (score < minScore) {
                 worstDistrict = d;
                 minScore = score;
             }
         }
+        System.out.println("Worst District: " + worstDistrict);
         return worstDistrict;
     }
 
@@ -278,7 +286,16 @@ public class Algorithm {
     //TODO
     public double rateDistrict(District d) {
         double objectiveFunctionValue = 0;
-        objectiveFunctionValue += Double.parseDouble(preference.get(EFFICIENCY_GAP)) * rateEfficiencyGap(d);
+        objectiveFunctionValue += Double.parseDouble(preference.get(EFFICIENCY_GAP.toString())) * rateEfficiencyGap(d);
+        System.out.println("ef value: " + objectiveFunctionValue);
+        objectiveFunctionValue += Double.parseDouble(preference.get(POPULATION_EQUALITY.toString())) * ratePopulationEquality(d);
+        System.out.println("pope value: " + objectiveFunctionValue);
+        objectiveFunctionValue += Double.parseDouble(preference.get(COMPETITIVENESS.toString())) * rateCOMPETITIVENESS(d);
+        System.out.println("comptivi value: " + objectiveFunctionValue);
+        objectiveFunctionValue += Double.parseDouble(preference.get(COMPACTNESS.toString())) * rateCompactnessBorder(d);
+        System.out.println("compact value: " + objectiveFunctionValue);
+        objectiveFunctionValue += Double.parseDouble(preference.get(LENGTH_WIDTH.toString())) * rateCompactnessLenWid(d);
+        System.out.println("length/width value: " + objectiveFunctionValue);
         return objectiveFunctionValue;
     }
 
@@ -416,9 +433,10 @@ public class Algorithm {
     }
 
     public double rateCompactnessLenWid(District d){
-        double length = d.getLength();
-        double width = d.getWidth();
-        return length / width;
+//        double length = d.getLength();
+//        double width = d.getWidth();
+//        return length / width;
+        return Math.random();
     }
 
     public double rateCompactnessBorder(District d){
@@ -435,7 +453,10 @@ public class Algorithm {
 
     public double ratePopulationEquality(District d) {
         int dp = d.getData().getDemographic().getPopulation(RaceType.ALL);
-        int tp = state.getData().getDemographic().getPopulation(RaceType.ALL) / state.getNumDistricts();
+        System.out.println("district pop: " + dp);
+        System.out.println("NumDistrict: "+ state.getDistricts().size());
+        System.out.println("total pop: " + state.getData().getDemographic().getPopulation(RaceType.ALL));
+        int tp = state.getData().getDemographic().getPopulation(RaceType.ALL) / state.getDistricts().size();
         double rate = 1.0 * Math.abs(dp - tp) / tp;
         if (rate < 0.5) {
             return 1;

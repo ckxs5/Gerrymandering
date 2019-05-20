@@ -61,7 +61,7 @@ public class MajMinManager {
                 }
             }
         }
-        System.out.println(bestCandidate);
+        System.out.println("The best Candidate: "+ bestCandidate);
     }
 
     //add mmDistrict-true, remove mmDistrict-false

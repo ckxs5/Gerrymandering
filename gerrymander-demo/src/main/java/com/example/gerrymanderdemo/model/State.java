@@ -22,12 +22,7 @@ public class State {
     private Data data;
     @OneToMany
     private Collection<District>districts;
-    private int numDistricts;
-    //TODO: See Whether if we need this?
-    private int numMajMinDistricts;
     private StateName name;
-    @Value("${gerrymandering.range.variant}")
-    private double districtPopulationVariant;
 
     public State() {
     }
@@ -44,8 +39,6 @@ public class State {
         for(District d : s.getDistricts()) {
             districts.add(new District());
         }
-        this.numDistricts = s.numDistricts;
-        this.numMajMinDistricts = s.numMajMinDistricts;
         this.id = s.id;
     }
 
@@ -75,13 +68,6 @@ public class State {
         updateData();
     }
 
-    public int getNumDistricts() {
-        return numDistricts;
-    }
-
-    public void setNumDistricts(int numDistricts) {
-        this.numDistricts = numDistricts;
-    }
 
     public int getNumMajMinDistricts(RaceType community, Range<Double> range) {
         int count = 0;
@@ -93,9 +79,6 @@ public class State {
         return count;
     }
 
-    public void setNumMajMinDistricts(int numMajMinDistricts) {
-        this.numMajMinDistricts = numMajMinDistricts;
-    }
 
     public StateName getName() {
         return name;

@@ -192,6 +192,9 @@ public class District {
 
     public double getLength(){
         double[][] geoJson= data.getBoundary().getGeoJSON();
+        System.out.println("geodata1: "+ data.getBoundary());
+        System.out.println("geodata: "+ data);
+        System.out.println("getLength in GeoJson: " + geoJson);
         double min_lon = geoJson[0][0];
         double max_lon = geoJson[0][0];
         for (int i = 0; i < geoJson.length; i++) {

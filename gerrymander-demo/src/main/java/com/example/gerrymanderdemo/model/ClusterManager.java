@@ -60,7 +60,7 @@ public class ClusterManager {
 
     public boolean runOnce() {
         if (clusters.size() <= targetNumCluster) {
-            System.out.println(clusters.size());
+            System.out.println("cluster size: " + clusters.size());
             return false;
         }
 
@@ -74,9 +74,9 @@ public class ClusterManager {
 //                clusters.remove(candidates.get(i));
 //                return true;
 //            }
-            System.out.printf("Edge is %s \n", edge);
-            System.out.printf("candidate is %s \n", candidates.get(i));
-            System.out.printf("The other is %s \n", edge.getTheOther(candidates.get(i)));
+//            System.out.printf("Edge is %s \n", edge);
+//            System.out.printf("candidate is %s \n", candidates.get(i));
+//            System.out.printf("The other is %s \n", edge.getTheOther(candidates.get(i)));
             if (candidates.contains(edge.getTheOther(candidates.get(i)))) {
                 merge(edge);
                 return true;

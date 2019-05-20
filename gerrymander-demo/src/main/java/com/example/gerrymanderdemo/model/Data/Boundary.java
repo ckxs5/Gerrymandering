@@ -8,6 +8,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 
 import javax.persistence.*;
+import java.util.Arrays;
 
 @Entity
 public class Boundary implements ResponseObject {
@@ -24,6 +25,7 @@ public class Boundary implements ResponseObject {
     public Boundary() {
     }
 
+
     public Boundary(Boundary boundary) {
         geoJSON = boundary.getGeoJSON();
     }
@@ -34,7 +36,21 @@ public class Boundary implements ResponseObject {
 
     public Boundary(Boundary b1, Boundary b2) {
         //TODO
-        area = b1.getArea()+b2.getArea();
+//        area = b1.getArea()+b2.getArea();
+//        int newLength = b1.geoJSON.length + b2.geoJSON.length;
+//        geoJSON = Arrays.copyOf(b1.getGeoJSON(), newLength);
+//        if (newLength - b1.getGeoJSON().length >= 0)
+//            System.arraycopy(b2.geoJSON, b1.getGeoJSON().length, geoJSON, b1.getGeoJSON().length, newLength - b1.getGeoJSON().length);
+//        System.out.println("old length: " + b1.getGeoJSON().length);
+//        System.out.println("old length2: "+ b2.getGeoJSON().length);
+//        double[][] combinedGeojson = new double[b1.getGeoJSON().length + b2.getGeoJSON().length][];
+//        System.arraycopy(b1.getGeoJSON(), 0, combinedGeojson, 0, b1.getGeoJSON().length);
+//        System.arraycopy(b2.getGeoJSON(), 0, combinedGeojson, b1.getGeoJSON().length, b2.getGeoJSON().length);
+//
+//        System.out.println("new array: " + combinedGeojson);
+//        System.out.println("new array length: " + combinedGeojson.length);
+//        System.out.println("new array2: " + Arrays.deepToString(combinedGeojson));
+
     }
 
 
@@ -70,19 +86,36 @@ public class Boundary implements ResponseObject {
 
     public void add(Boundary other) {
         //TODO
-        area += other.getArea();
+//        System.out.println("old length: " + geoJSON.length);
+//        System.out.println("old length2: "+ other.getGeoJSON().length);
+//        double[][] combinedGeojson = new double[geoJSON.length + other.getGeoJSON().length][];
+//        System.arraycopy(geoJSON, 0, combinedGeojson, 0, geoJSON.length);
+//        System.arraycopy(other.getGeoJSON(), 0, combinedGeojson, geoJSON.length, other.getGeoJSON().length);
+//
+//        System.out.println("new array: " + combinedGeojson);
+//        System.out.println("new array length: " + combinedGeojson.length);
     }
 
     public Boundary remove(Boundary other) {
         //TODO
-        area-=other.getArea();
+//        int biglength = geoJSON.length;
+//        int smalllength=other.getGeoJSON().length;
+//        for (int i =0; i<=smalllength; i++){
+//            for (int j =0; j <=biglength; j++){
+//                if(other.getGeoJSON()[j].equals(geoJSON[i])){
+//                    geoJSON[i] = null;
+//                }
+//
+//            }
+//        }
+//        area-=other.getArea();
         return other;
 
     }
 
     @Override
     public String toString() {
-        return geoJSON.toString();
+        return id == null? id.toString() : "";
     }
 
     @Override

@@ -27,7 +27,7 @@ public class AlgorithmController {
 
     @PostMapping(value = "/graphpartition", consumes = "application/json")
     public ResponseEntity<String> run(@RequestBody HashMap<String, String> preferences) {
-        System.out.println(preferences);
+        System.out.println("preferences: " + preferences);
         algorithm = new Algorithm(preferences, new State());
         State state = algorithm.graphPartition();
         return getDistrictPrecincts(state);

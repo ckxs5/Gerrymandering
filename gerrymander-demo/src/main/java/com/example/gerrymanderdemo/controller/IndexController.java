@@ -33,7 +33,7 @@ public class IndexController {
             System.out.println("return index");
 //            System.out.println(user);
             mav = new ModelAndView("index");
-            mav.addObject("compactness", Compactness.values());
+//            mav.addObject("compactness", Compactness.values());
             mav.addObject("preferences", PreferenceType.values());
             mav.addObject("states", StateName.values());
             mav.addObject("communities", RaceType.values());
