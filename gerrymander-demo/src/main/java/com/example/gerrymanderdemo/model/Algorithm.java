@@ -50,12 +50,14 @@ public class Algorithm {
 
     public void setRedistrictingPlan(){
         redistrictingPlan = new HashMap<>();
+        currentScores = new HashMap<>();
         for (District d: state.getDistricts()){
-            for (Precinct p: d.getPrecincts()){
+            for (Precinct p : d.getPrecincts()){
                 redistrictingPlan.put(p.getId(), d.getId());
             }
+            currentScores.put(d, rateDistrict(d));
         }
-        currentScores = new HashMap<>();
+
     }
 
     //TODO
@@ -137,20 +139,20 @@ public class Algorithm {
     }
 
     public Move getMoveFromDistrict(District startDistrict){
-        Set<Precinct> precincts = startDistrict.getBorderPrecincts();
-        for (Precinct p : precincts){
-            Set<Long> neighborIDs = p.getNeighborIDs();
-            for (Long id: neighborIDs){
-                if(startDistrict.getPrecinct(id) == null){//take the precinct that is not in startDistrict
+        List<Precinct> precincts = new ArrayList<>(startDistrict.getBorderPrecincts());
+        for (Precinct p : precincts) {
+            List<Long> neighborIDs = new ArrayList<>(p.getNeighborIDs());
+            for (Long id : neighborIDs) {
+                if (startDistrict.getPrecinct(id) == null) {//take the precinct that is not in startDistrict
                     District neighborDistrict = state.getDistrictById(redistrictingPlan.get(id));
-                    Move move = testMove(neighborDistrict,startDistrict,p);
-                    if (move != null){
-                        System.out.println("Moving p to neighborDistrict(neighborID = "+id+")");
+                    Move move = testMove(neighborDistrict, startDistrict, p);
+                    if (move != null) {
+                        System.out.println("Moving p to neighborDistrict(neighborID = " + id + ")");
                         currentDistrict = startDistrict;
                         return move;
                     }
-                    move = testMove(startDistrict,neighborDistrict,neighborDistrict.getPrecinct(id));
-                    if (move != null){
+                    move = testMove(startDistrict, neighborDistrict, neighborDistrict.getPrecinct(id));
+                    if (move != null) {
                         System.out.println("Move n to Start district: " + startDistrict.getId());
                         currentDistrict = startDistrict;
                         return move;

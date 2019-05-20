@@ -65,7 +65,9 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 //        algorithm.runTest();
         System.out.println("===================Starting make move===================");
         algorithm.setRedistrictingPlan();
-        algorithm.makeMove();
+        for (int i = 0; i < 10; i++) {
+            algorithm.makeMove();
+        }
     }
 
 //    private void initData(){

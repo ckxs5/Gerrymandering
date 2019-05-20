@@ -80,6 +80,16 @@ public class State {
         return count;
     }
 
+    public List<District> getMMDistricts(RaceType community, Range<Double> range) {
+        List<District> ds = new ArrayList<>();
+        for (District d : districts) {
+            if (range.isIncluding(d.getData().getDemographic().getPercentByRace(community))) {
+                ds.add(d);
+            }
+        }
+        return ds;
+    }
+
 
     public StateName getName() {
         return name;
