@@ -5,6 +5,7 @@ $("document").ready(function () {
     let stateLayer, districtLayer, precinctLayer;
     let mymap;
     let info;
+    let disInfo;
     let maxBounds;
     let done = false;
 
@@ -101,23 +102,51 @@ $("document").ready(function () {
         return this._div;
     };
 
+    disInfo = L.control();
+
+    disInfo.onAdd = function () {
+        this._div = L.DomUtil.create('div', 'info');
+        this.update();
+        return this._div;
+    };
+
+    disInfo.update = function (democratic, republican, otherParties, all, otherRaces, caucasian, asian, hispanic, african, native) {
+        this._div.innerHTML = '<h4>District Information</h4>' + (all ?
+            + '<b>Demographics</b><br>'
+            + 'Asian/Pacific Islander: ' + asian.toLocaleString("en") + '<br>'
+            + 'Caucasian: ' + caucasian.toLocaleString("en") + '<br>'
+            + 'Hispanic (of Any Race): ' + hispanic.toLocaleString("en") + '<br>'
+            + 'African-American: ' + african.toLocaleString("en") + '<br>'
+            + 'Native American: ' + native.toLocaleString("en") + '<br>'
+            + 'Other: ' + otherParties.toLocaleString("en") + '<br>'
+            + '<br><b>Election</b><br>'
+            + 'Democratic: ' + democratic.toLocaleString("en") + '<br>'
+            + 'Republican: ' + republican.toLocaleString("en") + '<br>'
+            + 'OtherParties: ' + otherParties.toLocaleString("en") + '<br>'
+            + '<br><b>Population</b><br>'
+            + all.toLocaleString("en")
+            : 'No District Selected');
+    };
+    disInfo.addTo(mymap);
+
+
     info.update = function (democratic, republican, otherParties, all, otherRaces, caucasian, asian, hispanic, african, native, name,county) {
         this._div.innerHTML = '<h4>Precinct Information</h4>' + (all ?
             '<b>' + name + '</b><br>'
             + '<b>Demographics</b><br>'
-            + 'Asian/Pacific Islander: ' + asian + '<br>'
-            + 'Caucasian: ' + caucasian + '<br>'
-            + 'Hispanic (of Any Race): ' + hispanic + '<br>'
-            + 'African-American: ' + african + '<br>'
-            + 'Native American: ' + native + '<br>'
-            + 'Other: ' + otherParties + '<br>'
+            + 'Asian/Pacific Islander: ' + asian.toLocaleString("en") + '<br>'
+            + 'Caucasian: ' + caucasian.toLocaleString("en") + '<br>'
+            + 'Hispanic (of Any Race): ' + hispanic.toLocaleString("en") + '<br>'
+            + 'African-American: ' + african.toLocaleString("en") + '<br>'
+            + 'Native American: ' + native.toLocaleString("en") + '<br>'
+            + 'Other: ' + otherParties.toLocaleString("en") + '<br>'
             + '<br><b>Election</b><br>'
-            + 'Democratic: ' + democratic + '<br>'
-            + 'Republican: ' + republican + '<br>'
-            + 'OtherParties: ' + otherParties + '<br>'
+            + 'Democratic: ' + democratic.toLocaleString("en") + '<br>'
+            + 'Republican: ' + republican.toLocaleString("en") + '<br>'
+            + 'OtherParties: ' + otherParties.toLocaleString("en") + '<br>'
             + 'County: ' + county + '<br>'
             + '<br><b>Population</b><br>'
-            + all
+            + all.toLocaleString("en")
             : 'No Precinct Selected');
     };
     info.addTo(mymap);
@@ -140,27 +169,26 @@ $("document").ready(function () {
             weights[$(this).attr("id")] = $(this).val();
         });
 
-        while(!done){
-            done = true;
-            console.log("Before Post: " + done);
-            postData(weights, "/graphpartition/once", colorModifying);
+        // while(postData(weights, "/graphpartition/once", colorModifying));
+
+        for(let i = 0; i< 100; i++){
+            if(!postData(weights, "/graphpartition/once", colorModifying))
+                break;
+            console.log("Color changing" + i);
         }
     });
 
     let precinctHashmap = {};
-
     precinctLayer.eachLayer(function(layer){
         precinctHashmap[layer.feature["properties"]["PrecinctID"]] = layer;
     });
     console.log(precinctHashmap);
 
     function colorModifying(data) {
-        done = false;
+        console.log("Coloring: "+ data);
         for (let i = 0; i < data.length; i++){
             let color = getColor();
-            // console.log(color);
             for(let j = 0; j < data[i].length; j++){
-                // console.log(precinctHashmap[data[i][j]].feature);
                 precinctHashmap[data[i][j]].setStyle({
                     fillColor: color,
                     weight: 1,
@@ -210,6 +238,15 @@ $("document").ready(function () {
             $("#batch-runs").hide();
         }
     });
+
+    $("#district-toggle").on("change", function(){
+        if($(this).prop('checked')){
+            mymap.addLayer(districts);
+        }else{
+            mymap.removeLayer(districts);
+        }
+    });
+
 
     $("#batchform").on("submit", function(event) {
         event.preventDefault();
@@ -291,6 +328,7 @@ $("document").ready(function () {
 
     function loadPrecinctPropertiesHelper(loadedJson) {
         let obj = loadedJson;
+        // console.log(obj);
         let democratic = obj['democratic'] ? obj['democratic'] : "N/A";
         let republican = obj['republican'] ? obj['republican'] : "N/A";
         let other_parties = obj['other_parties'] ? obj['other_parties'] : "N/A";
@@ -303,8 +341,27 @@ $("document").ready(function () {
         let other_race = obj['other_race'] ? obj['other_race'] : "N/A";
         let county = obj['county'] ? obj['county'] : "N/A";
         let name = obj['name'] ? obj['name'] : "N/A";
+        let disId = obj['district_id'] ? obj['district_id'] : "N/A";
 
         info.update(democratic, republican, other_parties, all, other_race, caucasian, asian, hispanic, african_american, native, name,county);
+        getData("/district/" + disId + "/data", loadDistrictPropertiesHelper);
+    }
+
+    function loadDistrictPropertiesHelper(obj) {
+        console.log("dist obj" + obj);
+        let democratic = obj['democratic'] ? obj['democratic'] : "N/A";
+        let republican = obj['republican'] ? obj['republican'] : "N/A";
+        let other_parties = obj['other_parties'] ? obj['other_parties'] : "N/A";
+        let all = obj.all ? obj.all: "N/A";
+        let caucasian = obj['caucasian'] ? obj['caucasian'] : "N/A";
+        let african_american = obj['african_american'] ? obj['african_american'] : "N/A";
+        let asian = obj['asian'] ? obj['asian'] : "N/A";
+        let native = obj['native'] ? obj['native'] : "N/A";
+        let hispanic = obj['hispanic'] ? obj['hispanic'] : "N/A";
+        let other_race = obj['other_race'] ? obj['other_race'] : "N/A";
+        console.log("ALLT: " + obj.toString());
+
+        disInfo.update(democratic, republican, other_parties, all, other_race, caucasian, asian, hispanic, african_american, native);
     }
 
     function resetPrecinctHighlight(e) {
@@ -318,7 +375,7 @@ $("document").ready(function () {
 
     function onEachDistrictFeature(feature, layer) {
         layer.on({
-            mouseover: highlightFeature,
+            mouseover: highlightPrecinctFeature,
             mouseout: resetDistrictHighlight
         });
     }

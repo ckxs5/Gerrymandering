@@ -11,16 +11,25 @@ function postData(data, url, callback) {
             200: function (response) {
                 if (callback != null)
                     callback(response);
+                return true;
             },
             400: function (response) {
                 alert("BAD REQUEST");
+                return false;
             },
             404: function (response) {
                 alert("NOT FOUND");
+                return false;
             }
         }
     });
 }
+
+function postDataOnce(data, url, callback){
+
+}
+
+
 
 function getData(url, callback){
     $.ajax({
