@@ -18,10 +18,10 @@ public class PrecinctConstructor {
     @JsonProperty("OtherParties")
     private int otherParties;
 
-    @JsonProperty("Democratic-Farmer-Labor")
+    @JsonProperty("Democrat")
     private int democratic;
 
-    @JsonProperty("republican")
+    @JsonProperty("Republican")
     private int republican;
 
     @JsonProperty("Name")
@@ -42,7 +42,7 @@ public class PrecinctConstructor {
     @JsonProperty("Total")
     private int total;
 
-    @JsonProperty("OnRace")
+    @JsonProperty("OneRace")
     private int oneRace;
 
     @JsonProperty("TwoOrMoreRaces")
@@ -155,8 +155,6 @@ public class PrecinctConstructor {
 
     public void setBoundary(double[][] boundary) { this.boundary = boundary; }
 
-
-
     public Precinct toIdPrecinct(){
         Precinct precinct = new Precinct();
         precinct.setId(id);
@@ -187,11 +185,10 @@ public class PrecinctConstructor {
         demographic.setPopulation(RaceType.AFRICAN_AMERICAN, africanAmerican);
         demographic.setPopulation(RaceType.ASIAN_PACIFIC_AMERICAN, asian);
         demographic.setPopulation(RaceType.NATIVE_AMERICAN, nativeAmerican);
-        demographic.setPopulation(RaceType.OTHERS, total - caucasian - africanAmerican - asian - nativeAmerican);
+        demographic.setPopulation(RaceType.OTHERS, others);
         demographic.setPopulation(RaceType.HISPANIC_LATINO_AMERICAN, hispanic);
         return demographic;
     }
-
 
     @Override
     public String toString() {

@@ -35,7 +35,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         // DO NOT UNCOMMENT THIS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//        PrecinctPreprocesor preprocesor = new PrecinctPreprocesor(precinctService, demographicService, voteService, boundaryService, dataService, "C:\\Users\\jimmy\\OneDrive\\Desktop\\Spring Programming\\CSE308\\gerrymander-demo\\datafiles\\MN\\precinct_data.json");
+//        PrecinctPreprocesor preprocesor = new PrecinctPreprocesor(precinctService, demographicService, voteService, boundaryService, dataService, "/Users/brandonchan/Documents/GitHub/CSE308/gerrymander-demo/datafiles/MN/FINAL_MN_NEW.json");
 
         PrecinctManager.setInstance(precinctService);
         HashMap<Long, Precinct> precincts = PrecinctManager.getPrecincts(StateName.MINNESOTA);
@@ -43,8 +43,8 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         System.out.println(precincts.values().toArray()[0].toString());
 
         //Construct District Manager
-        DistrictManager.setInstance(districtService, dataService, demographicService, voteService, boundaryService);
-        test();
+//        DistrictManager.setInstance(districtService, dataService, demographicService, voteService, boundaryService);
+//        test();
     }
 
     private HashMap<String, String> initPreferences() {
