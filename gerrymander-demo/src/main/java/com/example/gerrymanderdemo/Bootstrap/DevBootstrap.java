@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 @Component
@@ -17,14 +18,16 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
     private BoundaryService boundaryService;
     private DataService dataService;
     private DistrictService districtService;
+    private StateService stateService;
 
-    public DevBootstrap(PrecinctService precinctService, DemographicService demographicService, VoteService voteService, BoundaryService boundaryService, DataService dataService, DistrictService districtService) {
+    public DevBootstrap(PrecinctService precinctService, DemographicService demographicService, VoteService voteService, BoundaryService boundaryService, DataService dataService, DistrictService districtService,StateService stateService) {
         this.precinctService = precinctService;
         this.demographicService = demographicService;
         this.voteService = voteService;
         this.boundaryService = boundaryService;
         this.dataService = dataService;
         this.districtService = districtService;
+        this.stateService = stateService;
     }
 
     @Override
@@ -39,7 +42,13 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 
 //        Construct District Manager
         DistrictManager.setInstance(districtService, dataService, demographicService, voteService, boundaryService);
+
+        //construct State Manager
+        StateManager.setInstance(stateService, dataService, demographicService, voteService, boundaryService);
+
         test();
+
+
     }
 
     private HashMap<String, String> initPreferences() {
@@ -60,14 +69,34 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 
     private void test(){
         HashMap<String, String> preferences = initPreferences();
-        Algorithm algorithm = new Algorithm(preferences, new State());
-        algorithm.graphPartition();
-//        algorithm.runTest();
-        System.out.println("===================Starting make move===================");
-        algorithm.setRedistrictingPlan();
-        for (int i = 0; i < 10; i++) {
-            algorithm.makeMove();
+        for(int i=0;i<10;i++) {
+            Algorithm algorithm = new Algorithm(preferences, new State());
+            algorithm.graphPartition();
+            State s = algorithm.getState();
+            StateManager.getInstance().save(s);
+            //StateManager.getInstance().findById()
         }
+//        algorithm.runTest();
+//        System.out.println("===================Starting make move===================");
+//        algorithm.setRedistrictingPlan();
+//        algorithm.makeMove();
+    }
+
+    private Collection<SummaryObject> constructBatchSummaryObjects(){
+        State s1 = StateManager.getInstance().findById(new Long(4423));
+        State s2 = StateManager.getInstance().findById(new Long(4442));
+        State s3 = StateManager.getInstance().findById(new Long(4453));
+        State s4 = StateManager.getInstance().findById(new Long(4462));
+        State s5 = StateManager.getInstance().findById(new Long(4472));
+        State s6 = StateManager.getInstance().findById(new Long(4482));
+        State s7 = StateManager.getInstance().findById(new Long(4492));
+        State s8 = StateManager.getInstance().findById(new Long(4502));
+        State s9 = StateManager.getInstance().findById(new Long(4512));
+        State s10 = StateManager.getInstance().findById(new Long(4522));
+
+
+
+        return null;
     }
 
 //    private void initData(){
