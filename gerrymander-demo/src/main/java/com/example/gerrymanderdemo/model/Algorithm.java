@@ -410,6 +410,12 @@ public class Algorithm {
         return 1 - (1.0 * borderCount / total);
     }
 
+    public double ratePolsbyPopper(District d){
+        double AD = d.getData().getBoundary().getArea();
+        double PD = d.getPerimeter();
+        return AD*(4*Math.pow(Math.PI,3)/Math.pow(PD,4));
+    }
+
     public double ratePopulationEquality(District d) {
         int dp = d.getData().getDemographic().getPopulation(RaceType.ALL);
         int tp = state.getData().getDemographic().getPopulation(RaceType.ALL) / state.getNumDistricts();
