@@ -123,6 +123,11 @@
                                 <option th:each="c : ${compactness}" th:value="${c}" th:text="${c.toString()} == 'ALL' ? 'Compactness' : ${c}"></option>
                             </select>
                         </div>
+                        <div th:case="NUM_MMDISTRICTS" class="input-group input-group-sm" id="num-mmDistrict">
+                            <form id="mmdistrictform" class="input-group input-group-sm">
+                                <input type="number" class="form-control" th:id="${preference}" th:name="${preference}" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Number of Majority Minority District" autofocus min="1" max="10">
+                            </form>
+                        </div>
                         <div th:case="*">
                             <label th:for="${preference}" class="ranges" th:text="${preference}"></label>
                             <input class="custom-range" th:id="${preference}" th:name="${preference}" type="range">
