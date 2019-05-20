@@ -58,6 +58,23 @@ public class Algorithm {
 
     //TODO
     public State runAlgorithm(){return null;}
+
+    public Move runTest() {
+        MajMinManager majMinManager = new MajMinManager(
+                getState(),
+                RaceType.valueOf(preference.get("COMMUNITY_OF_INTEREST")),
+                Double.parseDouble(preference.get("MAJMIN_LOW")) / 100,
+                Double.parseDouble(preference.get("MAJMIN_UP")) / 100,
+                true);
+        District district = majMinManager.getBestCandidate();
+        System.out.printf("District get from mm Manager is %s \n", district);
+        Move move = majMinManager.moveFromDistrict();
+
+        System.out.println(move.getTo());
+        System.out.println(move.getFrom());
+        System.out.println(move.getPrecinct());
+        return move;
+    }
     //TODO
     public float getOF(){return tempObjectiveFunctionValue;}
 

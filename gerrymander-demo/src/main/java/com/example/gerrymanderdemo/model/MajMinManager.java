@@ -3,10 +3,7 @@ package com.example.gerrymanderdemo.model;
 import com.example.gerrymanderdemo.model.Enum.RaceType;
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MajMinManager {
@@ -18,8 +15,8 @@ public class MajMinManager {
     private District bestCandidate;
     private boolean addOrRemove;
 
-    public MajMinManager(Collection<District> districts,RaceType minorityRace, double downRatio, double upRatio, boolean addOrRemove){
-        this.districts = districts;
+    public MajMinManager(State state, RaceType minorityRace, double downRatio, double upRatio, boolean addOrRemove){
+        this.districts = state.getDistricts();
         this.minorityRace = minorityRace;
         range = new Range<>(downRatio, upRatio);
         this.mmDistricts = districts.stream().filter(district ->
@@ -27,6 +24,14 @@ public class MajMinManager {
                 ).collect(Collectors.toList());
         this.candidateDistricts = new ArrayList<>(districts);
         candidateDistricts.removeAll(mmDistricts);
+
+        for (District d : mmDistricts) {
+            System.out.printf("MM : %s, %f\n", d.getId(), d.getData().getDemographic().getPercentByRace(minorityRace));
+        }
+        for (District d : candidateDistricts) {
+            System.out.printf("CD : %s, %f\n", d.getId(), d.getData().getDemographic().getPercentByRace(minorityRace));
+        }
+
         this.addOrRemove = addOrRemove;
         setBestCandidateDistrict();
     }
@@ -62,12 +67,11 @@ public class MajMinManager {
     public Move moveFromDistrict(){
         Long districtId = bestCandidate.getId();
         Set<Precinct> borderPrecincts = bestCandidate.getBorderPrecincts();//TODO: getBorderPrecincts
-        for (Precinct p:borderPrecincts){
+        for (Precinct p : borderPrecincts){
             for (Precinct nn: p.getNeighbors()){
                 if(!nn.getDistrictId().equals(districtId)){//take the precinct that is not in startDistrict
                     District neighborDistrict = findNeighborDistrict(nn.getDistrictId());
-                    Move move = null;
-                    move = addOrRemove ? addMM_testMove(bestCandidate, neighborDistrict, p) : removeMM_testMove(bestCandidate, neighborDistrict, p);
+                    Move move = addOrRemove ? addMM_testMove(bestCandidate, neighborDistrict, p) : removeMM_testMove(bestCandidate, neighborDistrict, p);
                     if (move != null){
                         System.out.println("Moving p to neighborDistrict(neighborID = "+nn.getDistrictId()+")");
                         return move;
