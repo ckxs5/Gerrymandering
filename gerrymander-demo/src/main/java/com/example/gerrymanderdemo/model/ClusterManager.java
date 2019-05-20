@@ -102,6 +102,9 @@ public class ClusterManager {
         for (Cluster c : clusters) {
             districts.add(c.toDistrict());
         }
+        for (District district : districts){
+            district.setBorderPrecincts();
+        }
         return districts;
     }
 
