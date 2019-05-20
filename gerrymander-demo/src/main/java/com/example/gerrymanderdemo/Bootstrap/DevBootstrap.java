@@ -63,20 +63,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         HashMap<String, String> preferences = initPreferences();
         Algorithm algorithm = new Algorithm(preferences, new State());
         algorithm.graphPartition();
-
-        MajMinManager majMinManager = new MajMinManager(algorithm.getState().getDistricts(),
-                RaceType.valueOf(preferences.get("COMMUNITY_OF_INTEREST")),
-                       Double.parseDouble(preferences.get("MAJMIN_LOW")) / 100,
-                        Double.parseDouble(preferences.get("MAJMIN_UP")) / 100,
-                    true);
-        District district = majMinManager.getBestCandidate();
-        System.out.printf("District get from mm Manager is %s \n", district);
-        Move move = majMinManager.moveFromDistrict();
-
-        System.out.println(move.getTo());
-        System.out.println(move.getFrom());
-        System.out.println(move.getPrecinct());
-
+//        algorithm.runTest();
     }
 
 //    private void initData(){
