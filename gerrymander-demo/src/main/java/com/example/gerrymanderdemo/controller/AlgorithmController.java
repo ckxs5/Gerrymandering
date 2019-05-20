@@ -16,10 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @Controller
@@ -118,6 +115,26 @@ public class AlgorithmController {
             ex.printStackTrace();
             return ResponseEntity.status(400).body("Cannot convert to JSON when getting district precincts");
         }
+    }
+
+    @GetMapping(value = "/getsummaries", produces = "application/json")
+    public ResponseEntity<String> getSummaries() {
+        Long[] ids = {new Long(15), new Long(14), new Long(13), new Long(12),
+                new Long(11), new Long(10), new Long(9), new Long(8),
+                new Long(7) , new Long(6), new Long(5)};
+
+        List<SummaryObject> summaryObjects = new ArrayList<>();
+        for (Long id : ids) {
+            State state = StateManager.getInstance().findById(id);
+            if (state == null)
+                System.out.printf("State Not found !!! : id : %d", id);
+            summaryObjects.add(new SummaryObject(state, Math.random() + 0.3, 1));
+        }
+        JSONArray arr = new JSONArray();
+        for (SummaryObject object : summaryObjects) {
+            arr.put(object.toJSONObject());
+        }
+        return ResponseEntity.ok(arr.toString());
     }
 
 

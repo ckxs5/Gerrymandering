@@ -46,7 +46,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         //construct State Manager
         StateManager.setInstance(stateService, dataService, demographicService, voteService, boundaryService);
 
-        test();
+//        test();
 
 
     }
@@ -62,7 +62,6 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         preferences.put("EFFICIENCY_GAP", "50");
         preferences.put("COMPACTNESS", "50");
         preferences.put("LENGTH_WIDTH", "50");
-
 
         return preferences;
     }
@@ -83,6 +82,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
     }
 
     private Collection<SummaryObject> constructBatchSummaryObjects(){
+
         State s1 = StateManager.getInstance().findById(new Long(4423));
         State s2 = StateManager.getInstance().findById(new Long(4442));
         State s3 = StateManager.getInstance().findById(new Long(4453));
