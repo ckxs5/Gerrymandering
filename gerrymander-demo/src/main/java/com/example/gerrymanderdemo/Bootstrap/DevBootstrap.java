@@ -1,13 +1,10 @@
 package com.example.gerrymanderdemo.Bootstrap;
 
 import com.example.gerrymanderdemo.Service.*;
-import com.example.gerrymanderdemo.model.ClusterManager;
+import com.example.gerrymanderdemo.model.*;
 import com.example.gerrymanderdemo.model.Data.Boundary;
 import com.example.gerrymanderdemo.model.Data.Vote;
-import com.example.gerrymanderdemo.model.DistrictManager;
 import com.example.gerrymanderdemo.model.Enum.StateName;
-import com.example.gerrymanderdemo.model.Precinct;
-import com.example.gerrymanderdemo.model.PrecinctManager;
 import com.example.gerrymanderdemo.preprocessing.PrecinctConstructor;
 import com.example.gerrymanderdemo.preprocessing.PrecinctPreprocesor;
 import org.springframework.context.ApplicationListener;
@@ -45,8 +42,27 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         System.out.printf("Precinct %d loaded\n", precincts.size());
         System.out.println(precincts.values().toArray()[0].toString());
 
+
+
         //Construct District Manager
         DistrictManager.setInstance(districtService, dataService, demographicService, voteService, boundaryService);
+        test();
+    }
+
+    private HashMap<String, String> initPreferences() {
+        HashMap<String, String> preferences = new HashMap<>();
+        preferences.put("COMMUNITY_OF_INTEREST", "AFRICAN_AMERICAN");
+        preferences.put("NUM_DISTRICTS", "8");
+
+        return preferences;
+    }
+
+    private void test(){
+        HashMap<String, String> preferences = initPreferences();
+        Algorithm algorithm = new Algorithm(preferences, new State());
+        algorithm.graphPartition();
+
+
     }
 
 //    private void initData(){
