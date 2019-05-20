@@ -3,6 +3,9 @@ package com.example.gerrymanderdemo.model.Data;
 import com.example.gerrymanderdemo.model.Response.ResponseObject;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Polygon;
 
 import javax.persistence.*;
 
@@ -14,6 +17,9 @@ public class Boundary implements ResponseObject {
     @ElementCollection
     @OrderColumn
     private double[][] geoJSON;
+
+    @Transient
+    double area;
 
     public Boundary() {
     }
@@ -28,7 +34,11 @@ public class Boundary implements ResponseObject {
 
     public Boundary(Boundary b1, Boundary b2) {
         //TODO
+        area = b1.getArea()+b2.getArea();
     }
+
+
+    public double getArea(){ return area; }
 
     public Long getId() {
         return id;
@@ -44,15 +54,30 @@ public class Boundary implements ResponseObject {
 
     public void setGeoJSON(double[][] geoJSON) {
         this.geoJSON = geoJSON;
+        setArea();
+    }
+
+    public void setArea(){
+        Coordinate[] coArr = new Coordinate[geoJSON.length];
+        for(int i=0;i<coArr.length;i++){
+            Coordinate co = new Coordinate(geoJSON[i][0],geoJSON[i][1]);
+            coArr[i] = co;
+        }
+        GeometryFactory gf = new GeometryFactory();
+        Polygon p = gf.createPolygon(coArr);
+        area = p.getArea();
     }
 
     public void add(Boundary other) {
         //TODO
+        area += other.getArea();
     }
 
     public Boundary remove(Boundary other) {
         //TODO
+        area-=other.getArea();
         return other;
+
     }
 
     @Override

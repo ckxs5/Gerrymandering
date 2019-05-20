@@ -133,7 +133,12 @@ public class District {
 
 
     //TODO: we should change precincts type to a HashMap<precinctId, precinct>
-        public Precinct getPrecinct(String n) {
+    public Precinct getPrecinct(Long id) {
+        for (Precinct p : precincts) {
+            if(p.getId().equals(id)) {
+                return p;
+            }
+        }
         return null;
     }
 
@@ -172,7 +177,7 @@ public class District {
     public Set<Precinct> getBorderPrecincts(){
         for(Precinct p: precincts){
             for(Precinct np: p.getNeighbors()){
-                if(np.getDistrictId()!=id){
+                if(np.getDistrictId().equals(id)){
                     borderPrecincts.add(p);
                 }
             }
