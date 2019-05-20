@@ -46,9 +46,9 @@ public class AlgorithmController {
         }
     }
 
-    @GetMapping(value = "/district/{id}/data")
+    @GetMapping(value = "/district/{id}/data", produces = "application/json")
     public ResponseEntity<String> getDistrictById(@PathVariable Long id) {
-        System.out.printf("Request to get data for precinct : %d \n", id);
+        System.out.printf("Request to get data for district : %d \n", id);
         District district = algorithm.getState().getDistrictById(id);
         if (district != null) {
             ObjectMapper mapper = new ObjectMapper();
@@ -56,6 +56,7 @@ public class AlgorithmController {
             module.addSerializer(District.class, new DistrictDataSerializer());
             mapper.registerModule(module);
             try {
+                System.out.println("got");
                 return ResponseEntity.ok(mapper.writeValueAsString(district));
             } catch (JsonProcessingException ex) {
                 ex.printStackTrace();
