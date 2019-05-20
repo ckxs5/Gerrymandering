@@ -95,6 +95,10 @@ public class MajMinManager {
             m.undo();
             return null;
         }
+        if(finalPercent>upRatio || finalPercent<downRatio){
+            m.undo();
+            return null;
+        }
         return m;
     }
 
@@ -105,6 +109,10 @@ public class MajMinManager {
         m.execute();
         double finalPercent = bestCandidate.getData().getDemographic().getPercentByRace(minorityRace);
         if(finalPercent>=initialPercent){
+            m.undo();
+            return null;
+        }
+        if(finalPercent>upRatio || finalPercent<downRatio){
             m.undo();
             return null;
         }
