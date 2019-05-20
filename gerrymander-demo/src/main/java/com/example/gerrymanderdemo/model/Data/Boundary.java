@@ -1,11 +1,7 @@
 package com.example.gerrymanderdemo.model.Data;
 
 import com.example.gerrymanderdemo.model.Response.ResponseObject;
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Polygon;
 
 import javax.persistence.*;
 import java.util.Arrays;
@@ -70,19 +66,19 @@ public class Boundary implements ResponseObject {
 
     public void setGeoJSON(double[][] geoJSON) {
         this.geoJSON = geoJSON;
-        setArea();
+//        setArea();
     }
 
-    public void setArea(){
-        Coordinate[] coArr = new Coordinate[geoJSON.length];
-        for(int i=0;i<coArr.length;i++){
-            Coordinate co = new Coordinate(geoJSON[i][0],geoJSON[i][1]);
-            coArr[i] = co;
-        }
-        GeometryFactory gf = new GeometryFactory();
-        Polygon p = gf.createPolygon(coArr);
-        area = p.getArea();
-    }
+//    public void setArea(){
+//        Coordinate[] coArr = new Coordinate[geoJSON.length];
+//        for(int i=0;i<coArr.length;i++){
+//            Coordinate co = new Coordinate(geoJSON[i][0],geoJSON[i][1]);
+//            coArr[i] = co;
+//        }
+//        GeometryFactory gf = new GeometryFactory();
+//        Polygon p = gf.createPolygon(coArr);
+//        area = p.getArea();
+//    }
 
     public void add(Boundary other) {
         //TODO
@@ -121,7 +117,7 @@ public class Boundary implements ResponseObject {
     @Override
     public JSONObject toJSONObject() {
         //try {
-            return null;
+        return null;
 //        }catch (JSONException ex) {
 //            System.out.printf("Exception catched when returning a geoJson: %s \n", ex.getMessage());
 //            return null;

@@ -4,11 +4,11 @@ import json
 
 obj = []
 
-with open('MD_pretty_Data.json', 'r') as file:
+with open('MN/FINAL_MN_NEW.json', 'r') as file:
     obj = json.load(file)
 
-print(obj[0]['boundary'])
-print(obj[0]['id'])
+# print(obj[0]['boundary'])
+# print(obj[0]['id'])
 
 precinct_polygon = {}
 centroid_precinctId = {}
