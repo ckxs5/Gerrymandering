@@ -42,8 +42,6 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         System.out.printf("Precinct %d loaded\n", precincts.size());
         System.out.println(precincts.values().toArray()[0].toString());
 
-
-
         //Construct District Manager
         DistrictManager.setInstance(districtService, dataService, demographicService, voteService, boundaryService);
         test();
