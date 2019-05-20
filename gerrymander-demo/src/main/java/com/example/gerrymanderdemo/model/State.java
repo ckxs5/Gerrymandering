@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 public class State {
@@ -21,18 +22,13 @@ public class State {
     @OneToOne
     private Data data;
     @OneToMany
-    private Collection<District>districts;
-    private int numDistricts;
-    //TODO: See Whether if we need this?
-    private int numMajMinDistricts;
+    private List<District> districts;
     private StateName name;
-    @Value("${gerrymandering.range.variant}")
-    private double districtPopulationVariant;
 
     public State() {
     }
 
-    public State(StateName name, Collection<District> districts) {
+    public State(StateName name, List<District> districts) {
         this.name = name;
         this.districts = districts;
         updateData();
@@ -44,8 +40,6 @@ public class State {
         for(District d : s.getDistricts()) {
             districts.add(new District());
         }
-        this.numDistricts = s.numDistricts;
-        this.numMajMinDistricts = s.numMajMinDistricts;
         this.id = s.id;
     }
 
@@ -66,22 +60,15 @@ public class State {
         }
     }
 
-    public Collection<District> getDistricts() {
+    public List<District> getDistricts() {
         return districts;
     }
 
-    public void setDistricts(Collection<District> districts) {
+    public void setDistricts(List<District> districts) {
         this.districts = districts;
         updateData();
     }
 
-    public int getNumDistricts() {
-        return numDistricts;
-    }
-
-    public void setNumDistricts(int numDistricts) {
-        this.numDistricts = numDistricts;
-    }
 
     public int getNumMajMinDistricts(RaceType community, Range<Double> range) {
         int count = 0;
@@ -93,9 +80,16 @@ public class State {
         return count;
     }
 
-    public void setNumMajMinDistricts(int numMajMinDistricts) {
-        this.numMajMinDistricts = numMajMinDistricts;
+    public List<District> getMMDistricts(RaceType community, Range<Double> range) {
+        List<District> ds = new ArrayList<>();
+        for (District d : districts) {
+            if (range.isIncluding(d.getData().getDemographic().getPercentByRace(community))) {
+                ds.add(d);
+            }
+        }
+        return ds;
     }
+
 
     public StateName getName() {
         return name;

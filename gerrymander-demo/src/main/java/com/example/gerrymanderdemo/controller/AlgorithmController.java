@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.mysql.cj.xdevapi.JsonArray;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,24 +26,32 @@ import java.util.Set;
 public class AlgorithmController {
     private Algorithm algorithm;
 
-    @PostMapping(value = "/graphpartition", consumes = "application/json")
-    public ResponseEntity<String> run(@RequestBody HashMap<String, String> preferences) {
-        System.out.println(preferences);
+    @PostMapping(value = "/init_algorithm")
+    public ResponseEntity<String> init(@RequestBody HashMap<String, String> preferences) {
+        System.out.println("preferences: " + preferences);
         algorithm = new Algorithm(preferences, new State());
-        State state = algorithm.graphPartition();
-        return getDistrictPrecincts(state);
+        return ResponseEntity.ok("Done");
+    }
+
+    @PostMapping(value = "/graphpartition", consumes = "application/json")
+    public ResponseEntity<String> run() {
+        try {
+            State state = algorithm.graphPartition();
+            return getDistrictPrecincts(state.getDistricts());
+        } catch (NullPointerException ex) {
+            return ResponseEntity.status(400).body("Please first initialize algorithm");
+        }
     }
 
     @PostMapping(value = "/graphpartition/once", consumes = "application/json")
-    public ResponseEntity<String> runonce(@RequestBody HashMap<String, String> preferences) {
-        if (algorithm == null) {
-            algorithm = new Algorithm(preferences, new State());
-        }
+    public ResponseEntity<String> runonce() {
         try {
             State state = algorithm.graphPartitionOnce();
-            return getDistrictPrecincts(state);
+            return getDistrictPrecincts(state.getDistricts());
         } catch (NotAnotherMoveException ex) {
             return ResponseEntity.status(400).body("Unable to have another move");
+        } catch (NullPointerException ex) {
+            return ResponseEntity.status(400).body("Please first initialize algorithm");
         }
     }
 
@@ -68,19 +77,47 @@ public class AlgorithmController {
         }
     }
 
-    private ResponseEntity<String> getDistrictPrecincts(State state) {
-        Collection<District> districts = state.getDistricts();
-        JSONArray obj = new JSONArray();
-        for (District district : districts) {
-            Set<Precinct> precincts = district.getPrecincts();
-            JSONArray ps = new JSONArray();
-            for (Precinct precinct : precincts) {
-                ps.put(precinct.getId());
-            }
-            obj.put(ps);
+    @PostMapping(value = "/simulating_annealing", produces = "application/json")
+    public ResponseEntity<String> simulatingAnnealing() {
+        try {
+            algorithm.setRedistrictingPlan();
+            Move move = algorithm.makeMove();
+            JSONObject obj = new JSONObject();
+            obj.put("to", move.getTo().getId());
+            obj.put("from", move.getFrom().getId());
+            obj.put("p", move.getPrecinct().getId());
+            return ResponseEntity.ok(obj.toString());
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+            return ResponseEntity.status(400).body("Cannot convert to JSON when doing simulating_annealing");
+        } catch (NullPointerException ex) {
+            ex.printStackTrace();
+            return ResponseEntity.status(400).body("Please first initial Algorithm");
         }
-        System.out.printf("Return %d of Districts with its precinctIds. \n", obj.length());
-        return ResponseEntity.ok(obj.toString());
+    }
+
+    @GetMapping(value = "/getmmd", produces = "application/json")
+    public ResponseEntity<String> getMajMinDistrictBorders(){
+        return getDistrictPrecincts(algorithm.getState().getMMDistricts(algorithm.getCommunityOfInterest(), algorithm.getRange()));
+    }
+
+    private ResponseEntity<String> getDistrictPrecincts(Collection<District> districts) {
+        try {
+            JSONObject obj = new JSONObject();
+            for (District district : districts) {
+                Set<Precinct> precincts = district.getPrecincts();
+                JSONArray ps = new JSONArray();
+                for (Precinct precinct : precincts) {
+                    ps.put(precinct.getId());
+                }
+                obj.put(district.getId().toString(), ps);
+            }
+            System.out.printf("Return %d of Districts with its precinctIds. \n", obj.length());
+            return ResponseEntity.ok(obj.toString());
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+            return ResponseEntity.status(400).body("Cannot convert to JSON when getting district precincts");
+        }
     }
 
 

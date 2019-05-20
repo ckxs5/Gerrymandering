@@ -87,6 +87,7 @@ public class Cluster implements Comparable{
 
     // add ClassDiagram
     private void passEdges(Cluster parentCluster){
+//        System.out.println("Precinct id in cluster: "+ precinct.getId());
         for (Edge e : edges) {
             e.updateElement(this, parentCluster);
             parentCluster.addEdge(e);

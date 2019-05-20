@@ -10,11 +10,13 @@ import java.util.*;
 
 import static com.example.gerrymanderdemo.model.Enum.Party.DEMOCRATIC;
 import static com.example.gerrymanderdemo.model.Enum.Party.REPUBLICAN;
-import static com.example.gerrymanderdemo.model.Enum.PreferenceType.EFFICIENCY_GAP;
+import static com.example.gerrymanderdemo.model.Enum.PreferenceType.*;
 
 public class Algorithm {
     private Map<String, String> preference;
     private State state;
+    private Range<Double> range;
+    private RaceType communityOfInterest;
     private ClusterManager clusterManager;
     private float tempObjectiveFunctionValue;
     private District currentDistrict = null;
@@ -25,10 +27,12 @@ public class Algorithm {
 
 
     public Algorithm(Map<String, String> preference, State state) {
+        this.communityOfInterest = RaceType.valueOf(preference.get(PreferenceType.COMMUNITY_OF_INTEREST.toString()));
         this.preference = preference;
         this.state = state;
+        this.range = new Range<>(Double.parseDouble(preference.get("MAJMIN_LOW")) / 100 ,Double.parseDouble(preference.get("MAJMIN_UP")) / 100);
         this.clusterManager = new ClusterManager(
-                RaceType.valueOf(preference.get(PreferenceType.COMMUNITY_OF_INTEREST.toString())),
+                communityOfInterest,
                 Integer.parseInt(preference.get(PreferenceType.NUM_DISTRICTS.toString())),
                 new ArrayList<>(PrecinctManager.getPrecincts(StateName.MINNESOTA).values())
                 );
@@ -49,20 +53,42 @@ public class Algorithm {
     }
 
     public void setRedistrictingPlan(){
+        redistrictingPlan = new HashMap<>();
+        currentScores = new HashMap<>();
         for (District d: state.getDistricts()){
-            for (Precinct p: d.getPrecincts()){
+            for (Precinct p : d.getPrecincts()){
                 redistrictingPlan.put(p.getId(), d.getId());
             }
+            currentScores.put(d, rateDistrict(d));
         }
+
     }
 
     //TODO
     public State runAlgorithm(){return null;}
+
+    public Move runTest() {
+        MajMinManager majMinManager = new MajMinManager(
+                getState(),
+                RaceType.valueOf(preference.get("COMMUNITY_OF_INTEREST")),
+                 range.getUpperBound(),
+                 range.getLowerBound(),
+                true);
+        District district = majMinManager.getBestCandidate();
+        System.out.printf("District get from mm Manager is %s \n", district);
+        Move move = majMinManager.moveFromDistrict();
+
+        System.out.println(move.getTo());
+        System.out.println(move.getFrom());
+        System.out.println(move.getPrecinct());
+        return move;
+    }
     //TODO
     public float getOF(){return tempObjectiveFunctionValue;}
 
 
     public Move makeMove(){
+        System.out.println("currentDistrict: " + currentDistrict);
         if (currentDistrict == null){
             currentDistrict = getWorstDistrict();
         }
@@ -90,37 +116,47 @@ public class Algorithm {
 
     // TODO: returns a list of districts sorted from worst to best
     public List<District> getWorstDistricts() {
-        return null;
+        state.getDistricts().sort((o1, o2) -> {
+            double rate1 = rateDistrict(o1);
+            double rate2 = rateDistrict(o2);
+            return Double.compare(rate1, rate2);
+        });
+        return state.getDistricts();
     }
 
     public District getWorstDistrict() {
         District worstDistrict = null;
         double minScore = Double.POSITIVE_INFINITY;
+        System.out.println("minScore: " + minScore);
+        System.out.println("Get Districts: " + state.getDistricts());
         for (District d : state.getDistricts()) {//TODO: getDistricts()
-            double score = currentScores.get(d);
+            double score = rateDistrict(d);
+            currentScores.put(d, score);
+            System.out.println("Score: " + score);
             if (score < minScore) {
                 worstDistrict = d;
                 minScore = score;
             }
         }
+        System.out.println("Worst District: " + worstDistrict);
         return worstDistrict;
     }
 
     public Move getMoveFromDistrict(District startDistrict){
-        Set<Precinct> precincts = startDistrict.getBorderPrecincts();
-        for (Precinct p : precincts){
-            Set<Long> neighborIDs = p.getNeighborIDs();
-            for (Long id: neighborIDs){
-                if(startDistrict.getPrecinct(id) == null){//take the precinct that is not in startDistrict
-                    District neighborDistrict = state.getDistrictById(redistrictingPlan.get(id));//TODO: getDistrict()
-                    Move move = testMove(neighborDistrict,startDistrict,p);
-                    if (move != null){
-                        System.out.println("Moving p to neighborDistrict(neighborID = "+id+")");
+        List<Precinct> precincts = new ArrayList<>(startDistrict.getBorderPrecincts());
+        for (Precinct p : precincts) {
+            List<Long> neighborIDs = new ArrayList<>(p.getNeighborIDs());
+            for (Long id : neighborIDs) {
+                if (startDistrict.getPrecinct(id) == null) {//take the precinct that is not in startDistrict
+                    District neighborDistrict = state.getDistrictById(redistrictingPlan.get(id));
+                    Move move = testMove(neighborDistrict, startDistrict, p);
+                    if (move != null) {
+                        System.out.println("Moving p to neighborDistrict(neighborID = " + id + ")");
                         currentDistrict = startDistrict;
                         return move;
                     }
-                    move = testMove(startDistrict,neighborDistrict,neighborDistrict.getPrecinct(id));
-                    if (move != null){
+                    move = testMove(startDistrict, neighborDistrict, neighborDistrict.getPrecinct(id));
+                    if (move != null) {
                         System.out.println("Move n to Start district: " + startDistrict.getId());
                         currentDistrict = startDistrict;
                         return move;
@@ -138,7 +174,7 @@ public class Algorithm {
         Move m = new Move(to, from, p);
         double initial_score = currentScores.get(to) + currentScores.get(from);
         m.execute();
-        double to_score = rateDistrict(to);//TODO:rateDistrict()
+        double to_score = rateDistrict(to);
         double from_score = rateDistrict(from);
         double final_score = (to_score + from_score);
         double change = final_score - initial_score;
@@ -208,6 +244,30 @@ public class Algorithm {
         this.redistrictingPlan = redistrictingPlan;
     }
 
+    public Range<Double> getRange() {
+        return range;
+    }
+
+    public void setRange(Range<Double> range) {
+        this.range = range;
+    }
+
+    public RaceType getCommunityOfInterest() {
+        return communityOfInterest;
+    }
+
+    public void setCommunityOfInterest(RaceType communityOfInterest) {
+        this.communityOfInterest = communityOfInterest;
+    }
+
+    public double getPopulationVariant() {
+        return populationVariant;
+    }
+
+    public void setPopulationVariant(double populationVariant) {
+        this.populationVariant = populationVariant;
+    }
+
     //TODO:check contiguity for moving precinct p out of district d
     //returns true if contiguous
     private boolean checkContiguity(Precinct p, District d){
@@ -258,11 +318,39 @@ public class Algorithm {
         return (neededPrecincts.size() == 0);
         //return false;
     }
-    //TODO
+
     public double rateDistrict(District d) {
         double objectiveFunctionValue = 0;
-        objectiveFunctionValue += Double.parseDouble(preference.get(EFFICIENCY_GAP)) * rateEfficiencyGap(d);
-        return objectiveFunctionValue;
+        double total = 0;
+        double ef= Double.parseDouble(preference.get(EFFICIENCY_GAP.toString()));
+
+        objectiveFunctionValue +=  ef * rateEfficiencyGap(d);
+        total += ef;
+        System.out.println("ef value: " + ef);
+
+        double pope = Double.parseDouble(preference.get(POPULATION_EQUALITY.toString()));
+        objectiveFunctionValue += pope * ratePopulationEquality(d);
+        total += pope;
+        System.out.println("pope value: " + objectiveFunctionValue);
+
+        double comptivi = Double.parseDouble(preference.get(COMPETITIVENESS.toString()));
+        objectiveFunctionValue += comptivi * rateCOMPETITIVENESS(d);
+        total += comptivi;
+        System.out.println("comptivi value: " + objectiveFunctionValue);
+
+        double compact = Double.parseDouble(preference.get(COMPACTNESS.toString()));
+        objectiveFunctionValue += compact * rateCompactnessBorder(d);
+        total += compact;
+        System.out.println("compact value: " + objectiveFunctionValue);
+
+        double lw = Double.parseDouble(preference.get(LENGTH_WIDTH.toString()));
+        objectiveFunctionValue += lw * rateCompactnessLenWid(d);
+        total += lw;
+        System.out.println("length/width value: " + objectiveFunctionValue);
+
+        double objf = objectiveFunctionValue / total;
+        System.out.println("OJF value: " + objf);
+        return objf;
     }
 
     /*
@@ -399,9 +487,10 @@ public class Algorithm {
     }
 
     public double rateCompactnessLenWid(District d){
-        double length = d.getLength();
-        double width = d.getWidth();
-        return length / width;
+//        double length = d.getLength();
+//        double width = d.getWidth();
+//        return length / width;
+        return Math.random();
     }
 
     public double rateCompactnessBorder(District d){
@@ -418,7 +507,10 @@ public class Algorithm {
 
     public double ratePopulationEquality(District d) {
         int dp = d.getData().getDemographic().getPopulation(RaceType.ALL);
-        int tp = state.getData().getDemographic().getPopulation(RaceType.ALL) / state.getNumDistricts();
+        System.out.println("district pop: " + dp);
+        System.out.println("NumDistrict: "+ state.getDistricts().size());
+        System.out.println("total pop: " + state.getData().getDemographic().getPopulation(RaceType.ALL));
+        int tp = state.getData().getDemographic().getPopulation(RaceType.ALL) / state.getDistricts().size();
         double rate = 1.0 * Math.abs(dp - tp) / tp;
         if (rate < 0.5) {
             return 1;

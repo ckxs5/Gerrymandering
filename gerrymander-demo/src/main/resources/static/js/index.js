@@ -7,7 +7,8 @@ $("document").ready(function () {
     let info;
     let disInfo;
     let maxBounds;
-    let done = false;
+
+    console.log("user id: " + sessionStorage.getItem("user"));
 
     mymap = L.map('map', {layers: states}).setView(USCENTER, defaultZoomLevel);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -402,12 +403,10 @@ $("document").ready(function () {
         dehighlightFeature(e);
     }
 
-    // function disables() {
-    //     if (sessionStorage.getItem("user") == null) {
-    //         $("#controllpane").find("*").prop("disabled", true);
-    //     }
-    //
+    // if(sessionStorage.getItem("user") === null) {
+    //     console.log("user id: " + sessionStorage.getItem("user"));
+    //     $("#controllpane").find("*").prop("disabled", true);
+    //     $("#district-toggle").prop("disabled", false);
     // }
-    // disables();
 
 });
