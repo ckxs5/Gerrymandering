@@ -68,6 +68,8 @@ public class AlgorithmController {
         }
     }
 
+    
+
     private ResponseEntity<String> getDistrictPrecincts(State state) {
         Collection<District> districts = state.getDistricts();
         JSONArray obj = new JSONArray();
