@@ -15,6 +15,8 @@ import static com.example.gerrymanderdemo.model.Enum.PreferenceType.*;
 public class Algorithm {
     private Map<String, String> preference;
     private State state;
+    private Range<Double> range;
+    private RaceType communityOfInterest;
     private ClusterManager clusterManager;
     private float tempObjectiveFunctionValue;
     private District currentDistrict = null;
@@ -25,10 +27,12 @@ public class Algorithm {
 
 
     public Algorithm(Map<String, String> preference, State state) {
+        this.communityOfInterest = RaceType.valueOf(preference.get(PreferenceType.COMMUNITY_OF_INTEREST.toString()));
         this.preference = preference;
         this.state = state;
+        this.range = new Range<>(Double.parseDouble(preference.get("MAJMIN_LOW")) / 100 ,Double.parseDouble(preference.get("MAJMIN_UP")) / 100);
         this.clusterManager = new ClusterManager(
-                RaceType.valueOf(preference.get(PreferenceType.COMMUNITY_OF_INTEREST.toString())),
+                communityOfInterest,
                 Integer.parseInt(preference.get(PreferenceType.NUM_DISTRICTS.toString())),
                 new ArrayList<>(PrecinctManager.getPrecincts(StateName.MINNESOTA).values())
                 );
@@ -67,8 +71,8 @@ public class Algorithm {
         MajMinManager majMinManager = new MajMinManager(
                 getState(),
                 RaceType.valueOf(preference.get("COMMUNITY_OF_INTEREST")),
-                Double.parseDouble(preference.get("MAJMIN_LOW")) / 100,
-                Double.parseDouble(preference.get("MAJMIN_UP")) / 100,
+                 range.getUpperBound(),
+                 range.getLowerBound(),
                 true);
         District district = majMinManager.getBestCandidate();
         System.out.printf("District get from mm Manager is %s \n", district);
@@ -238,6 +242,30 @@ public class Algorithm {
 
     public void setRedistrictingPlan(HashMap<Long, Long> redistrictingPlan) {
         this.redistrictingPlan = redistrictingPlan;
+    }
+
+    public Range<Double> getRange() {
+        return range;
+    }
+
+    public void setRange(Range<Double> range) {
+        this.range = range;
+    }
+
+    public RaceType getCommunityOfInterest() {
+        return communityOfInterest;
+    }
+
+    public void setCommunityOfInterest(RaceType communityOfInterest) {
+        this.communityOfInterest = communityOfInterest;
+    }
+
+    public double getPopulationVariant() {
+        return populationVariant;
+    }
+
+    public void setPopulationVariant(double populationVariant) {
+        this.populationVariant = populationVariant;
     }
 
     //TODO:check contiguity for moving precinct p out of district d

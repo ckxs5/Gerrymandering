@@ -37,7 +37,7 @@ public class AlgorithmController {
     public ResponseEntity<String> run() {
         try {
             State state = algorithm.graphPartition();
-            return getDistrictPrecincts(state);
+            return getDistrictPrecincts(state.getDistricts());
         } catch (NullPointerException ex) {
             return ResponseEntity.status(400).body("Please first initialize algorithm");
         }
@@ -47,7 +47,7 @@ public class AlgorithmController {
     public ResponseEntity<String> runonce() {
         try {
             State state = algorithm.graphPartitionOnce();
-            return getDistrictPrecincts(state);
+            return getDistrictPrecincts(state.getDistricts());
         } catch (NotAnotherMoveException ex) {
             return ResponseEntity.status(400).body("Unable to have another move");
         } catch (NullPointerException ex) {
@@ -96,8 +96,12 @@ public class AlgorithmController {
         }
     }
 
-    private ResponseEntity<String> getDistrictPrecincts(State state) {
-        Collection<District> districts = state.getDistricts();
+    @GetMapping(value = "/getmmd", produces = "application/json")
+    public ResponseEntity<String> getMajMinDistrictBorders(){
+        return getDistrictPrecincts(algorithm.getState().getMMDistricts(algorithm.getCommunityOfInterest(), algorithm.getRange()));
+    }
+
+    private ResponseEntity<String> getDistrictPrecincts(Collection<District> districts) {
         try {
             JSONObject obj = new JSONObject();
             for (District district : districts) {
