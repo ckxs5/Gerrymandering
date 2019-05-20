@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 public class State {
@@ -21,13 +22,13 @@ public class State {
     @OneToOne
     private Data data;
     @OneToMany
-    private Collection<District>districts;
+    private List<District> districts;
     private StateName name;
 
     public State() {
     }
 
-    public State(StateName name, Collection<District> districts) {
+    public State(StateName name, List<District> districts) {
         this.name = name;
         this.districts = districts;
         updateData();
@@ -59,11 +60,11 @@ public class State {
         }
     }
 
-    public Collection<District> getDistricts() {
+    public List<District> getDistricts() {
         return districts;
     }
 
-    public void setDistricts(Collection<District> districts) {
+    public void setDistricts(List<District> districts) {
         this.districts = districts;
         updateData();
     }

@@ -97,8 +97,8 @@ public class ClusterManager {
         clusters.add(new Cluster(clusterPair.getElement1(), clusterPair.getElement2()));
     }
 
-    public Collection<District> toDistricts() {
-        Collection<District> districts = new ArrayList<>();
+    public List<District> toDistricts() {
+        List<District> districts = new ArrayList<>();
         for (Cluster c : clusters) {
             districts.add(c.toDistrict());
         }

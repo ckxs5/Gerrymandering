@@ -110,7 +110,12 @@ public class Algorithm {
 
     // TODO: returns a list of districts sorted from worst to best
     public List<District> getWorstDistricts() {
-        return null;
+        state.getDistricts().sort((o1, o2) -> {
+            double rate1 = rateDistrict(o1);
+            double rate2 = rateDistrict(o2);
+            return Double.compare(rate1, rate2);
+        });
+        return state.getDistricts();
     }
 
     public District getWorstDistrict() {
@@ -137,7 +142,7 @@ public class Algorithm {
             Set<Long> neighborIDs = p.getNeighborIDs();
             for (Long id: neighborIDs){
                 if(startDistrict.getPrecinct(id) == null){//take the precinct that is not in startDistrict
-                    District neighborDistrict = state.getDistrictById(redistrictingPlan.get(id));//TODO: getDistrict()
+                    District neighborDistrict = state.getDistrictById(redistrictingPlan.get(id));
                     Move move = testMove(neighborDistrict,startDistrict,p);
                     if (move != null){
                         System.out.println("Moving p to neighborDistrict(neighborID = "+id+")");
@@ -163,7 +168,7 @@ public class Algorithm {
         Move m = new Move(to, from, p);
         double initial_score = currentScores.get(to) + currentScores.get(from);
         m.execute();
-        double to_score = rateDistrict(to);//TODO:rateDistrict()
+        double to_score = rateDistrict(to);
         double from_score = rateDistrict(from);
         double final_score = (to_score + from_score);
         double change = final_score - initial_score;
@@ -283,20 +288,39 @@ public class Algorithm {
         return (neededPrecincts.size() == 0);
         //return false;
     }
-    //TODO
+
     public double rateDistrict(District d) {
         double objectiveFunctionValue = 0;
-        objectiveFunctionValue += Double.parseDouble(preference.get(EFFICIENCY_GAP.toString())) * rateEfficiencyGap(d);
-        System.out.println("ef value: " + objectiveFunctionValue);
-        objectiveFunctionValue += Double.parseDouble(preference.get(POPULATION_EQUALITY.toString())) * ratePopulationEquality(d);
+        double total = 0;
+        double ef= Double.parseDouble(preference.get(EFFICIENCY_GAP.toString()));
+
+        objectiveFunctionValue +=  ef * rateEfficiencyGap(d);
+        total += ef;
+        System.out.println("ef value: " + ef);
+
+        double pope = Double.parseDouble(preference.get(POPULATION_EQUALITY.toString()));
+        objectiveFunctionValue += pope * ratePopulationEquality(d);
+        total += pope;
         System.out.println("pope value: " + objectiveFunctionValue);
-        objectiveFunctionValue += Double.parseDouble(preference.get(COMPETITIVENESS.toString())) * rateCOMPETITIVENESS(d);
+
+        double comptivi = Double.parseDouble(preference.get(COMPETITIVENESS.toString()));
+        objectiveFunctionValue += comptivi * rateCOMPETITIVENESS(d);
+        total += comptivi;
         System.out.println("comptivi value: " + objectiveFunctionValue);
-        objectiveFunctionValue += Double.parseDouble(preference.get(COMPACTNESS.toString())) * rateCompactnessBorder(d);
+
+        double compact = Double.parseDouble(preference.get(COMPACTNESS.toString()));
+        objectiveFunctionValue += compact * rateCompactnessBorder(d);
+        total += compact;
         System.out.println("compact value: " + objectiveFunctionValue);
-        objectiveFunctionValue += Double.parseDouble(preference.get(LENGTH_WIDTH.toString())) * rateCompactnessLenWid(d);
+
+        double lw = Double.parseDouble(preference.get(LENGTH_WIDTH.toString()));
+        objectiveFunctionValue += lw * rateCompactnessLenWid(d);
+        total += lw;
         System.out.println("length/width value: " + objectiveFunctionValue);
-        return objectiveFunctionValue;
+
+        double objf = objectiveFunctionValue / total;
+        System.out.println("OJF value: " + objf);
+        return objf;
     }
 
     /*
