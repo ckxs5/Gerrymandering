@@ -256,6 +256,10 @@ $("document").ready(function () {
         event.preventDefault();
     });
 
+    $("#num-mmDistrict").on("submit", function(event) {
+        event.preventDefault();
+    })
+
     $("#STATE_NAME").on("change", function() {
         console.log("State name: " + $("#STATE_NAME").val());
         let state = $("#STATE_NAME").val();
