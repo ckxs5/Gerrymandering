@@ -39,7 +39,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 
 //        Construct District Manager
         DistrictManager.setInstance(districtService, dataService, demographicService, voteService, boundaryService);
-        test();
+//        test();
     }
 
     private HashMap<String, String> initPreferences() {

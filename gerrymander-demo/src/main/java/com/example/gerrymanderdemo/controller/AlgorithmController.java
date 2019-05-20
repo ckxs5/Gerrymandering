@@ -26,24 +26,27 @@ import java.util.Set;
 public class AlgorithmController {
     private Algorithm algorithm;
 
-    @PostMapping(value = "/init_algorithm")
+    @PostMapping(value = "/init_algorithm", consumes = "application/json")
     public ResponseEntity<String> init(@RequestBody HashMap<String, String> preferences) {
         System.out.println("preferences: " + preferences);
         algorithm = new Algorithm(preferences, new State());
+        System.out.println("algorithm: " + algorithm);
         return ResponseEntity.ok("Done");
     }
 
-    @PostMapping(value = "/graphpartition", consumes = "application/json")
+    @PostMapping(value = "/graphpartition", produces = "application/json")
     public ResponseEntity<String> run() {
         try {
+            System.out.println("another algorithm: "+ algorithm);
             State state = algorithm.graphPartition();
             return getDistrictPrecincts(state.getDistricts());
         } catch (NullPointerException ex) {
+            ex.printStackTrace();
             return ResponseEntity.status(400).body("Please first initialize algorithm");
         }
     }
 
-    @PostMapping(value = "/graphpartition/once", consumes = "application/json")
+    @PostMapping(value = "/graphpartition/once", produces = "application/json")
     public ResponseEntity<String> runonce() {
         try {
             State state = algorithm.graphPartitionOnce();

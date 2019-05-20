@@ -7,6 +7,7 @@ $("document").ready(function () {
     let info;
     let disInfo;
     let maxBounds;
+    let colorHashMap = {};
 
     console.log("user id: " + sessionStorage.getItem("user"));
 
@@ -159,8 +160,12 @@ $("document").ready(function () {
             console.log($(this).attr("id") + " : " + $(this).val());
             weights[$(this).attr("id")] = $(this).val();
         });
-        postData(weights, "/graphpartition", colorModifying);
+        postData(weights, "/init_algorithm", graphpartition);
+
     });
+    function graphpartition(data){
+        postData(null, "/graphpartition", colorModifying);
+    }
 
     $("#play-btn-not").on("click", function() {
         console.log("play not skip button");
@@ -170,14 +175,37 @@ $("document").ready(function () {
             weights[$(this).attr("id")] = $(this).val();
         });
 
-        // while(postData(weights, "/graphpartition/once", colorModifying));
-
         for(let i = 0; i< 100; i++){
             if(!postData(weights, "/graphpartition/once", colorModifying))
                 break;
             console.log("Color changing" + i);
         }
     });
+
+    $("#phase2Play").on("click", function(){
+        for(let i = 0; i< 30; i++) {
+            postData(null, "/simulating_annealing", saColorModifying);
+        }
+    })
+
+    function saColorModifying(data){
+        let color ;
+        let player;
+        console.log("sa coloring " + data);
+        Object.keys(data).forEach(function(key) {
+            if (key === "to"){
+                color =  colorHashMap[data[key]];
+            }else if (key === "p") {
+                player = precinctHashmap[data[key]];
+            }
+        });
+        player.setStyle({
+            fillColor: color,
+            weight: 1,
+            color: 'white',
+            fillOpacity: 0.7
+        });
+    }
 
     let precinctHashmap = {};
     precinctLayer.eachLayer(function(layer){
@@ -186,19 +214,24 @@ $("document").ready(function () {
     console.log(precinctHashmap);
 
     function colorModifying(data) {
-        console.log("Coloring: "+ data);
-        for (let i = 0; i < data.length; i++){
+        // data ={}
+        console.log("Coloring: " + data);
+
+        Object.keys(data).forEach(function(key){
+            console.log("This Coloring keys: " + key);
+            console.log("value: " + data[key]);
             let color = getColor();
-            for(let j = 0; j < data[i].length; j++){
-                precinctHashmap[data[i][j]].setStyle({
+            colorHashMap[key] = color;
+            for (let i = 0; i < data[key].length; i++) {
+                precinctHashmap[data[key][i]].setStyle({
                     fillColor: color,
                     weight: 1,
                     color: 'white',
                     fillOpacity: 0.7
                 });
-                onEachPrecinctFeature(precinctHashmap[data[i][j]].feature, precinctHashmap[data[i][j]]);
+                onEachPrecinctFeature(precinctHashmap[data[key][i]].feature, precinctHashmap[data[key][i]]);
             }
-        }
+        });
     }
 
     $("#sign-in").on("click", function () {
