@@ -1,6 +1,7 @@
 package com.example.gerrymanderdemo.Service;
 
 import com.example.gerrymanderdemo.Repository.StateRepository;
+import com.example.gerrymanderdemo.model.District;
 import com.example.gerrymanderdemo.model.Enum.StateName;
 import com.example.gerrymanderdemo.model.State;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,7 @@ public class StateService {
     }
     //TODO
     public State saveState(State state) {
-        //return stateRepository.save(state) != null;
-        return null;
+        return stateRepository.save(state);
     }
 //    private StateRepository stateRepository;
 //
@@ -31,4 +31,8 @@ public class StateService {
 //    }
     //TODO
     public State getOriginState(StateName name){ return null;}
+
+    public State findById(Long id) {
+        return stateRepository.findById(id).orElse(null);
+    }
 }
