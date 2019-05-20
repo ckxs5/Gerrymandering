@@ -51,6 +51,7 @@ public class District {
 
     public void setPrecincts(Set<Precinct> precincts) {
         this.precincts = precincts;
+        setBorderPrecincts();
     }
 
     public Long getId() {
@@ -101,14 +102,17 @@ public class District {
         return result;
     }
 
+    public void setBorderPrecincts() {
+        for(Precinct p: precincts){
+            for(Precinct np: p.getNeighbors()){
+                if(np.getDistrictId()!=id){
+                    borderPrecincts.add(p);
+                }
+            }
+        }
+    }
+
     public Set<Precinct> getBorderPrecincts(){
-//        for(Precinct p: precincts){
-//            for(Precinct np: p.getNeighbors()){
-//                if(np.getDistrictId()!=id){
-//                    borderPrecincts.add(p);
-//                }
-//            }
-//        }
         return borderPrecincts;
     }
 

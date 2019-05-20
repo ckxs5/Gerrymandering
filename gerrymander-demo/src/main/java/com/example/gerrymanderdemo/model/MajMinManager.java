@@ -1,55 +1,58 @@
-package com.example.gerrymanderdemo.model.User;
+package com.example.gerrymanderdemo.model;
 
-import com.example.gerrymanderdemo.model.District;
 import com.example.gerrymanderdemo.model.Enum.RaceType;
-import com.example.gerrymanderdemo.model.Move;
-import com.example.gerrymanderdemo.model.Precinct;
 
+
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class MajMinManager {
     private Collection<District> districts;
     private RaceType minorityRace;
-    private double downRatio;
-    private double upRatio;
-    private Collection<District> mmDistricts;
-    private Collection<District> candidateDistricts;
+    private Range<Double> range;
+    private List<District> mmDistricts;
+    private List<District> candidateDistricts;
     private District bestCandidate;
     private boolean addOrRemove;
 
-    public MajMinManager(Collection<District> districts,RaceType minorityRace,double downRatio,double upRatio,
-                         Collection<District> mmDistricts,Collection<District> candidateDistricts,District bestCandidate,boolean addOrRemove){
+    public MajMinManager(Collection<District> districts,RaceType minorityRace, double downRatio, double upRatio, boolean addOrRemove){
         this.districts = districts;
         this.minorityRace = minorityRace;
-        this.downRatio = downRatio;
-        this.upRatio = upRatio;
-        this.mmDistricts = mmDistricts;
-        this.candidateDistricts = candidateDistricts;
-        this.bestCandidate = bestCandidate;
+        range = new Range<>(downRatio, upRatio);
+        this.mmDistricts = districts.stream().filter(district ->
+                range.isIncluding(district.getData().getDemographic().getPercentByRace(minorityRace))
+                ).collect(Collectors.toList());
+        this.candidateDistricts = new ArrayList<>(districts);
+        candidateDistricts.removeAll(mmDistricts);
         this.addOrRemove = addOrRemove;
+        setBestCandidateDistrict();
     }
 
 
-    public void setBestCandidateDistrict(){
-        if(addOrRemove==true){//we want add a mmDistrict
+    private void setBestCandidateDistrict(){
+        if(addOrRemove == true){//we want add a mmDistrict
             double bestPercent = 0;
             for(District d: candidateDistricts) {
                 double dPercent = d.getData().getDemographic().getPercentByRace(minorityRace);
-                bestPercent = dPercent>bestPercent?dPercent:bestPercent;
-                bestCandidate = d;
+                if(dPercent > bestPercent){
+                    bestPercent = dPercent;
+                    bestCandidate = d;
+                }
             }
         }else{//we want remove a mmDistrict
             double bestPercent = 1;
             for(District d: mmDistricts) {
                 double dPercent = d.getData().getDemographic().getPercentByRace(minorityRace);
-                bestPercent = dPercent<bestPercent?dPercent:bestPercent;
-                bestCandidate = d;
+                if(dPercent < bestPercent){
+                    bestPercent = dPercent;
+                    bestCandidate = d;
+                }
             }
         }
     }
-
-
 
     //add mmDistrict-true, remove mmDistrict-false
     public Move getMoveFromDistrict(){
@@ -57,28 +60,29 @@ public class MajMinManager {
         Set<Precinct> borderPrecincts = bestCandidate.getBorderPrecincts();//TODO: getBorderPrecincts
         for (Precinct p:borderPrecincts){
             for (Precinct nn: p.getNeighbors()){
-                if(nn.getDistrictId()!=districtId){//take the precinct that is not in startDistrict
+                if(!nn.getDistrictId().equals(districtId)){//take the precinct that is not in startDistrict
                     District neighborDistrict = findNeighborDistrict(nn.getDistrictId());
                     Move move = null;
-                    move = addOrRemove?testAddMove(neighborDistrict, bestCandidate, p):testRemoveMove(neighborDistrict, bestCandidate, p);
+                    move = addOrRemove ? addMM_testMove(bestCandidate, neighborDistrict, p) : removeMM_testMove(bestCandidate, neighborDistrict, p);
                     if (move != null){
                         System.out.println("Moving p to neighborDistrict(neighborID = "+nn.getDistrictId()+")");
                         return move;
                     }
-                    move = addOrRemove?testAddMove(bestCandidate,neighborDistrict,nn):testRemoveMove(bestCandidate,neighborDistrict,nn);
+                    move = addOrRemove ? addMM_testMove(neighborDistrict, bestCandidate, nn) : removeMM_testMove(neighborDistrict, bestCandidate, nn);
                     if (move != null){
-                        System.out.println("Move n to Start district: "+bestCandidate.getId());
+                        System.out.println("Move n to Start district: " + bestCandidate.getId());
                         return move;
                     }
                 }
             }
         }
+        System.out.println("No Move Found");
         return null;
     }
 
     public District findNeighborDistrict(Long id){
         for(District d: districts){
-            if (d.getId() == id){
+            if (d.getId().equals(id)){
                 return d;
             }
         }
@@ -86,16 +90,12 @@ public class MajMinManager {
     }
 
     //we want add a mmDistrict
-    public Move testAddMove(District to, District from, Precinct p) {
+    public Move addMM_testMove(District to, District from, Precinct p) {
         Move m = new Move(to, from, p);
         double initialPercent = bestCandidate.getData().getDemographic().getPercentByRace(minorityRace);
         m.execute();
         double finalPercent = bestCandidate.getData().getDemographic().getPercentByRace(minorityRace);
-        if(finalPercent<=initialPercent){
-            m.undo();
-            return null;
-        }
-        if(finalPercent>upRatio || finalPercent<downRatio){
+        if(finalPercent <= initialPercent || finalPercent > range.getUpperBound()){
             m.undo();
             return null;
         }
@@ -103,16 +103,12 @@ public class MajMinManager {
     }
 
     //we want remove a mmDistrict
-    public Move testRemoveMove(District to, District from, Precinct p) {
+    public Move removeMM_testMove(District to, District from, Precinct p) {
         Move m = new Move(to, from, p);
         double initialPercent = bestCandidate.getData().getDemographic().getPercentByRace(minorityRace);
         m.execute();
         double finalPercent = bestCandidate.getData().getDemographic().getPercentByRace(minorityRace);
-        if(finalPercent>=initialPercent){
-            m.undo();
-            return null;
-        }
-        if(finalPercent>upRatio || finalPercent<downRatio){
+        if(finalPercent >= initialPercent){
             m.undo();
             return null;
         }
