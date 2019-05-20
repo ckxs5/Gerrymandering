@@ -284,9 +284,9 @@ $("document").ready(function () {
     }
 
     function loadPrecinctProperties(layer) {
-        // let precinctId = layer.feature["properties"]["PrecinctID"];
-        // let  url = "/precinct/"+precinctId+"/data";
-        // getData(url, loadPrecinctPropertiesHelper);
+        let precinctId = layer.feature["properties"]["PrecinctID"];
+        let  url = "/precinct/"+precinctId+"/data";
+        getData(url, loadPrecinctPropertiesHelper);
     }
 
     function loadPrecinctPropertiesHelper(loadedJson) {
