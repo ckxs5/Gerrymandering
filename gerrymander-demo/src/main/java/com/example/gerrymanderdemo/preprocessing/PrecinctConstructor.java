@@ -12,218 +12,157 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Arrays;
 
 public class PrecinctConstructor {
-    @JsonProperty("id")
-    private Long id;
-    @JsonProperty("Name")
-    private String name;
-    @JsonProperty("country")
+    @JsonProperty("county")
     private String county;
-    @JsonProperty("state")
-    private StateName state;
+
+    @JsonProperty("OtherParties")
+    private int otherParties;
+
     @JsonProperty("Democratic-Farmer-Labor")
     private int democratic;
-    @JsonProperty("american delta")
-    private int delta;
-    @JsonProperty("libertarian")
-    private int libertarian;
-    @JsonProperty("green")
-    private int green;
+
     @JsonProperty("republican")
     private int republican;
-    @JsonProperty("Independence")
-    private int independence;
-    @JsonProperty("Socialist Workers")
-    private int socialistWorkers;
-    @JsonProperty("Legal Marijuana Now")
-    private int lewgalMarijuanaNow;
-    @JsonProperty("White")
-    private int caucassion;
-    @JsonProperty("Black or African American")
-    private int africanAmerican;
-    @JsonProperty("American Indian and Alaska Native")
-    private int nativeAmerican;
-    @JsonProperty("Asian")
-    private int asian;
-    @JsonProperty("Hispanic or Latino (of any race)")
-    private int hispanic;
-    @JsonProperty("Total Population")
-    private int total;
+
+    @JsonProperty("Name")
+    private String name;
+
+    @JsonProperty("id")
+    private Long id;
+
     @JsonProperty("type")
     private String type;
+
+    @JsonProperty("TotalVote")
+    private int totalVote;
+
+    @JsonProperty("TotalRatio")
+    private int totalRatio;
+
+    @JsonProperty("Total")
+    private int total;
+
+    @JsonProperty("OnRace")
+    private int oneRace;
+
+    @JsonProperty("TwoOrMoreRaces")
+    private int twoOrMoreRaces;
+
+    @JsonProperty("White")
+    private int caucasian;
+
+    @JsonProperty("Black")
+    private int africanAmerican;
+
+    @JsonProperty("NativeAmerican")
+    private int nativeAmerican;
+
+    @JsonProperty("Asian")
+    private int asian;
+
+    @JsonProperty("PacificIslander")
+    private int pacificIslander;
+
+    @JsonProperty("Others")
+    private int others;
+
+    @JsonProperty("Hispanic")
+    private int hispanic;
+
     @JsonProperty("boundary")
     private double[][] boundary;
-    @JsonProperty("neighbors")
-    private Long[] neighbors;
 
     public PrecinctConstructor() {
     }
 
-    public Long getId() {
-        return id;
-    }
+    public String getCounty() { return county; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setCounty(String county) { this.county = county; }
 
-    public String getName() {
-        return name;
-    }
+    public int getOtherParties() { return otherParties; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setOtherParties(int otherParties) { this.otherParties = otherParties; }
 
-    public String getCounty() {
-        return county;
-    }
+    public int getDemocratic() { return democratic; }
 
-    public void setCounty(String county) {
-        this.county = county;
-    }
+    public void setDemocratic(int democratic) { this.democratic = democratic; }
 
-    public int getDemocratic() {
-        return democratic;
-    }
+    public int getRepublican() { return republican; }
 
-    public void setDemocratic(int democratic) {
-        this.democratic = democratic;
-    }
+    public void setRepublican(int republican) { this.republican = republican; }
 
-    public int getDelta() {
-        return delta;
-    }
+    public String getName() { return name; }
 
-    public void setDelta(int delta) {
-        this.delta = delta;
-    }
+    public void setName(String name) { this.name = name; }
 
-    public int getLibertarian() {
-        return libertarian;
-    }
+    public Long getId() { return id; }
 
-    public void setLibertarian(int libertarian) {
-        this.libertarian = libertarian;
-    }
+    public void setId(Long id) { this.id = id; }
 
-    public int getGreen() {
-        return green;
-    }
+    public String getType() { return type; }
 
-    public void setGreen(int green) {
-        this.green = green;
-    }
+    public void setType(String type) { this.type = type; }
 
-    public int getRepublican() {
-        return republican;
-    }
+    public int getTotalVote() { return totalVote; }
 
-    public void setRepublican(int republican) {
-        this.republican = republican;
-    }
+    public void setTotalVote(int totalVote) { this.totalVote = totalVote; }
 
-    public int getIndependence() {
-        return independence;
-    }
+    public int getTotalRatio() { return totalRatio; }
 
-    public void setIndependence(int independence) {
-        this.independence = independence;
-    }
+    public void setTotalRatio(int totalRatio) { this.totalRatio = totalRatio; }
 
-    public int getSocialistWorkers() {
-        return socialistWorkers;
-    }
+    public int getTotal() { return total; }
 
-    public void setSocialistWorkers(int socialistWorkers) {
-        this.socialistWorkers = socialistWorkers;
-    }
+    public void setTotal(int total) { this.total = total; }
 
-    public int getLewgalMarijuanaNow() {
-        return lewgalMarijuanaNow;
-    }
+    public int getOneRace() { return oneRace; }
 
-    public void setLewgalMarijuanaNow(int lewgalMarijuanaNow) {
-        this.lewgalMarijuanaNow = lewgalMarijuanaNow;
-    }
+    public void setOneRace(int oneRace) { this.oneRace = oneRace; }
 
-    public int getCaucassion() {
-        return caucassion;
-    }
+    public int getTwoOrMoreRaces() { return twoOrMoreRaces; }
 
-    public void setCaucassion(int caucassion) {
-        this.caucassion = caucassion;
-    }
+    public void setTwoOrMoreRaces(int twoOrMoreRaces) { this.twoOrMoreRaces = twoOrMoreRaces; }
 
-    public int getAfricanAmerican() {
-        return africanAmerican;
-    }
+    public int getCaucasian() { return caucasian; }
 
-    public void setAfricanAmerican(int africanAmerican) {
-        this.africanAmerican = africanAmerican;
-    }
+    public void setCaucasian(int caucasian) { this.caucasian = caucasian; }
 
-    public int getNativeAmerican() {
-        return nativeAmerican;
-    }
+    public int getAfricanAmerican() { return africanAmerican; }
 
-    public void setNativeAmerican(int nativeAmerican) {
-        this.nativeAmerican = nativeAmerican;
-    }
+    public void setAfricanAmerican(int africanAmerican) { this.africanAmerican = africanAmerican; }
 
-    public int getAsian() {
-        return asian;
-    }
+    public int getNativeAmerican() { return nativeAmerican; }
 
-    public void setAsian(int asian) {
-        this.asian = asian;
-    }
+    public void setNativeAmerican(int nativeAmerican) { this.nativeAmerican = nativeAmerican; }
 
-    public int getTotal() {
-        return total;
-    }
+    public int getAsian() { return asian; }
 
-    public void setTotal(int total) {
-        this.total = total;
-    }
+    public void setAsian(int asian) { this.asian = asian; }
 
-    public String getType() {
-        return type;
-    }
+    public int getPacificIslander() { return pacificIslander; }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+    public void setPacificIslander(int pacificIslander) { this.pacificIslander = pacificIslander; }
 
-    public double[][] getBoundary() {
-        return boundary;
-    }
+    public int getOthers() { return others; }
 
-    public void setBoundary(double[][] boundary) {
-        this.boundary = boundary;
-    }
+    public void setOthers(int others) { this.others = others; }
 
-    public Long[] getNeighbors() {
-        return neighbors;
-    }
+    public int getHispanic() { return hispanic; }
 
-    public void setNeighbors(Long[] neighbors) {
-        this.neighbors = neighbors;
-    }
+    public void setHispanic(int hispanic) { this.hispanic = hispanic; }
 
-    public int getHispanic() {
-        return hispanic;
-    }
+    public double[][] getBoundary() { return boundary; }
 
-    public void setHispanic(int hispanic) {
-        this.hispanic = hispanic;
-    }
+    public void setBoundary(double[][] boundary) { this.boundary = boundary; }
+
+
 
     public Precinct toIdPrecinct(){
         Precinct precinct = new Precinct();
         precinct.setId(id);
         precinct.setCounty(county);
         precinct.setName(name);
-        precinct.setState(state);
+        precinct.setState(StateName.MINNESOTA);
         return precinct;
     }
 
@@ -231,9 +170,7 @@ public class PrecinctConstructor {
         Vote vote = new Vote();
         vote.setVote(Party.DEMOCRATIC, democratic);
         vote.setVote(Party.REPUBLICAN, republican);
-        vote.setVote(Party.OTHERS,
-                this.delta + this.green + this.independence + this.lewgalMarijuanaNow +
-                        this.libertarian + this.socialistWorkers);
+        vote.setVote(Party.OTHERS, otherParties);
         return vote;
     }
 
@@ -246,11 +183,11 @@ public class PrecinctConstructor {
     public Demographic toDemographic(){
         Demographic demographic = new Demographic();
         demographic.setPopulation(RaceType.ALL, total);
-        demographic.setPopulation(RaceType.CAUCASIAN, caucassion);
+        demographic.setPopulation(RaceType.CAUCASIAN, caucasian);
         demographic.setPopulation(RaceType.AFRICAN_AMERICAN, africanAmerican);
         demographic.setPopulation(RaceType.ASIAN_PACIFIC_AMERICAN, asian);
         demographic.setPopulation(RaceType.NATIVE_AMERICAN, nativeAmerican);
-        demographic.setPopulation(RaceType.OTHERS, total - caucassion - africanAmerican - asian - nativeAmerican);
+        demographic.setPopulation(RaceType.OTHERS, total - caucasian - africanAmerican - asian - nativeAmerican);
         demographic.setPopulation(RaceType.HISPANIC_LATINO_AMERICAN, hispanic);
         return demographic;
     }
@@ -259,26 +196,26 @@ public class PrecinctConstructor {
     @Override
     public String toString() {
         return "PrecinctConstructor{" +
-                "id=" + id +
-                ",\n name='" + name + '\'' +
-                ",\n county='" + county + '\'' +
+                "county='" + county + '\'' +
+                ",\n otherParties=" + otherParties +
                 ",\n democratic=" + democratic +
-                ",\n delta=" + delta +
-                ",\n libertarian=" + libertarian +
-                ",\n green=" + green +
                 ",\n republican=" + republican +
-                ",\n independence=" + independence +
-                ",\n socialistWorkers=" + socialistWorkers +
-                ",\n lewgalMarijuanaNow=" + lewgalMarijuanaNow +
-                ",\n caucassion=" + caucassion +
+                ",\n name='" + name + '\'' +
+                ",\n id=" + id +
+                ",\n type='" + type + '\'' +
+                ",\n totalVote=" + totalVote +
+                ",\n totalRatio=" + totalRatio +
+                ",\n total=" + total +
+                ",\n oneRace=" + oneRace +
+                ",\n twoOrMoreRaces=" + twoOrMoreRaces +
+                ",\n caucasian=" + caucasian +
                 ",\n africanAmerican=" + africanAmerican +
                 ",\n nativeAmerican=" + nativeAmerican +
                 ",\n asian=" + asian +
+                ",\n pacificIslander=" + pacificIslander +
+                ",\n others=" + others +
                 ",\n hispanic=" + hispanic +
-                ",\n total=" + total +
-                ",\n type='" + type + '\'' +
                 ",\n boundary=" + Arrays.toString(boundary) +
-                ",\n neighbors=" + Arrays.toString(neighbors) +
-                "\n}";
+                '}';
     }
 }
