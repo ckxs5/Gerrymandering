@@ -146,6 +146,12 @@ body, html{
     font-size: 16px;
     opacity: 0.9 !important;
 }
+.form-control{
+    color:whitesmoke!important;
+    background-color: transparent!important;
+    border: transparent!important;
+}
+
 .form-signin .form-control:focus {
     z-index: 2;
 }

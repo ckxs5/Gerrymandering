@@ -24,17 +24,16 @@
 <nav id="fixed-top">
     <div class="row">
         <div class="col-5">
-            <img class="rounded float-left" src="Images/Oriole.jpg" style="height: 41px">
+            <img class="rounded float-left" src="Images/bigoriole.png" style="height: 41px">
         </div>
         <div class="col-2">
             <p class="h3">Gerrymandering</p>
         </div>
-
         <div class="col-md col-6" id="signInForm">
             <form class="form-inline" id="toHome" method="post">
                 <div class="form-group mb-2">
                     <label for="staticEmail2" class="sr-only">Email</label>
-                    <input type="email"  class="form-control form-control-sm" name="email" id="staticEmail2" placeholder="Email" required autofocus>
+                    <input type="email"  class="form-control form-control-sm" name="email" id="staticEmail2" placeholder="Username" required>
                 </div>
                 <div class="form-group mx-sm-3 mb-2">
                     <label for="inputPassword2" class="sr-only">Password</label>
@@ -43,17 +42,19 @@
                 <button type="submit" class="btn-sm btn-primary mb-2 mr-2" id="sign-in">Sign In</button>
                 <button type="button" class="btn-sm btn-primary mb-2" id="signupbtn">Sign Up</button>
             </form>
+            <div id="logOutButton" style="display: none">
+                <input class="btn-sm btn-primary" onclick=postData(null,"/logout",userlogout) type="button" value="Log Out" >
+            </div>
         </div>
-
     </div>
 </nav>
 
 <div class="container-fluid">
     <script type="text/javascript" th:src="@{/geoJson/us-states.js}"></script>
     <script type="text/javascript" th:src="@{/geoJson/FL_Dist.js}"></script>
-<!--    <script type="text/javascript" th:src="@{/geoJson/FL_Precincts.js}"></script>-->
+    <script type="text/javascript" th:src="@{/geoJson/FL_Precincts.js}"></script>
     <script type="text/javascript" th:src="@{/geoJson/MD_CongressionalDistrict.js}"></script>
-<!--    <script type="text/javascript" th:src="@{/geoJson/MD_Precincts.js}"></script>-->
+    <script type="text/javascript" th:src="@{/geoJson/MD_Precincts.js}"></script>
     <script type="text/javascript" th:src="@{/geoJson/MN_CongressionalDistrict.js}"></script>
 <!--    <script type="text/javascript" th:src="@{/geoJson/MN_Precincts.js}"></script>-->
     <script type="text/javascript" th:src="@{/geoJson/MN_Precincts_F.js}"></script>
@@ -126,7 +127,7 @@
 <!--                        </div>-->
                         <div th:case="NUM_MMDISTRICTS" class="input-group input-group-sm" id="num-mmDistrict">
                             <form id="mmdistrictform" class="input-group input-group-sm">
-                                <input type="number" class="form-control" th:id="${preference}" th:name="${preference}" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Number of Majority Minority District" autofocus min="1" max="10">
+                                <input type="number" class="form-control" th:id="${preference}" th:name="${preference}" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Number of Majority Minority District" autofocus min="0" max="10">
                             </form>
                         </div>
                         <div th:case="*">
@@ -145,17 +146,12 @@
     <p class="h3">Welcome to Orioles!</p>
     <p class="message"></p>
     <form class="form-signin" id="signup" method="post">
-        <input type="email" name="email" class="form-control" placeholder="Email" required autofocus>
+        <input type="text" name="email" class="form-control" placeholder="Username" required>
         <input type="password" name="password" class="form-control" placeholder="password" required>
-        <button class="btn-lg btn-primary" type="submit" id="signup-submit-button" onclick=postForm(event,"#signup","/signup",usersignup)>Sign up</button>
+        <button class="btn-lg btn-primary" type="submit" id="signup-button">Sign up</button>
         <button class="btn-lg btn-primary" type="button" id="cancel-button"> Cancel </button>
     </form>
 </div>
-
-<div id="logOutButton" style="display: none">
-    <input class="btn-sm btn-primary" onclick=postData(null,"/logout",userlogout) type="button" value="Log Out" >
-</div>
-
 
     <script crossorigin="anonymous"
             integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"

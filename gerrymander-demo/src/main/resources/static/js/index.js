@@ -9,8 +9,6 @@ $("document").ready(function () {
     let maxBounds;
     let colorHashMap = {};
 
-    console.log("user id: " + sessionStorage.getItem("user"));
-
     mymap = L.map('map', {layers: states}).setView(USCENTER, defaultZoomLevel);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
         maxZoom: MAXZOOM,
@@ -36,20 +34,20 @@ $("document").ready(function () {
         onEachFeature: onEachDistrictFeature
     }).addTo(districts);
 
-    // precinctLayer = L.geoJson(FL_P, {
-    //     style: style,
-    //     onEachFeature: onEachPrecinctFeature
-    // }).addTo(precincts);
+    precinctLayer = L.geoJson(FL_P, {
+        style: style,
+        onEachFeature: onEachPrecinctFeature
+    }).addTo(precincts);
 
     districtLayer = L.geoJson(MD_Dist, {
         style: style,
         onEachFeature: onEachDistrictFeature
     }).addTo(districts);
 
-    // precinctLayer = L.geoJson(MD_O, {
-    //     style: style,
-    //     onEachFeature: onEachPrecinctFeature
-    // }).addTo(precincts);
+    precinctLayer = L.geoJson(MD_P, {
+        style: style,
+        onEachFeature: onEachPrecinctFeature
+    }).addTo(precincts);
 
     districtLayer = L.geoJson(MN_Dist, {
         style: style,
@@ -67,7 +65,7 @@ $("document").ready(function () {
             mymap.removeLayer(states);
             mymap.addLayer(districts);
         }
-        if (mymap.getZoom() > precinctZoomLevel || mymap.hasLayer(districtLayer)){
+        if (mymap.getZoom() > precinctZoomLevel && mymap.hasLayer(districtLayer)){
             mymap.removeLayer(districts);
             mymap.addLayer(precincts);
         }
@@ -235,18 +233,46 @@ $("document").ready(function () {
     }
 
     $("#sign-in").on("click", function () {
+        console.log("clicked");
         let usernameAndPassword = {};
         let count = 0;
         $("#toHome input").each(function () {
+            console.log($(this).attr("name") + ":" + $(this).val());
             usernameAndPassword[$(this).attr("name")] = $(this).val();
         });
-        $.each(usernameAndPassword, function(value){
+        $.each(usernameAndPassword, function(key, value){
             if(value !== "")
                 count += 1;
+            console.log("value: " + value);
         });
-        if (count === 2)
+        if (count === 2) {
+            console.log("count is 2");
             postForm(event, "#toHome", "/login", userlogin);
+        }
     });
+
+    $("#signup-button").on("click", function() {
+       console.log("Start registing");
+       let username_password = {};
+       let count = 0;
+       $("#signup input").each(function (){
+           console.log($(this).attr("name") + ":" + $(this).val());
+           username_password[$(this).attr("name")] = $(this).val();
+       });
+       $.each(username_password, function(key, value){
+            if(value !== "")
+                count += 1;
+            console.log("value: " + value);
+       });
+       if (count === 2) {
+            console.log("count is 2");
+            postForm(event, "#signup", "/signup", usersignup);
+       }
+    });
+
+
+
+
 
     $("#signupbtn").on("click", function () {
         $(".lightbox").delay(500).fadeIn(500);
