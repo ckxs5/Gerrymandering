@@ -173,12 +173,12 @@ $("document").ready(function () {
             weights[$(this).attr("id")] = $(this).val();
         });
 
-        for(let i = 0; i< 100; i++){
-            if(!postData(weights, "/graphpartition/once", colorModifying))
-                break;
-            console.log("Color changing" + i);
-        }
+        postData(weights, "/init_algorithm", graphpartitionOnce());
     });
+
+    function graphpartitionOnce(){
+        postData(null, "/graphpartition/once", colorModifying);
+    }
 
     $("#phase2Play").on("click", function(){
         for(let i = 0; i< 30; i++) {
