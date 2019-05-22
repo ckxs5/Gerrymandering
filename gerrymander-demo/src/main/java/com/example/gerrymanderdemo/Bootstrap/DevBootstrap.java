@@ -39,10 +39,10 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         HashMap<Long, Precinct> precincts = PrecinctManager.getPrecincts(StateName.MINNESOTA);
         System.out.printf("Precinct %d loaded\n", precincts.size());
         System.out.println("precincts values"+precincts.values().toArray()[0].toString());
-
-//        Construct District Manager
+//
+////        Construct District Manager
         DistrictManager.setInstance(districtService, dataService, demographicService, voteService, boundaryService);
-
+//
         StateManager.setInstance(stateService, dataService, demographicService, voteService, boundaryService);
 
     }
