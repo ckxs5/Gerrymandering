@@ -48,7 +48,6 @@ public class Algorithm {
         if (!clusterManager.runOnce()) {
             throw new NotAnotherMoveException();
         }
-        state.setDistricts(clusterManager.toDistricts());
         return state;
     }
 

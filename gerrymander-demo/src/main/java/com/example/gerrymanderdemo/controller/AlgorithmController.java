@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import sun.java2d.loops.CustomComponent;
 
 import java.util.*;
 
@@ -43,14 +44,17 @@ public class AlgorithmController {
         }
     }
 
+
     @PostMapping(value = "/graphpartition/once", produces = "application/json")
     public ResponseEntity<String> runonce() {
         try {
-            State state = algorithm.graphPartitionOnce();
-            return getDistrictPrecincts(state.getDistricts());
+            algorithm.graphPartitionOnce();
+            return getClusterPrecincts(algorithm.getClusterManager().getClusters());
         } catch (NotAnotherMoveException ex) {
+            ex.printStackTrace();
             return ResponseEntity.status(400).body("Unable to have another move");
         } catch (NullPointerException ex) {
+            ex.printStackTrace();
             return ResponseEntity.status(400).body("Please first initialize algorithm");
         }
     }
@@ -102,6 +106,25 @@ public class AlgorithmController {
         return getDistrictPrecincts(algorithm.getState().getMMDistricts(algorithm.getCommunityOfInterest(), algorithm.getRange()));
     }
 
+    private ResponseEntity<String> getClusterPrecincts(List<Cluster> clusters) {
+        try {
+            JSONObject object = new JSONObject();
+            for (int i = 0; i < clusters.size(); i++) {
+                Set<Precinct> precincts = clusters.get(i).getPrecincts();
+                JSONArray ps = new JSONArray();
+                for (Precinct p : precincts) {
+                    ps.put(p.getId());
+                }
+                object.put("" + i, ps);
+            }
+            System.out.printf("Return %d of Clusters with its precinctIds. \n", clusters.size());
+            return ResponseEntity.ok(object.toString());
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+            return ResponseEntity.status(400).body("Cannot convert to JSON when getting cluster precincts");
+        }
+    }
+
     private ResponseEntity<String> getDistrictPrecincts(Collection<District> districts) {
         try {
             JSONObject obj = new JSONObject();
@@ -139,6 +162,12 @@ public class AlgorithmController {
             arr.put(object.toJSONObject());
         }
         return ResponseEntity.ok(arr.toString());
+    }
+
+    @PostMapping(value = "/save")
+    public ResponseEntity<String> save(){
+        StateManager.getInstance().save(algorithm.getState());
+        return ResponseEntity.ok("Saved");
     }
 
 
