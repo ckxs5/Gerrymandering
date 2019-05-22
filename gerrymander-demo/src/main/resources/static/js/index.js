@@ -179,17 +179,13 @@ $("document").ready(function () {
             console.log($(this).attr("id") + " : " + $(this).val());
             weights[$(this).attr("id")] = $(this).val();
         });
-
-<<<<<<< Updated upstream
         if(initCount === 0){
             postData(weights, "/init_algorithm", graphpartitionOnce);
             initCount += 1;
         }else {
             graphpartitionOnce(null);
         }
-=======
-        postData(weights, "/init_algorithm", graphpartitionOnce);
->>>>>>> Stashed changes
+
     });
 
     function graphpartitionOnce(data){
