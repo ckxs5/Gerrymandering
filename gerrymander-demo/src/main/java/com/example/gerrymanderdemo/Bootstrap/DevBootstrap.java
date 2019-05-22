@@ -2,6 +2,7 @@ package com.example.gerrymanderdemo.Bootstrap;
 
 import com.example.gerrymanderdemo.Service.*;
 import com.example.gerrymanderdemo.model.*;
+import com.example.gerrymanderdemo.model.Enum.RaceType;
 import com.example.gerrymanderdemo.model.Enum.StateName;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 @Component
 public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> {
@@ -39,18 +41,18 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         HashMap<Long, Precinct> precincts = PrecinctManager.getPrecincts(StateName.MINNESOTA);
         System.out.printf("Precinct %d loaded\n", precincts.size());
         System.out.println("precincts values"+precincts.values().toArray()[0].toString());
-//
-////        Construct District Manager
+
+//        Construct District Manager
         DistrictManager.setInstance(districtService, dataService, demographicService, voteService, boundaryService);
-//
         StateManager.setInstance(stateService, dataService, demographicService, voteService, boundaryService);
 
+        test();
     }
 
     private HashMap<String, String> initPreferences() {
         HashMap<String, String> preferences = new HashMap<>();
         preferences.put("COMMUNITY_OF_INTEREST", "AFRICAN_AMERICAN");
-        preferences.put("NUM_DISTRICTS", "8");
+        preferences.put("NUM_DISTRICTS", "6");
         preferences.put("MAJMIN_UP", "50");
         preferences.put("MAJMIN_LOW", "5");
         preferences.put("POPULATION_EQUALITY", "50");
@@ -58,42 +60,34 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         preferences.put("EFFICIENCY_GAP", "50");
         preferences.put("COMPACTNESS", "50");
         preferences.put("LENGTH_WIDTH", "50");
-
         return preferences;
     }
 
     private void test(){
         HashMap<String, String> preferences = initPreferences();
-        for(int i=0;i<10;i++) {
-            Algorithm algorithm = new Algorithm(preferences, new State());
-            algorithm.graphPartition();
-            State s = algorithm.getState();
-            StateManager.getInstance().save(s);
-            //StateManager.getInstance().findById()
+        Algorithm algorithm = new Algorithm(preferences, new State());
+        algorithm.graphPartition();
+        State state = algorithm.getState();
+        List<District> districts = state.getDistricts();
+        for(int i = 0; i < districts.size(); i++) {
+            System.out.printf("District %d population : %d \n", i, districts.get(i).getData().getDemographic().getPopulation(RaceType.ALL));
         }
-//        algorithm.runTest();
-//        System.out.println("===================Starting make move===================");
-//        algorithm.setRedistrictingPlan();
-//        algorithm.makeMove();
     }
 
-    private Collection<SummaryObject> constructBatchSummaryObjects(){
-
-        State s1 = StateManager.getInstance().findById(new Long(4423));
-        State s2 = StateManager.getInstance().findById(new Long(4442));
-        State s3 = StateManager.getInstance().findById(new Long(4453));
-        State s4 = StateManager.getInstance().findById(new Long(4462));
-        State s5 = StateManager.getInstance().findById(new Long(4472));
-        State s6 = StateManager.getInstance().findById(new Long(4482));
-        State s7 = StateManager.getInstance().findById(new Long(4492));
-        State s8 = StateManager.getInstance().findById(new Long(4502));
-        State s9 = StateManager.getInstance().findById(new Long(4512));
-        State s10 = StateManager.getInstance().findById(new Long(4522));
-
-
-
-        return null;
-    }
+//    private Collection<SummaryObject> constructBatchSummaryObjects(){
+//        State s1 = StateManager.getInstance().findById(new Long(4423));
+//        State s2 = StateManager.getInstance().findById(new Long(4442));
+//        State s3 = StateManager.getInstance().findById(new Long(4453));
+//        State s4 = StateManager.getInstance().findById(new Long(4462));
+//        State s5 = StateManager.getInstance().findById(new Long(4472));
+//        State s6 = StateManager.getInstance().findById(new Long(4482));
+//        State s7 = StateManager.getInstance().findById(new Long(4492));
+//        State s8 = StateManager.getInstance().findById(new Long(4502));
+//        State s9 = StateManager.getInstance().findById(new Long(4512));
+//        State s10 = StateManager.getInstance().findById(new Long(4522));
+//
+//        return null;
+//    }
 
 //    private void initData(){
 //
