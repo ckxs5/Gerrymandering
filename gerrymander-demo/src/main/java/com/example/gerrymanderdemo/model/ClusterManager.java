@@ -73,7 +73,7 @@ public class ClusterManager {
         List<Cluster> candidates = filterClusters();
         int count = 0;
         while (candidates.size() > 1 && count < candidates.size() - 1) {
-            Cluster target = candidates.get(count);
+            Cluster target = candidates.get((int)(Math.random() * candidates.size()));
             Edge edge = target.getBestEdge();
             Cluster other = edge.getTheOther(target);
 
