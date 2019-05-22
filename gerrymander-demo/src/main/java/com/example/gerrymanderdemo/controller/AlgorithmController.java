@@ -49,6 +49,7 @@ public class AlgorithmController {
     @PostMapping(value = "/graphpartition/once", produces = "application/json")
     public ResponseEntity<String> runonce() {
         try {
+            System.out.printf("Algorithm is AlgController is : %s\n", algorithm);
             algorithm.graphPartitionOnce();
             return getClusterPrecincts(algorithm.getClusterManager().getClusters());
         } catch (NotAnotherMoveException ex) {

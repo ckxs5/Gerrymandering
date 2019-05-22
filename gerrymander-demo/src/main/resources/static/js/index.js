@@ -179,13 +179,13 @@ $("document").ready(function () {
             console.log($(this).attr("id") + " : " + $(this).val());
             weights[$(this).attr("id")] = $(this).val();
         });
-
         if(initCount === 0){
             postData(weights, "/init_algorithm", graphpartitionOnce);
             initCount += 1;
         }else {
             graphpartitionOnce(null);
         }
+
     });
 
     function graphpartitionOnce(data){
