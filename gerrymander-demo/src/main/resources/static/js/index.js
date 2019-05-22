@@ -226,9 +226,13 @@ $("document").ready(function () {
     function colorModifying(data) {
         // data ={}
         console.log("Coloring: " + data);
-
         Object.keys(data).forEach(function(key){
-            console.log("This Coloring keys: " + key);
+            // console.log("This Coloring keys: " + key);
+            if(key === "message") {
+                console.log("datakey========" + data[key]);
+                $("#consoleMessage").text(data[key]);
+                return;
+            }
             console.log("value: " + data[key]);
             let color = getColor();
             colorHashMap[key] = color;

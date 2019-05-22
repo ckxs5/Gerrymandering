@@ -120,6 +120,7 @@ public class AlgorithmController {
                     ps.put(p.getId());
                 }
                 object.put("" + i, ps);
+                object.put("message", String.format("%d Clusters", clusters.size()));
             }
             System.out.printf("Return %d of Clusters with its precinctIds. \n", clusters.size());
             return ResponseEntity.ok(object.toString());
