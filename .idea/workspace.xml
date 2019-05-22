@@ -14,7 +14,7 @@
     <option name="delegatedBuild" value="true" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -39,7 +39,6 @@
     </navigator>
     <panes>
       <pane id="ProjectPane" />
-      <pane id="PackagesPane" />
       <pane id="Scope">
         <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
           <expand>
@@ -52,16 +51,11 @@
               <item name="CSE" type="2674bda8:ScopeViewTreeModel$GroupNode" />
               <item name="gerrymander-demo" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
-            <path>
-              <item name="CSE308" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="CSE" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="gerrymander-demo" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name=".mvn" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -113,11 +107,12 @@
       <workItem from="1556737784692" duration="70000" />
       <workItem from="1557955943759" duration="837000" />
       <workItem from="1558311094029" duration="49000" />
+      <workItem from="1558496368445" duration="17000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4935000" />
+    <option name="totallyTimeSpent" value="4952000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -131,7 +126,7 @@
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17516778" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17785235" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
