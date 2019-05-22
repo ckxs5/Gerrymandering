@@ -12,7 +12,7 @@ import org.locationtech.jts.geom.Polygon;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,8 +24,6 @@ public class District {
     private Data data;
     @Transient
     private Set<Precinct> precincts;
-    @Transient
-    private Set<Precinct> borderPrecincts;
 
     private Coordinate[] borderCoordinates;
 
@@ -62,13 +60,14 @@ public class District {
         this.id = id;
     }
 
-    public Set<Precinct> getNeighbors(){
+    public Set<Precinct> getNeighborPrecincts(){
         Set<Precinct> neighbours = new HashSet<>();
         for (Precinct p: precincts) {
             neighbours.addAll(p.getNeighbors());
         }
         return neighbours;
     }
+
 
     public Precinct findBestCandidate(RaceType type, Order order){
         Precinct minCandidate = (Precinct) precincts.toArray()[0];
@@ -102,38 +101,25 @@ public class District {
         return result;
     }
 
-    public void setBorderPrecincts() {
-        this.borderPrecincts = new HashSet<>();
-        for(Precinct p: precincts){
-            for(Precinct np: p.getNeighbors()){
-                if(np.getDistrictId().equals(id)){
-                    borderPrecincts.add(p);
-                }
+    public List<Precinct> getBorderPrecincts(){
+        ArrayList<Precinct> ps = new ArrayList<>();
+        for (Precinct p : precincts) {
+            if(p.isBorder()) {
+                ps.add(p);
             }
         }
-    }
-
-    public Set<Precinct> getBorderPrecincts(){
-        return borderPrecincts;
+        return ps;
     }
 
     public void addPrecinct(Precinct precinct){
         if (precincts.add(precinct)) {
             this.data.add(precinct.getData());
         }
-        for (Precinct neighbor: precinct.getNeighbors()){
-            if(neighbor.getDistrictId() == id){
-                if(withinDistrict(neighbor)){
-                        borderPrecincts.remove(neighbor);
-                }
-            }
-        }
-        borderPrecincts.add(precinct);
     }
 
     public boolean withinDistrict(Precinct p){
         for(Precinct n: p.getNeighbors()){
-            if(n.getDistrictId() != id){
+            if(n.getDistrict().getId().equals(id)){
                return false;
             }
         }
@@ -144,14 +130,6 @@ public class District {
     public Precinct removePrecinct(Precinct precinct){
         if (precincts.remove(precinct)) {
             this.data.remove(precinct.getData());
-            for (Precinct neighbor: precinct.getNeighbors()){
-                if(neighbor.getDistrictId() == id){
-                    if(!withinDistrict(neighbor)){
-                            borderPrecincts.add(neighbor);
-                    }
-                }
-            }
-            borderPrecincts.remove(precinct);
             return precinct;
         }
         return null;
@@ -168,8 +146,41 @@ public class District {
         }
     }
 
-    public boolean isMajorityMinority(RaceType communityOfInterest, Range range){
+    public boolean isMajorityMinority(RaceType communityOfInterest, Range<Double> range){
         return range.isIncluding(this.getData().getDemographic().getPercentByRace(communityOfInterest));
+    }
+
+    public Set<District> getNeigbours() {
+        Set<District> n = new HashSet<>();
+        for(Precinct p : precincts) {
+            n.addAll(p.getNeigbourDistricts());
+        }
+        return n;
+    }
+
+    public District getLowestPopNeigbour() {
+        Set<District> ns = getNeigbours();
+        District target = (District) ns.toArray()[0];
+        for (District d : ns) {
+            if(d.getData().getDemographic().getPopulation(RaceType.ALL) < target.getData().getDemographic().getPopulation(RaceType.ALL)) {
+                target = d;
+            }
+        }
+        return target;
+    }
+
+    public boolean passPrecinct(District to) {
+        for (Precinct p : getBorderPrecincts()) {
+            for (Precinct n : p.getNeighbors()) {
+                if (n.getDistrict() == to) {
+                    to.addPrecinct(p);
+                    p.setDistrict(to, true);
+                    this.removePrecinct(p);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public double getGerrymanderingScore(){
@@ -182,12 +193,12 @@ public class District {
 
     //TODO: we should change precincts type to a HashMap<precinctId, precinct>
     public Precinct getPrecinct(Long id) {
-            for (Precinct p : precincts) {
-                if(p.getId().equals(id)) {
-                    return p;
-                }
+        for (Precinct p : precincts) {
+            if(p.getId().equals(id)) {
+                return p;
             }
-            return null;
+        }
+        return null;
     }
 
     public double getLength(){
@@ -228,27 +239,27 @@ public class District {
 
 
 
-    public void setBorderCoordinate(){
-        GeometryFactory gf = new GeometryFactory();
-        int borderPrecinctCount = borderPrecincts.size();
-        Coordinate[] borderCo = new Coordinate[borderPrecinctCount];
-        int index = 0;
-        for (Precinct p: borderPrecincts){
-            double[][] pBoundary = p.getBoundary();
-            Coordinate[] coor = new Coordinate[pBoundary.length];
-            for(int i=0; i<coor.length; i++) {
-                Coordinate co = new Coordinate(pBoundary[i][0], pBoundary[i][1]);
-                coor[i] = co;
-            }
-            Polygon prec = gf.createPolygon(coor);
-            Point pCenter = prec.getCentroid();
-            Coordinate centerCo = pCenter.getCoordinate();
-            borderCo[index] = centerCo;
-            index++;
-        }
-
-        borderCoordinates = borderCo;
-    }
+//    public void setBorderCoordinate(){
+//        GeometryFactory gf = new GeometryFactory();
+//        int borderPrecinctCount = borderPrecincts.size();
+//        Coordinate[] borderCo = new Coordinate[borderPrecinctCount];
+//        int index = 0;
+//        for (Precinct p: borderPrecincts){
+//            double[][] pBoundary = p.getBoundary();
+//            Coordinate[] coor = new Coordinate[pBoundary.length];
+//            for(int i=0; i<coor.length; i++) {
+//                Coordinate co = new Coordinate(pBoundary[i][0], pBoundary[i][1]);
+//                coor[i] = co;
+//            }
+//            Polygon prec = gf.createPolygon(coor);
+//            Point pCenter = prec.getCentroid();
+//            Coordinate centerCo = pCenter.getCoordinate();
+//            borderCo[index] = centerCo;
+//            index++;
+//        }
+//
+//        borderCoordinates = borderCo;
+//    }
 
 
     public double getPerimeter(){

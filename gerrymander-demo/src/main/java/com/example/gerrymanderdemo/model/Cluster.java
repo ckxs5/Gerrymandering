@@ -64,18 +64,18 @@ public class Cluster implements Comparable{
     }
 
     public Edge getBestEdge(){
-        sortEdgesByJoinability();
         try {
-            return this.edges.get(0);
+            Edge result = edges.get(0);
+            for (Edge e : edges) {
+                if (e.getJoinability() > result.getJoinability()) {
+                    result = e;
+                }
+            }
+            return result;
         } catch (IndexOutOfBoundsException ex) {
             System.out.printf("There is no edge for cluster with children %d\n", this.getChildren().size());
             return null;
         }
-    }
-
-    // Class Diagram:
-    public  void sortEdgesByJoinability(){
-        Collections.sort(this.edges);
     }
 
     // add ClassDiagram
@@ -126,7 +126,7 @@ public class Cluster implements Comparable{
         d.setPrecincts(this.getPrecincts());
         d = DistrictManager.getInstance().save(d);
         for (Precinct p: d.getPrecincts()){
-            p.setDistrictId(d.getId());
+            p.setDistrict(d, false);
         }
         return d;
     }

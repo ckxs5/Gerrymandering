@@ -11,10 +11,12 @@ public class Edge extends Pair<Cluster> implements Comparable{
     //TODO: check if joinability's datatype is ok
     private double joinability;
     private RaceType communityOfInterest;
+    private int targetPopulation;
 
-    public Edge(Cluster ele1, Cluster ele2, RaceType communityOfInterest) {
+    public Edge(Cluster ele1, Cluster ele2, RaceType communityOfInterest, int targetPopulation) {
         super(ele1, ele2);
         this.communityOfInterest = communityOfInterest;
+        this.targetPopulation = targetPopulation;
         this.setJoinability();
     }
 
@@ -53,7 +55,7 @@ public class Edge extends Pair<Cluster> implements Comparable{
     }
 
     public void setJoinability() {
-        this.joinability = JoinabilityMeasureType.values().length / getTotalJoinability();
+        this.joinability = getTotalJoinability() / JoinabilityMeasureType.values().length;
     }
 
     private double getTotalJoinability() {
@@ -61,13 +63,16 @@ public class Edge extends Pair<Cluster> implements Comparable{
         for (JoinabilityMeasureType measureType: JoinabilityMeasureType.values()) {
             int rate = Properties.getJoinabilityMeasureRatio(measureType);
             double val = 0;
+            //TODO: Set weights on properties file instead of hard code
             switch (measureType) {
                 case RACE_JOINABILITY:
-                    val = getRaceJoinability() ;
+                    val = getRaceJoinability()  * .75;
                     break;
                 case COUNTY_JOINABILITY:
-                    val = getCountyJoinability();
+                    val = getCountyJoinability() * .25;
                     break;
+                case POPULATION_DIFFERENCE:
+                    val = getPopulationDifference() * 2.0;
                 default:
                     break;
             }
@@ -81,13 +86,21 @@ public class Edge extends Pair<Cluster> implements Comparable{
         Set<String> e2County = this.getElement2().getCounties();
         Set<String> intersection = new HashSet<>(e1County);
         intersection.retainAll(e2County);
-        return (double) intersection.size() / Math.min(e1County.size(), e2County.size());
+        return 1.0 * intersection.size() / Math.min(e1County.size(), e2County.size());
     }
 
     private double getRaceJoinability() {
         double p1CommunityRatio = this.getElement1().getData().getDemographic().getPercentByRace(communityOfInterest);
         double p2CommunityRatio = this.getElement2().getData().getDemographic().getPercentByRace(communityOfInterest);
-        return  (1 - Math.abs(p1CommunityRatio - p2CommunityRatio)) / 1;
+        return  (1.0 - Math.abs(p1CommunityRatio - p2CommunityRatio)) / 1;
+    }
+
+    private double getPopulationDifference() {
+        int sum = 0;
+        sum += this.getElement1().getData().getDemographic().getPopulation(RaceType.ALL);
+        sum += this.getElement2().getData().getDemographic().getPopulation(RaceType.ALL);
+
+        return 1.0 * Math.min(sum, targetPopulation) / Math.max(sum, targetPopulation);
     }
 
     public boolean isRedundant() {

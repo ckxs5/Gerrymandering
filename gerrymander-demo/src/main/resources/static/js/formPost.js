@@ -22,10 +22,9 @@ function userlogin(logindata) {
     console.log("right here");
     console.log(logindata);
 
-    document.getElementById('signInForm').innerHTML = document.getElementById('logOutButton').innerHTML;
-    document.getElementById('signInForm').style.display="initial";
-    document.getElementById('logOutButton').remove();
-    window.location.href = '/';
+    $(".form-inline").hide();
+    // document.getElementById('signInForm').style.display="initial";
+    $("#logOutButton").show();
 }
 
 function userlogout(logoutdata) {
@@ -33,6 +32,7 @@ function userlogout(logoutdata) {
 }
 
 function usersignup(signupdata) {
+    console.log(signupdata);
     console.log("sign up data");
     window.location.href = '/';
 }
