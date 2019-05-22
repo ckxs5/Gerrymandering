@@ -62,9 +62,9 @@ public class AlgorithmController {
 
     @GetMapping(value = "/district/{id}/data", produces = "application/json")
     public ResponseEntity<String> getDistrictById(@PathVariable Long id) {
-        System.out.printf("Request to get data for district : %d \n", id);
-        District district = algorithm.getState().getDistrictById(id);
-        if (district != null) {
+        try {
+            System.out.printf("Request to get data for district : %d \n", id);
+            District district = algorithm.getState().getDistrictById(id);
             ObjectMapper mapper = new ObjectMapper();
             SimpleModule module = new SimpleModule();
             module.addSerializer(District.class, new DistrictDataSerializer());
@@ -76,9 +76,8 @@ public class AlgorithmController {
                 ex.printStackTrace();
                 return ResponseEntity.status(400).body("error");
             }
-        } else {
-            System.out.printf("Could not find entity with id %d \n", id);
-            return ResponseEntity.status(404).body("Could not find entity");
+        } catch (NullPointerException ex) {
+            return getClusterData(Integer.parseInt(id.toString()));
         }
     }
 
@@ -114,6 +113,9 @@ public class AlgorithmController {
                 Set<Precinct> precincts = clusters.get(i).getPrecincts();
                 JSONArray ps = new JSONArray();
                 for (Precinct p : precincts) {
+                    District fake = new District();
+                    fake.setId(new Long(i));
+                    p.setDistrict(fake, false);
                     ps.put(p.getId());
                 }
                 object.put("" + i, ps);
@@ -174,7 +176,7 @@ public class AlgorithmController {
             module.addSerializer(Cluster.class, new ClusterDataSerializer());
             mapper.registerModule(module);
             try {
-                System.out.println("got");
+                System.out.printf("Returning cluster %d data.\n", index);
                 return ResponseEntity.ok(mapper.writeValueAsString(c));
             } catch (JsonProcessingException ex) {
                 ex.printStackTrace();
