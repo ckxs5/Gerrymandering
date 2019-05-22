@@ -28,7 +28,9 @@ public class Precinct implements ResponseObject {
             inverseJoinColumns = @JoinColumn(name = "precinct2_id"))
     private Set<Precinct> neighbors;
     @Transient
-    private Long districtId;
+    private District district;
+    @Transient
+    private boolean isBorder;
 
     public Precinct() {
     }
@@ -40,11 +42,22 @@ public class Precinct implements ResponseObject {
         this.neighbors = neighbors;
     }
 
-    public void setDistrictId(long districtId){
-        this.districtId = districtId;
+    public void setDistrict(District district, boolean updateIsBorder){
+        this.district = district;
+        if (updateIsBorder) {
+            updateIsBorder();
+        }
     }
 
-    public Long getDistrictId(){ return districtId; }
+    public District getDistrict(){ return district; }
+
+    public boolean isBorder() {
+        return isBorder;
+    }
+
+    public void setIsBorder(boolean isBorder) {
+        this.isBorder = isBorder;
+    }
 
     public String getCounty(){ return county; }
 
@@ -92,6 +105,21 @@ public class Precinct implements ResponseObject {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<District> getNeigbourDistricts() {
+        Set<District> n = new HashSet<>();
+        for (Precinct p : neighbors) {
+            District temp = p.getDistrict();
+            if (temp != null && !temp.equals(district)) {
+                n.add(temp);
+            }
+        }
+        return n;
+    }
+
+    private void updateIsBorder() {
+        this.isBorder = !(getNeigbourDistricts().size() > 0);
     }
 
     @Override

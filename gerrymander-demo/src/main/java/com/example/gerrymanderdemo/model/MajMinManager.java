@@ -66,15 +66,15 @@ public class MajMinManager {
 
     //add mmDistrict-true, remove mmDistrict-false
     public Move moveFromDistrict(){
-        Long districtId = bestCandidate.getId();
-        Set<Precinct> borderPrecincts = bestCandidate.getBorderPrecincts();//TODO: getBorderPrecincts
+        District district = bestCandidate;
+        List<Precinct> borderPrecincts = bestCandidate.getBorderPrecincts();//TODO: getBorderPrecincts
         for (Precinct p : borderPrecincts){
             for (Precinct nn: p.getNeighbors()){
-                if(!nn.getDistrictId().equals(districtId)){//take the precinct that is not in startDistrict
-                    District neighborDistrict = findNeighborDistrict(nn.getDistrictId());
+                if(!nn.getDistrict().equals(district)){//take the precinct that is not in startDistrict
+                    District neighborDistrict = findNeighborDistrict(nn.getDistrict());
                     Move move = addOrRemove ? addMM_testMove(bestCandidate, neighborDistrict, p) : removeMM_testMove(bestCandidate, neighborDistrict, p);
                     if (move != null){
-                        System.out.println("Moving p to neighborDistrict(neighborID = "+nn.getDistrictId()+")");
+                        System.out.println("Moving p to neighborDistrict(neighborID = "+nn.getDistrict()+")");
                         return move;
                     }
                     move = addOrRemove ? addMM_testMove(neighborDistrict, bestCandidate, nn) : removeMM_testMove(neighborDistrict, bestCandidate, nn);
@@ -89,7 +89,7 @@ public class MajMinManager {
         return null;
     }
 
-    public District findNeighborDistrict(Long id){
+    public District findNeighborDistrict(District id){
         for(District d: districts){
             if (d.getId().equals(id)){
                 return d;

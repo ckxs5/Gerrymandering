@@ -12,7 +12,7 @@ public class Move {
     }
 
     public void execute(){
-        precinct.setDistrictId(to.getId());
+        precinct.setDistrict(to, true);
         from.removePrecinct(precinct);
         to.addPrecinct(precinct);
     }
@@ -23,8 +23,8 @@ public class Move {
     }
 
     public String toString(){
-        Long toID = to!=null?to.getId(): -1;
-        Long fromID = from!=null?from.getId():-1;
+        Long toID = to != null ? to.getId(): -1;
+        Long fromID = from != null ? from.getId():-1;
         Long precinctID = precinct!=null?precinct.getId():-1;
         return "{"+"\"to\":\""+toID+"\",\"from\":\""+fromID+"\",\"precinct\":\""+precinctID+"\"}";
     }
