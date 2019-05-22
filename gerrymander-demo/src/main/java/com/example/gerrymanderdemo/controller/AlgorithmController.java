@@ -1,5 +1,6 @@
 package com.example.gerrymanderdemo.controller;
 
+import com.example.gerrymanderdemo.JacksonSerializer.ClusterDataSerializer;
 import com.example.gerrymanderdemo.JacksonSerializer.DistrictDataSerializer;
 import com.example.gerrymanderdemo.JacksonSerializer.PrecinctDataSerializer;
 import com.example.gerrymanderdemo.model.*;
@@ -162,6 +163,27 @@ public class AlgorithmController {
             arr.put(object.toJSONObject());
         }
         return ResponseEntity.ok(arr.toString());
+    }
+
+    @GetMapping(value = "cluster/{index}/data")
+    public ResponseEntity<String> getClusterData(@PathVariable int index) {
+        try {
+            Cluster c = algorithm.getClusterManager().getClusters().get(index);
+            ObjectMapper mapper = new ObjectMapper();
+            SimpleModule module = new SimpleModule();
+            module.addSerializer(Cluster.class, new ClusterDataSerializer());
+            mapper.registerModule(module);
+            try {
+                System.out.println("got");
+                return ResponseEntity.ok(mapper.writeValueAsString(c));
+            } catch (JsonProcessingException ex) {
+                ex.printStackTrace();
+                return ResponseEntity.status(400).body("error");
+            }
+        } catch (NullPointerException ex) {
+            ex.printStackTrace();
+            return ResponseEntity.status(404).body("No cluster found");
+        }
     }
 
     @PostMapping(value = "/save")
