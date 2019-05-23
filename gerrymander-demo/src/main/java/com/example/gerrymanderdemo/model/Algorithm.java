@@ -25,7 +25,7 @@ public class Algorithm {
     private double populationVariant;
 
 
-    public Algorithm(Map<String, String> preference, State state) {
+    public Algorithm(Map<String, String> preference, State state) throws NumberFormatException{
         this.communityOfInterest = RaceType.valueOf(preference.get(PreferenceType.COMMUNITY_OF_INTEREST.toString()));
         this.preference = preference;
         this.state = state;
@@ -55,6 +55,7 @@ public class Algorithm {
             p.setDistrict(p.getDistrict(), true);
         }
         currentScores = new HashMap<>();
+        System.out.println("Set Redistrict Plan!!!!!!!!!!!!");
         for (District d: state.getDistricts()){
             currentScores.put(d.getId(), rateDistrict(d));
         }
@@ -85,46 +86,52 @@ public class Algorithm {
 
 
     public Move makeMove(){
-        System.out.println("currentDistrict: " + currentDistrict);
+        System.out.printf("Before makeMove district number :%d \n", state.getDistricts().size());
         if (currentDistrict == null){
             currentDistrict = getWorstDistrict();
         }
         Move m = getMoveFromDistrict(currentDistrict);
         if (m == null){
+            System.out.printf("After makeMove district number :%d \n", state.getDistricts().size());
             return makeMove_secondary();
         }
+        System.out.printf("After makeMove district number :%d \n", state.getDistricts().size());
         return m;
     }
 
     //This is similar to makeMove, but reverse to put neighbor precinct to startDistrict and check
     public Move makeMove_secondary() {
+        System.out.printf("Before makeMove_secondary district number :%d \n", state.getDistricts().size());
         List<District> districts = getWorstDistricts();//TODO:getWorstDistricts()
         districts.remove(0);
         while (districts.size() > 0) {
-            District startDistrict = districts.get(0);
+            District startDistrict = districts.remove(0);
             Move m = getMoveFromDistrict(startDistrict);
             if (m != null) {
+                System.out.printf("After makeMove_secondary district number :%d \n", state.getDistricts().size());
                 return m;
             }
-            districts.remove(0);
         }
+        System.out.printf("After makeMove_secondary  returning null district number :%d \n", state.getDistricts().size());
         return null;
     }
 
     // TODO: returns a list of districts sorted from worst to best
     public List<District> getWorstDistricts() {
+        System.out.printf("Before getWorstDistricts district number :%d \n", state.getDistricts().size());
         state.getDistricts().sort((o1, o2) -> {
             double rate1 = rateDistrict(o1);
             double rate2 = rateDistrict(o2);
             return Double.compare(rate1, rate2);
         });
-        return state.getDistricts();
+        System.out.printf("After getWorstDistricts district number :%d \n", state.getDistricts().size());
+        return new ArrayList<>(state.getDistricts());
     }
 
     public District getWorstDistrict() {
+        System.out.printf("Before getWorstDistrict district number :%d \n", state.getDistricts().size());
         District worstDistrict = null;
         double minScore = Double.POSITIVE_INFINITY;
-        System.out.println("minScore: " + minScore);
         System.out.println("Get Districts: " + state.getDistricts());
         for (District d : state.getDistricts()) {//TODO: getDistricts()
             double score = rateDistrict(d);
@@ -135,40 +142,57 @@ public class Algorithm {
                 minScore = score;
             }
         }
-        System.out.println("Worst District: " + worstDistrict);
+        System.out.printf("After getWorstDistrict district number :%d \n", state.getDistricts().size());
         return worstDistrict;
     }
 
     public Move getMoveFromDistrict(District startDistrict){
+        System.out.printf("Before getMoveFromDistrict district number :%d \n", state.getDistricts().size());
         List<District> ns = new ArrayList<>(startDistrict.getNeigbours());
         for (District d : ns) {
-            Move move = startDistrict.constructMoveWithToDistrict(d);
-            if (move != null) {
+            List<Move> moves = startDistrict.constructMovesWithToDistrict(d);
+            while (moves.size() > 0) {
+                Move move = moves.remove(0);
                 System.out.printf("getMoveFromDistrict got move %s\n", move);
                 move = testMove(move);
+                if (move != null) {
+
+                    return move;
+                }
             }
-            else  {
-                move = d.constructMoveWithToDistrict(startDistrict);
+
+            moves = d.constructMovesWithToDistrict(startDistrict);
+            while (moves.size() > 0) {
+                Move move = moves.remove(0);
+                System.out.printf("getMoveFromDistrict got move %s\n", move);
                 move = testMove(move);
-            }
-            if (move != null) {
-                return move;
+                if (move != null) {
+                    return move;
+                }
             }
         }
 
-        System.out.printf("Could not construct move for District %d \n", startDistrict.getId());
+        System.out.printf("After getMoveFromDistrict district number :%d \n", state.getDistricts().size());
         return null;
     }
 
     private Move testMove(Move move) {
+        System.out.printf("Before testMove district number :%d \n", state.getDistricts().size());
         if (!checkContiguity(move.getPrecinct(), move.getFrom())) {
             return null;
         }
-        System.out.printf("Current score in test move %s \n", currentScores);
-        System.out.printf("Current score1 %f score2 %f \n", currentScores.get(move.getTo().getId()), currentScores.get(move.getFrom().getId()));
-        System.out.printf("Current move to %d \n", move.getTo().getId());
-        System.out.printf("Current move from %d \n", move.getFrom().getId());
-        System.out.printf("Move in test move is %s\n", move);
+//        System.out.printf("Current score in test move %s \n", currentScores);
+//        System.out.printf("Current score1 %f score2 %f \n", currentScores.get(move.getTo().getId()), currentScores.get(move.getFrom().getId()));
+//        System.out.printf("Current move to %d \n", move.getTo().getId());
+//        System.out.printf("Current move from %d \n", move.getFrom().getId());
+//        if(currentScores.get(move.getTo().getId()) == null) {
+//            System.out.printf("Current score contains key %s\n", currentScores.containsKey(move.getTo().getId()));
+//            System.out.printf("State contains key %s\n", state.getDistricts().contains(move.getTo()));
+//        }
+//        if(currentScores.get(move.getFrom().getId()) == null) {
+//            System.out.printf("Current score contains key %s\n", currentScores.containsKey(move.getFrom().getId()));
+//            System.out.printf("State contains key %s\n", state.getDistricts().contains(move.getFrom()));
+//        }
         double initial_score = currentScores.get(move.getTo().getId()) + currentScores.get(move.getFrom().getId());
         move.execute();
         double to_score = rateDistrict(move.getTo());
@@ -177,10 +201,12 @@ public class Algorithm {
         double change = final_score - initial_score;
         if (change <= 0) {
             move.undo();
+            System.out.printf("After testMove district number :%d \n", state.getDistricts().size());
             return null;
         }
         currentScores.put(move.getTo().getId(), to_score);
         currentScores.put(move.getFrom().getId(), from_score);
+        System.out.printf("After testMove district number :%d \n", state.getDistricts().size());
         return move;
     }
 
@@ -228,9 +254,9 @@ public class Algorithm {
         return currentScores;
     }
 
-    public void setCurrentScores(HashMap<Long, Double> currentScores) {
-        this.currentScores = currentScores;
-    }
+//    public void setCurrentScores(HashMap<Long, Double> currentScores) {
+//        this.currentScores = currentScores;
+//    }
 
     public Range<Double> getRange() {
         return range;
@@ -427,7 +453,7 @@ public class Algorithm {
     public double rateCOMPETITIVENESS(District d) {
         int gv = d.getData().getVoteData().getVote(REPUBLICAN);
         int dv = d.getData().getVoteData().getVote(DEMOCRATIC);
-        return 1.0 - 1.0 *(Math.abs(gv - dv)) / (gv + dv);
+        return 1.0 - 1.0  * (Math.abs(gv - dv)) / (gv + dv);
     }
 
     public double rateGERRYMANDER_REPUBLICAN(District d) {
@@ -496,12 +522,12 @@ public class Algorithm {
         System.out.println("total pop: " + state.getData().getDemographic().getPopulation(RaceType.ALL));
         int tp = state.getData().getDemographic().getPopulation(RaceType.ALL) / state.getDistricts().size();
         double rate = 1.0 * Math.abs(dp - tp) / tp;
-        if (rate < 0.5) {
+        if (rate < 0.05) {
             return 1;
         } else if (rate > populationVariant) {
             return 0;
         } else {
-            return (rate - 0.5) / (populationVariant - 0.5);
+            return (rate - 0.05) / (populationVariant - 0.05);
         }
     }
 

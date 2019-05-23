@@ -186,15 +186,16 @@ public class District {
         return false;
     }
 
-    public Move constructMoveWithToDistrict(District to) {
+    public List<Move> constructMovesWithToDistrict(District to) {
+        List<Move> moves = new ArrayList<>();
         List<Precinct> borders = getBorderPrecincts();
         for (Precinct p : borders) {
             Set<District> ns = p.getNeigbourDistricts();
             if (ns.contains(to)) {
-                return new Move(to, this, p);
+                moves.add(new Move(to, this, p));
             }
         }
-        return null;
+        return moves;
     }
 
     public double getGerrymanderingScore(){

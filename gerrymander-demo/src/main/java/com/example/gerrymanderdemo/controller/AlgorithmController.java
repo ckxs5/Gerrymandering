@@ -27,10 +27,14 @@ public class AlgorithmController {
 
     @PostMapping(value = "/init_algorithm", consumes = "application/json")
     public ResponseEntity<String> init(@RequestBody HashMap<String, String> preferences) {
-        System.out.println("preferences: " + preferences);
-        algorithm = new Algorithm(preferences, new State());
-        System.out.println("algorithm: " + algorithm);
-        return ResponseEntity.ok("Done");
+       try {
+           System.out.println("preferences: " + preferences);
+           algorithm = new Algorithm(preferences, new State());
+           System.out.println("algorithm: " + algorithm);
+           return ResponseEntity.ok("Done");
+       } catch (NumberFormatException ex) {
+           return ResponseEntity.status(400).body("Please check your input value");
+       }
     }
 
     @PostMapping(value = "/graphpartition", produces = "application/json")
@@ -38,6 +42,7 @@ public class AlgorithmController {
         try {
             System.out.println("another algorithm: "+ algorithm);
             State state = algorithm.graphPartition();
+            algorithm.setRedistrictingPlan();
             return getDistrictPrecincts(state.getDistricts());
         } catch (NullPointerException ex) {
             ex.printStackTrace();
@@ -85,12 +90,11 @@ public class AlgorithmController {
     @PostMapping(value = "/simulating_annealing", produces = "application/json")
     public ResponseEntity<String> simulatingAnnealing() {
         try {
-            algorithm.setRedistrictingPlan();
             System.out.println("Cheryl==========="+algorithm);
             Move move = algorithm.makeMove();
             JSONObject obj = new JSONObject();
             System.out.println("Algorithm move: " + move);
-            obj.put("to", move.getTo().getId());
+             obj.put("to", move.getTo().getId());
             obj.put("from", move.getFrom().getId());
             obj.put("p", move.getPrecinct().getId());
             return ResponseEntity.ok(obj.toString());

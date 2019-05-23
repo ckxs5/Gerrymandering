@@ -136,12 +136,12 @@ public class ClusterManager {
                 while(clusters.size() > targetNumCluster){
                     forceToTargetNum();
                 }
-            case BALANCE_POPULATION:
-                count = 0;
-                toDistricts();
-                while (balancePopulation() && count < targetNumCluster){
-                    System.out.printf("Balancing:  %d \n", ++count);
-                }
+//            case BALANCE_POPULATION:
+//                count = 0;
+//                toDistricts();
+//                while (balancePopulation() && count < targetNumCluster){
+//                    System.out.printf("Balancing:  %d \n", ++count);
+//                }
         }
 
     }

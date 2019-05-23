@@ -12,14 +12,13 @@ public class Move {
     }
 
     public void execute(){
-        precinct.setDistrict(to, true);
-        from.removePrecinct(precinct);
         to.addPrecinct(precinct);
+        from.removePrecinct(precinct);
     }
 
     public void undo(){
-        to.removePrecinct(precinct);
         from.addPrecinct(precinct);
+        to.removePrecinct(precinct);
     }
 
     public String toString(){
