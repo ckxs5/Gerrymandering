@@ -46,7 +46,7 @@ public class BatchManager {
         State stateWithId = stateService.saveState(intermediateState);
         int numMM = intermediateState.getNumMajMinDistricts(
                 RaceType.valueOf(userPreference.get(PreferenceType.COMMUNITY_OF_INTEREST.toString())), majMinRange);
-        float objValue = algorithm.getOF();
+        double objValue = algorithm.getOF();
         SummaryObject so = new SummaryObject(stateWithId,objValue,numMM);
         this.summaries.add(so);
     }
