@@ -89,6 +89,7 @@ public class AlgorithmController {
             System.out.println("Cherly==========="+algorithm);
             Move move = algorithm.makeMove();
             JSONObject obj = new JSONObject();
+            System.out.println("Algorithm move: " + move);
             obj.put("to", move.getTo().getId());
             obj.put("from", move.getFrom().getId());
             obj.put("p", move.getPrecinct().getId());
