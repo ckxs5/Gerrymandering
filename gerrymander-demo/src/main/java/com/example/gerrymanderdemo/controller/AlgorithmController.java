@@ -97,6 +97,7 @@ public class AlgorithmController {
              obj.put("to", move.getTo().getId());
             obj.put("from", move.getFrom().getId());
             obj.put("p", move.getPrecinct().getId());
+            obj.put("message", String.format("Objective Function value: %f.5 ", algorithm.getOF()));
             return ResponseEntity.ok(obj.toString());
         } catch (JSONException ex) {
             ex.printStackTrace();

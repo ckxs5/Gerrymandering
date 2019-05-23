@@ -81,8 +81,14 @@ public class Algorithm {
         return move;
     }
 
-    //TODO
-    public float getOF(){return tempObjectiveFunctionValue;}
+
+    public double getOF(){
+        double sum = 0;
+        for(double score : currentScores.values()) {
+            sum += 0;
+        }
+        return sum / state.getDistricts().size();
+    }
 
 
     public Move makeMove(){
