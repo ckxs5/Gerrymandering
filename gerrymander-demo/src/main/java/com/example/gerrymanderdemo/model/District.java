@@ -114,6 +114,7 @@ public class District {
     public void addPrecinct(Precinct precinct){
         if (precincts.add(precinct)) {
             this.data.add(precinct.getData());
+            precinct.setDistrict(this, true);
         }
     }
 
@@ -181,6 +182,19 @@ public class District {
             }
         }
         return false;
+    }
+
+    public Move constructMoveWithToDistrict(District to) {
+        List<Precinct> borders = getBorderPrecincts();
+        System.out.println("constructMoveWithToDistrict got border precincts : " + borders);
+        for (Precinct p : borders) {
+            Set<District> ns = p.getNeigbourDistricts();
+            System.out.println("constructMoveWithToDistrict got neighbour District : " + ns);
+            if (ns.contains(to)) {
+                return new Move(to, this, p);
+            }
+        }
+        return null;
     }
 
     public double getGerrymanderingScore(){

@@ -52,6 +52,9 @@ public class Algorithm {
     }
 
     public void setRedistrictingPlan(){
+        for (Precinct p : PrecinctManager.getPrecincts(StateName.MINNESOTA).values()) {
+            p.setDistrict(p.getDistrict(), true);
+        }
         redistrictingPlan = new HashMap<>();
         currentScores = new HashMap<>();
         for (District d: state.getDistricts()){
@@ -82,6 +85,7 @@ public class Algorithm {
         System.out.println(move.getPrecinct());
         return move;
     }
+
     //TODO
     public float getOF(){return tempObjectiveFunctionValue;}
 
@@ -142,27 +146,23 @@ public class Algorithm {
     }
 
     public Move getMoveFromDistrict(District startDistrict){
-        List<Precinct> precincts = new ArrayList<>(startDistrict.getBorderPrecincts());
-        for (Precinct p : precincts) {
-            List<Long> neighborIDs = new ArrayList<>(p.getNeighborIDs());
-            for (Long id : neighborIDs) {
-                if (startDistrict.getPrecinct(id) == null) {//take the precinct that is not in startDistrict
-                    District neighborDistrict = state.getDistrictById(redistrictingPlan.get(id));
-                    Move move = testMove(neighborDistrict, startDistrict, p);
-                    if (move != null) {
-                        System.out.println("Moving p to neighborDistrict(neighborID = " + id + ")");
-                        currentDistrict = startDistrict;
-                        return move;
-                    }
-                    move = testMove(startDistrict, neighborDistrict, neighborDistrict.getPrecinct(id));
-                    if (move != null) {
-                        System.out.println("Move n to Start district: " + startDistrict.getId());
-                        currentDistrict = startDistrict;
-                        return move;
-                    }
-                }
+        List<District> ns = new ArrayList<>(startDistrict.getNeigbours());
+        for (District d : ns) {
+            Move move = startDistrict.constructMoveWithToDistrict(d);
+            if (move != null) {
+                System.out.printf("getMoveFromDistrict got move %s\n", move);
+                move = testMove(move.getTo(), move.getFrom(), move.getPrecinct());
+            }
+            else  {
+                move = d.constructMoveWithToDistrict(startDistrict);
+                move = testMove(move.getTo(), move.getFrom(), move.getPrecinct());
+            }
+            if (move != null) {
+                return move;
             }
         }
+
+        System.out.printf("Could not construct move for District %d \n", startDistrict.getId());
         return null;
     }
 

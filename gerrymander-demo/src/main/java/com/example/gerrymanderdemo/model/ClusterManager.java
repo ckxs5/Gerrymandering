@@ -262,9 +262,6 @@ public class ClusterManager {
             districts.add(c.toDistrict());
         }
 
-        for (Precinct p : PrecinctManager.getPrecincts(StateName.MINNESOTA).values()) {
-            p.setDistrict(p.getDistrict(), true);
-        }
         this.districts = districts;
         return districts;
     }

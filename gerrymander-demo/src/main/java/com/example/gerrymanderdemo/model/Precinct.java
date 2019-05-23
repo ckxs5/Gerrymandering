@@ -114,7 +114,8 @@ public class Precinct implements ResponseObject {
         Set<District> n = new HashSet<>();
         for (Precinct p : neighbors) {
             District temp = p.getDistrict();
-            if (temp != null && !temp.equals(district)) {
+            System.out.printf("getNeighbourDistrict : %s and This District: %s\n", temp, district);
+            if (!(temp == district)) {
                 n.add(temp);
             }
         }

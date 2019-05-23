@@ -131,7 +131,7 @@ $("document").ready(function () {
     disInfo.addTo(mymap);
 
 
-    info.update = function (democratic, republican, otherParties, all, otherRaces, caucasian, asian, hispanic, african, native, name,county) {
+    info.update = function (democratic, republican, otherParties, all, otherRaces, caucasian, asian, hispanic, african, native, name,county, is_border) {
         this._div.innerHTML = '<h4>Precinct Information</h4>' + (all ?
             '<b>' + name + '</b><br>'
             + '<b>Demographics</b><br>'
@@ -146,6 +146,7 @@ $("document").ready(function () {
             + 'Republican: ' + republican.toLocaleString("en") + '<br>'
             + 'OtherParties: ' + otherParties.toLocaleString("en") + '<br>'
             + 'County: ' + county + '<br>'
+            + 'Is Border: ' + is_border + '<br>'
             + '<br><b>Population</b><br>'
             + all.toLocaleString("en")
             : 'No Precinct Selected');
@@ -420,8 +421,9 @@ $("document").ready(function () {
         let county = obj['county'] ? obj['county'] : "N/A";
         let name = obj['name'] ? obj['name'] : "N/A";
         let disId = obj['district_id'] ? obj['district_id'] : "N/A";
+        let is_border = obj['is_border'] ? 'yes' : 'no';
 
-        info.update(democratic, republican, other_parties, all, other_race, caucasian, asian, hispanic, african_american, native, name,county);
+        info.update(democratic, republican, other_parties, all, other_race, caucasian, asian, hispanic, african_american, native, name,county, is_border);
         getData("/district/" + disId + "/data", loadDistrictPropertiesHelper);
     }
 
