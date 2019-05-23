@@ -46,6 +46,9 @@ public class Precinct implements ResponseObject {
         this.district = district;
         if (updateIsBorder) {
             updateIsBorder();
+            for (Precinct p : neighbors) {
+                p.updateIsBorder();
+            }
         }
     }
 
@@ -118,7 +121,7 @@ public class Precinct implements ResponseObject {
         return n;
     }
 
-    private void updateIsBorder() {
+    public void updateIsBorder() {
         this.isBorder = !(getNeigbourDistricts().size() > 0);
     }
 
