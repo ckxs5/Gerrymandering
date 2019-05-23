@@ -20,8 +20,7 @@ public class Algorithm {
     private ClusterManager clusterManager;
     private float tempObjectiveFunctionValue;
     private District currentDistrict = null;
-    private HashMap<District, Double> currentScores;//TODO: Map district to its score
-    private HashMap<Long, Long> redistrictingPlan;//TODO: Map key precinctId to its district's id
+    private HashMap<Long, Double> currentScores;//TODO: Map district to its score
     @Value("${population.range.variant}")
     private double populationVariant;
 
@@ -55,13 +54,9 @@ public class Algorithm {
         for (Precinct p : PrecinctManager.getPrecincts(StateName.MINNESOTA).values()) {
             p.setDistrict(p.getDistrict(), true);
         }
-        redistrictingPlan = new HashMap<>();
         currentScores = new HashMap<>();
         for (District d: state.getDistricts()){
-            for (Precinct p : d.getPrecincts()){
-                redistrictingPlan.put(p.getId(), d.getId());
-            }
-            currentScores.put(d, rateDistrict(d));
+            currentScores.put(d.getId(), rateDistrict(d));
         }
     }
 
@@ -133,7 +128,7 @@ public class Algorithm {
         System.out.println("Get Districts: " + state.getDistricts());
         for (District d : state.getDistricts()) {//TODO: getDistricts()
             double score = rateDistrict(d);
-            currentScores.put(d, score);
+            currentScores.put(d.getId(), score);
             System.out.println("Score: " + score);
             if (score < minScore) {
                 worstDistrict = d;
@@ -150,11 +145,11 @@ public class Algorithm {
             Move move = startDistrict.constructMoveWithToDistrict(d);
             if (move != null) {
                 System.out.printf("getMoveFromDistrict got move %s\n", move);
-                move = testMove(move.getTo(), move.getFrom(), move.getPrecinct());
+                move = testMove(move);
             }
             else  {
                 move = d.constructMoveWithToDistrict(startDistrict);
-                move = testMove(move.getTo(), move.getFrom(), move.getPrecinct());
+                move = testMove(move);
             }
             if (move != null) {
                 return move;
@@ -165,25 +160,28 @@ public class Algorithm {
         return null;
     }
 
-    private Move testMove(District to, District from, Precinct p) {
-        if (!checkContiguity(p,from)) {
+    private Move testMove(Move move) {
+        if (!checkContiguity(move.getPrecinct(), move.getFrom())) {
             return null;
         }
-        Move m = new Move(to, from, p);
-        double initial_score = currentScores.get(to) + currentScores.get(from);
-        m.execute();
-        double to_score = rateDistrict(to);
-        double from_score = rateDistrict(from);
+        System.out.printf("Current score in test move %s \n", currentScores);
+        System.out.printf("Current score1 %f score2 %f \n", currentScores.get(move.getTo().getId()), currentScores.get(move.getFrom().getId()));
+        System.out.printf("Current move to %d \n", move.getTo().getId());
+        System.out.printf("Current move from %d \n", move.getFrom().getId());
+        System.out.printf("Move in test move is %s\n", move);
+        double initial_score = currentScores.get(move.getTo().getId()) + currentScores.get(move.getFrom().getId());
+        move.execute();
+        double to_score = rateDistrict(move.getTo());
+        double from_score = rateDistrict(move.getFrom());
         double final_score = (to_score + from_score);
         double change = final_score - initial_score;
         if (change <= 0) {
-            m.undo();
+            move.undo();
             return null;
         }
-        currentScores.put(to, to_score);
-        currentScores.put(from, from_score);
-        redistrictingPlan.put(p.getId(), to.getId());
-        return m;
+        currentScores.put(move.getTo().getId(), to_score);
+        currentScores.put(move.getFrom().getId(), from_score);
+        return move;
     }
 
     public Map<String, String> getPreference() {
@@ -226,20 +224,12 @@ public class Algorithm {
         this.currentDistrict = currentDistrict;
     }
 
-    public HashMap<District, Double> getCurrentScores() {
+    public HashMap<Long, Double> getCurrentScores() {
         return currentScores;
     }
 
-    public void setCurrentScores(HashMap<District, Double> currentScores) {
+    public void setCurrentScores(HashMap<Long, Double> currentScores) {
         this.currentScores = currentScores;
-    }
-
-    public HashMap<Long, Long> getRedistrictingPlan() {
-        return redistrictingPlan;
-    }
-
-    public void setRedistrictingPlan(HashMap<Long, Long> redistrictingPlan) {
-        this.redistrictingPlan = redistrictingPlan;
     }
 
     public Range<Double> getRange() {
@@ -269,16 +259,17 @@ public class Algorithm {
     //TODO:check contiguity for moving precinct p out of district d
     //returns true if contiguous
     private boolean checkContiguity(Precinct p, District d){
-        Set<Long> neighborIDs = p.getNeighborIDs();
+//        Set<Long> neighborIDs = p.getNeighborIDs();
+        Set<Precinct> neighbors = p.getNeighbors();
         HashSet<Precinct> neededPrecincts = new HashSet<Precinct>();
         HashSet<Precinct> neighborToExplore = new HashSet<Precinct>();//potential sources of exploration
         HashSet<Precinct> exploreNeighbors = new HashSet<Precinct>();// neighbors already explored
         exploreNeighbors.add(p);// add the precinct being moved, to ensure it won't be used
         // if a neighbor is in the district that's losing a precinct, we need to make sure they're still contiguous
-        for (Long id : neighborIDs) {
+        for (Precinct n : neighbors) {
             // if neighbor is in the district we're losing from
-            if ((redistrictingPlan.get(id)).equals(d.getId())) {
-                Precinct n = d.getPrecinct(id);
+//            if ((redistrictingPlan.get(id)).equals(d.getId())) {
+            if(n.getDistrict().equals(d)) {
                 neededPrecincts.add(n);
             }
         }
@@ -292,10 +283,10 @@ public class Algorithm {
         while (neighborToExplore.size() != 0){
             // take an arbitrary precinct from the sources of exploration
             Precinct n = neighborToExplore.iterator().next();
-            for (Long id :n.getNeighborIDs()) {
+            for (Precinct nn : n.getNeighbors()) {
                 //we only care about neighbors in our district,d
-                if (redistrictingPlan.get(id).equals(d.getId())) {
-                    Precinct nn = d.getPrecinct(id);
+//                if (redistrictingPlan.get(id).equals(d.getId())) {
+                if (nn.getDistrict().equals(d)) {
                     // if we've hit one of our needed precincts, check it off
                     if (neededPrecincts.contains(nn)) {
                         neededPrecincts.remove(nn);
@@ -324,30 +315,24 @@ public class Algorithm {
 
         objectiveFunctionValue +=  ef * rateEfficiencyGap(d);
         total += ef;
-        System.out.println("ef value: " + ef);
 
         double pope = Double.parseDouble(preference.get(POPULATION_EQUALITY.toString()));
         objectiveFunctionValue += pope * ratePopulationEquality(d);
         total += pope;
-        System.out.println("pope value: " + objectiveFunctionValue);
 
         double comptivi = Double.parseDouble(preference.get(COMPETITIVENESS.toString()));
         objectiveFunctionValue += comptivi * rateCOMPETITIVENESS(d);
         total += comptivi;
-        System.out.println("comptivi value: " + objectiveFunctionValue);
 
         double compact = Double.parseDouble(preference.get(COMPACTNESS.toString()));
         objectiveFunctionValue += compact * rateCompactnessBorder(d);
         total += compact;
-        System.out.println("compact value: " + objectiveFunctionValue);
 
         double lw = Double.parseDouble(preference.get(LENGTH_WIDTH.toString()));
         objectiveFunctionValue += lw * rateCompactnessLenWid(d);
         total += lw;
-        System.out.println("length/width value: " + objectiveFunctionValue);
 
         double objf = objectiveFunctionValue / total;
-        System.out.println("OJF value: " + objf);
         return objf;
     }
 
@@ -423,6 +408,7 @@ public class Algorithm {
         abs(winning party margin - losing party votes)
     */
     public double rateEfficiencyGap(District d) {
+        System.out.printf("District in rateEfficiencyGap is %s \n", d);
         int gv = d.getData().getVoteData().getVote(REPUBLICAN);
         int dv = d.getData().getVoteData().getVote(DEMOCRATIC);
         int tv = gv + dv;
