@@ -41,7 +41,7 @@
                 <thead class="thead-light">
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">Email</th>
+                    <th scope="col">Username</th>
                     <th scope="col">User Type</th>
                     <th scope="col">Actions</th>
                 </tr>
@@ -79,8 +79,8 @@
                     <div class="modal-body">
                         <div class='form-group'>
                             <div class='form-group'>
-                                <label>New Email</label>
-                                <input type='text' name='email' class='form-control' placeholder='Email'>
+                                <label>New Username</label>
+                                <input type='text' name='email' class='form-control' placeholder='Username'>
                             </div>
                             <label>New Password</label>
                             <input type='password' name='password' class='form-control' placeholder='Password'>
@@ -108,7 +108,7 @@
                 <form id="deleteUser">
                     <div class="modal-body">
                         <div class='form-group'>
-                            <label>Email of Account to Remove</label>
+                            <label>ID of Account to Remove</label>
                             <div class="input-group mb-3">
                                 <select class="custom-select" id="inputGroupSelect">
                                     <option class="dropdown-item" th:each="user : ${listOfUsers}" th:text="${user.getId()}"></option>

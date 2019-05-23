@@ -25,6 +25,9 @@ function userlogin(logindata) {
     $(".form-inline").hide();
     // document.getElementById('signInForm').style.display="initial";
     $("#logOutButton").show();
+    console.log("Login data: " + logindata);
+    console.log("/homepage");
+    window.location.href = "/homepage";
 }
 
 function userlogout(logoutdata) {
@@ -42,7 +45,7 @@ function getDeleteId(){
     let id = $("#inputGroupSelect").val();
     let url = "/user/" + id + "/delete";
     getData(url, null);
-    window.location.href = '/';
+    window.location.href = '/homepage';
 
 }
 

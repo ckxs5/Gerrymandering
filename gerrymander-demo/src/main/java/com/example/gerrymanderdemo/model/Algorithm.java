@@ -63,7 +63,6 @@ public class Algorithm {
             }
             currentScores.put(d, rateDistrict(d));
         }
-
     }
 
     //TODO
