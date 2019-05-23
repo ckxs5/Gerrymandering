@@ -27,7 +27,7 @@ function userlogin(logindata) {
     $("#logOutButton").show();
     console.log("Login data: " + logindata);
     console.log("/homepage");
-    window.location.href = "/homepage";
+    // window.location.href = "/homepage";
 }
 
 function userlogout(logoutdata) {
