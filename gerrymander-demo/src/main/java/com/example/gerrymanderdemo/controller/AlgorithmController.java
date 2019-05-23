@@ -148,6 +148,7 @@ public class AlgorithmController {
                 }
                 obj.put(district.getId().toString(), ps);
             }
+            obj.put("message", String.format("%d Districts", districts.size()));
             System.out.printf("Return %d of Districts with its precinctIds. \n", obj.length());
             return ResponseEntity.ok(obj.toString());
         } catch (JSONException ex) {
