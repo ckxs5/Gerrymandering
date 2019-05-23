@@ -18,12 +18,11 @@ public class IndexController {
 
     @GetMapping(value = {"/", "/index", "/homepage"})
     public ModelAndView index(HttpSession session){
-        User user = (User) session.getAttribute("user");
-//        System.out.println("Get attribute user: " + session.getAttribute("user"));
+        User user = (User)session.getAttribute("user");
         ModelAndView mav;
+        System.out.println("USER: "  + user);
 
-       if(user != null && user.getUserType().equals(UserType.ADMIN)){
-           System.out.println(user);
+        if(user != null && user.getUserType().equals(UserType.ADMIN)){
            System.out.println("user type: " + user.getUserType());
            mav = new ModelAndView("admin");
            List<User> users = userService.findAll();
@@ -31,11 +30,10 @@ public class IndexController {
            mav.addObject("UserTypes", UserType.values());
         } else{
             System.out.println("return index");
-//            System.out.println(user);
+            System.out.println(user);
             mav = new ModelAndView("index");
             if(user != null)
                 mav.addObject("user", user);
-//            mav.addObject("compactness", Compactness.values());
             mav.addObject("preferences", PreferenceType.values());
             mav.addObject("states", StateName.values());
             mav.addObject("communities", RaceType.values());

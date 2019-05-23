@@ -86,7 +86,7 @@ public class AlgorithmController {
     public ResponseEntity<String> simulatingAnnealing() {
         try {
             algorithm.setRedistrictingPlan();
-            System.out.println("Cherly==========="+algorithm);
+            System.out.println("Cheryl==========="+algorithm);
             Move move = algorithm.makeMove();
             JSONObject obj = new JSONObject();
             System.out.println("Algorithm move: " + move);
