@@ -233,7 +233,7 @@ $("document").ready(function () {
                 $("#consoleMessage").text(data[key]);
                 return;
             }
-            console.log("value: " + data[key]);
+            // console.log("value: " + data[key]);
             let color = getColor();
             colorHashMap[key] = color;
             for (let i = 0; i < data[key].length; i++) {
@@ -285,8 +285,6 @@ $("document").ready(function () {
             postForm(event, "#signup", "/signup", usersignup);
        }
     });
-
-
 
 
 
