@@ -8,6 +8,7 @@ $("document").ready(function () {
     let disInfo;
     let maxBounds;
     let colorHashMap = {};
+    let initCount = 0;
 
     mymap = L.map('map', {layers: states}).setView(USCENTER, defaultZoomLevel);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -158,7 +159,12 @@ $("document").ready(function () {
             console.log($(this).attr("id") + " : " + $(this).val());
             weights[$(this).attr("id")] = $(this).val();
         });
-        postData(weights, "/init_algorithm", graphpartition);
+        if(initCount === 0){
+            postData(weights, "/init_algorithm", graphpartition);
+            initCount += 1;
+        }else{
+            graphpartition(null);
+        }
 
     });
     function graphpartition(data){
@@ -168,17 +174,23 @@ $("document").ready(function () {
     $("#play-btn-not").on("click", function() {
         console.log("play not skip button");
         let weights = {};
+        let count = 0;
         $("#weights input, select").each(function () {
             console.log($(this).attr("id") + " : " + $(this).val());
             weights[$(this).attr("id")] = $(this).val();
         });
-
-        for(let i = 0; i< 100; i++){
-            if(!postData(weights, "/graphpartition/once", colorModifying))
-                break;
-            console.log("Color changing" + i);
+        if(initCount === 0){
+            postData(weights, "/init_algorithm", graphpartitionOnce);
+            initCount += 1;
+        }else {
+            graphpartitionOnce(null);
         }
+
     });
+
+    function graphpartitionOnce(data){
+        postData(null, "/graphpartition/once", colorModifying);
+    }
 
     $("#phase2Play").on("click", function(){
         for(let i = 0; i< 30; i++) {
@@ -214,10 +226,14 @@ $("document").ready(function () {
     function colorModifying(data) {
         // data ={}
         console.log("Coloring: " + data);
-
         Object.keys(data).forEach(function(key){
-            console.log("This Coloring keys: " + key);
-            console.log("value: " + data[key]);
+            // console.log("This Coloring keys: " + key);
+            if(key === "message") {
+                console.log("datakey========" + data[key]);
+                $("#consoleMessage").text(data[key]);
+                return;
+            }
+            // console.log("value: " + data[key]);
             let color = getColor();
             colorHashMap[key] = color;
             for (let i = 0; i < data[key].length; i++) {
@@ -269,8 +285,6 @@ $("document").ready(function () {
             postForm(event, "#signup", "/signup", usersignup);
        }
     });
-
-
 
 
 

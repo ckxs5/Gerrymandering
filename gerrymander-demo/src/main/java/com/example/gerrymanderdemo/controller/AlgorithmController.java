@@ -1,5 +1,6 @@
 package com.example.gerrymanderdemo.controller;
 
+import com.example.gerrymanderdemo.JacksonSerializer.ClusterDataSerializer;
 import com.example.gerrymanderdemo.JacksonSerializer.DistrictDataSerializer;
 import com.example.gerrymanderdemo.JacksonSerializer.PrecinctDataSerializer;
 import com.example.gerrymanderdemo.model.*;
@@ -15,6 +16,7 @@ import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import sun.java2d.loops.CustomComponent;
 
 import java.util.*;
 
@@ -43,23 +45,27 @@ public class AlgorithmController {
         }
     }
 
+
     @PostMapping(value = "/graphpartition/once", produces = "application/json")
     public ResponseEntity<String> runonce() {
         try {
-            State state = algorithm.graphPartitionOnce();
-            return getDistrictPrecincts(state.getDistricts());
+            System.out.printf("Algorithm is AlgController is : %s\n", algorithm);
+            algorithm.graphPartitionOnce();
+            return getClusterPrecincts(algorithm.getClusterManager().getClusters());
         } catch (NotAnotherMoveException ex) {
+            ex.printStackTrace();
             return ResponseEntity.status(400).body("Unable to have another move");
         } catch (NullPointerException ex) {
+            ex.printStackTrace();
             return ResponseEntity.status(400).body("Please first initialize algorithm");
         }
     }
 
     @GetMapping(value = "/district/{id}/data", produces = "application/json")
     public ResponseEntity<String> getDistrictById(@PathVariable Long id) {
-        System.out.printf("Request to get data for district : %d \n", id);
-        District district = algorithm.getState().getDistrictById(id);
-        if (district != null) {
+        try {
+            System.out.printf("Request to get data for district : %d \n", id);
+            District district = algorithm.getState().getDistrictById(id);
             ObjectMapper mapper = new ObjectMapper();
             SimpleModule module = new SimpleModule();
             module.addSerializer(District.class, new DistrictDataSerializer());
@@ -71,9 +77,8 @@ public class AlgorithmController {
                 ex.printStackTrace();
                 return ResponseEntity.status(400).body("error");
             }
-        } else {
-            System.out.printf("Could not find entity with id %d \n", id);
-            return ResponseEntity.status(404).body("Could not find entity");
+        } catch (NullPointerException ex) {
+            return getClusterData(Integer.parseInt(id.toString()));
         }
     }
 
@@ -100,6 +105,29 @@ public class AlgorithmController {
     @GetMapping(value = "/getmmd", produces = "application/json")
     public ResponseEntity<String> getMajMinDistrictBorders(){
         return getDistrictPrecincts(algorithm.getState().getMMDistricts(algorithm.getCommunityOfInterest(), algorithm.getRange()));
+    }
+
+    private ResponseEntity<String> getClusterPrecincts(List<Cluster> clusters) {
+        try {
+            JSONObject object = new JSONObject();
+            for (int i = 0; i < clusters.size(); i++) {
+                Set<Precinct> precincts = clusters.get(i).getPrecincts();
+                JSONArray ps = new JSONArray();
+                for (Precinct p : precincts) {
+                    District fake = new District();
+                    fake.setId(new Long(i));
+                    p.setDistrict(fake, false);
+                    ps.put(p.getId());
+                }
+                object.put("" + i, ps);
+                object.put("message", String.format("%d Clusters", clusters.size()));
+            }
+            System.out.printf("Return %d of Clusters with its precinctIds. \n", clusters.size());
+            return ResponseEntity.ok(object.toString());
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+            return ResponseEntity.status(400).body("Cannot convert to JSON when getting cluster precincts");
+        }
     }
 
     private ResponseEntity<String> getDistrictPrecincts(Collection<District> districts) {
@@ -139,6 +167,33 @@ public class AlgorithmController {
             arr.put(object.toJSONObject());
         }
         return ResponseEntity.ok(arr.toString());
+    }
+
+    @GetMapping(value = "cluster/{index}/data")
+    public ResponseEntity<String> getClusterData(@PathVariable int index) {
+        try {
+            Cluster c = algorithm.getClusterManager().getClusters().get(index);
+            ObjectMapper mapper = new ObjectMapper();
+            SimpleModule module = new SimpleModule();
+            module.addSerializer(Cluster.class, new ClusterDataSerializer());
+            mapper.registerModule(module);
+            try {
+                System.out.printf("Returning cluster %d data.\n", index);
+                return ResponseEntity.ok(mapper.writeValueAsString(c));
+            } catch (JsonProcessingException ex) {
+                ex.printStackTrace();
+                return ResponseEntity.status(400).body("error");
+            }
+        } catch (NullPointerException ex) {
+            ex.printStackTrace();
+            return ResponseEntity.status(404).body("No cluster found");
+        }
+    }
+
+    @PostMapping(value = "/save")
+    public ResponseEntity<String> save(){
+        StateManager.getInstance().save(algorithm.getState());
+        return ResponseEntity.ok("Saved");
     }
 
 

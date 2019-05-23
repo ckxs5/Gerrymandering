@@ -2,6 +2,8 @@ package com.example.gerrymanderdemo.model;
 
 import com.example.gerrymanderdemo.model.Data.Data;
 import com.example.gerrymanderdemo.model.Enum.RaceType;
+import com.fasterxml.jackson.databind.util.ClassUtil;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -92,7 +94,7 @@ public class Cluster implements Comparable{
             e.updateElement(this, parentCluster);
             parentCluster.addEdge(e);
         }
-        this.edges = null;
+        this.edges.clear();
     }
 
     public void addChildren(Cluster c){
@@ -140,4 +142,16 @@ public class Cluster implements Comparable{
             return -1;
         }
     }
+
+    public Cluster getNeiWithLowestPop(){
+        Cluster targert = edges.get(0).getTheOther(this);
+        for (Edge e : edges){
+            Cluster temp = e.getTheOther(this);
+            if(temp.getData().getDemographic().getPopulation(RaceType.ALL) < targert.getData().getDemographic().getPopulation(RaceType.ALL)) {
+                targert = temp;
+            }
+        }
+        return targert;
+    }
+
 }

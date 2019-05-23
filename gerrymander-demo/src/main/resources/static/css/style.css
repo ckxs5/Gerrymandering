@@ -102,6 +102,26 @@ body, html{
     text-shadow: #333 0 1px 0;
     z-index: 1000;
 }
+#loading {
+    background-size: 640px;
+    background-position-x: center;
+    background-position-y: inherit;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+    padding: 15% 35% 25% 35%;
+    text-align: center;
+    /*background-color: transparent;*/
+    text-align: center;
+    text-shadow: #333 0 1px 0;
+    z-index: 1000;
+
+}
+
+
 
 .toolbar{
     width: 25%;

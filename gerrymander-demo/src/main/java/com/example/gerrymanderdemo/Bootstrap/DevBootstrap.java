@@ -46,7 +46,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         DistrictManager.setInstance(districtService, dataService, demographicService, voteService, boundaryService);
         StateManager.setInstance(stateService, dataService, demographicService, voteService, boundaryService);
 
-        test();
+//        test();
     }
 
     private HashMap<String, String> initPreferences() {
@@ -63,15 +63,19 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         return preferences;
     }
 
-    private void test(){
+    private void test() {
         HashMap<String, String> preferences = initPreferences();
-        Algorithm algorithm = new Algorithm(preferences, new State());
-        algorithm.graphPartition();
-        State state = algorithm.getState();
-        List<District> districts = state.getDistricts();
-        for(int i = 0; i < districts.size(); i++) {
-            System.out.printf("District %d population : %d \n", i, districts.get(i).getData().getDemographic().getPopulation(RaceType.ALL));
+        int i;
+        for (i = 0; i < 10; i++){
+            Algorithm algorithm = new Algorithm(preferences, new State());
+            algorithm.graphPartition();
+            State state = algorithm.getState();
+            StateManager.getInstance().save(state);
         }
+//        List<District> districts = state.getDistricts();
+//        for(int i = 0; i < districts.size(); i++) {
+//            System.out.printf("District %d population : %d \n", i, districts.get(i).getData().getDemographic().getPopulation(RaceType.ALL));
+//        }
     }
 
 //    private Collection<SummaryObject> constructBatchSummaryObjects(){
