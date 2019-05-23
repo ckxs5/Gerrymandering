@@ -123,7 +123,7 @@ public class Precinct implements ResponseObject {
     }
 
     public void updateIsBorder() {
-        this.isBorder = !(getNeigbourDistricts().size() > 0);
+        this.isBorder = (getNeigbourDistricts().size() > 0);
     }
 
     @Override
