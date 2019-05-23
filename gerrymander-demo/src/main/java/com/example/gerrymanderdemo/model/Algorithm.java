@@ -101,6 +101,8 @@ public class Algorithm {
     //This is similar to makeMove, but reverse to put neighbor precinct to startDistrict and check
     public Move makeMove_secondary() {
         List<District> districts = getWorstDistricts();//TODO:getWorstDistricts()
+        System.out.println("<><><><><><><><><><><><> "+ districts);
+
         districts.remove(0);
         while (districts.size() > 0) {
             District startDistrict = districts.get(0);
@@ -143,12 +145,18 @@ public class Algorithm {
 
     public Move getMoveFromDistrict(District startDistrict){
         List<Precinct> precincts = new ArrayList<>(startDistrict.getBorderPrecincts());
+        System.out.println("================================getMoveFromDistrict: " + precincts);
+        System.out.println("getBorder: " + startDistrict.getBorderPrecincts());
         for (Precinct p : precincts) {
             List<Long> neighborIDs = new ArrayList<>(p.getNeighborIDs());
+            System.out.println("neighborIDs: " + neighborIDs);
             for (Long id : neighborIDs) {
+                System.out.println("startDistrict.getPrecinct(id): " + startDistrict.getPrecinct(id));
                 if (startDistrict.getPrecinct(id) == null) {//take the precinct that is not in startDistrict
                     District neighborDistrict = state.getDistrictById(redistrictingPlan.get(id));
+                    System.out.println("neighborDistrict:  " + neighborDistrict);
                     Move move = testMove(neighborDistrict, startDistrict, p);
+                    System.out.println("move: " + move);
                     if (move != null) {
                         System.out.println("Moving p to neighborDistrict(neighborID = " + id + ")");
                         currentDistrict = startDistrict;

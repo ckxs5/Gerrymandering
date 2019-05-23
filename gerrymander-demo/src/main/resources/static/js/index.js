@@ -193,9 +193,7 @@ $("document").ready(function () {
     }
 
     $("#phase2Play").on("click", function(){
-        for(let i = 0; i< 30; i++) {
-            postData(null, "/simulating_annealing", saColorModifying);
-        }
+        postData(null, "/simulating_annealing", saColorModifying);
     })
 
     function saColorModifying(data){
