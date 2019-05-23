@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import sun.java2d.loops.CustomComponent;
@@ -200,6 +201,16 @@ public class AlgorithmController {
     public ResponseEntity<String> save(){
         StateManager.getInstance().save(algorithm.getState());
         return ResponseEntity.ok("Saved");
+    }
+
+    @GetMapping(value = "/state/{id}/load")
+    public ResponseEntity<String> load(@PathVariable Long id){
+        State state = StateManager.getInstance().findById(id);
+        if (state == null) {
+            return ResponseEntity.status(404).body("State not found");
+        }
+        this.algorithm.setState(state);
+        return getDistrictPrecincts(state.getDistricts());
     }
 
 
