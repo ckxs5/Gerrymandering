@@ -202,6 +202,11 @@ $("document").ready(function () {
         let player;
         console.log("sa coloring " + data);
         Object.keys(data).forEach(function(key) {
+            if(key === "message") {
+                console.log("Objectivefunctionvalue: " + data[key]);
+                $("#objvalueMessage").text(data[key]);
+                return;
+            }
             if (key === "to"){
                 color =  colorHashMap[data[key]];
             }else if (key === "p") {
